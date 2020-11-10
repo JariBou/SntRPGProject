@@ -15,6 +15,8 @@ Armor
 GoldGivenUponDeath?
 
 
+GUI class is just a preview; real one to do with netbeans for flexibility
+
 
 To make levels idea:
 have a  main file in which you import the level classes with a constructor with the player as input

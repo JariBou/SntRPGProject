@@ -1,11 +1,10 @@
 package fr.snt.jari;
 
 import fr.snt.jari.enemies.Enemies;
-import fr.snt.jari.enemies.Weapons;
 
 public class Player {
     private final String name;
-    private int health,maxHealth, attack, armor;
+    private int health,maxHealth, attack, armor, gold;
     private Weapons weapon;
 
     public Player(String name, int maxHealth, int attack, int armor){
@@ -15,6 +14,7 @@ public class Player {
         this.attack = attack;
         this.armor = armor;
         this.weapon = null;
+        this.gold = 0;
     }
 
     public String getName() {
@@ -27,6 +27,18 @@ public class Player {
 
     public String getWeapon() {
         return weapon.getName();
+    }
+
+    public int getGold() {
+        return gold;
+    }
+
+    public void addGold(int amount){
+        this.gold += amount;
+    }
+
+    public void removeGold(int amount){
+        this.gold -= amount;
     }
 
     public void setMaxHealth(int maxHealth) {
@@ -69,9 +81,21 @@ public class Player {
         this.health -= attack;
     }
 
+    public int getTotalDamage(){
+        if (this.hasWeapon()){
+            return this.getAttack() + weapon.getAttack();
+        } else{
+            return this.getAttack();
+        }
+    }
+
     public void attack(Enemies target){
-        int totalDamage = this.getAttack() + weapon.getAttack() - target.getArmor();
+        int totalDamage = this.getTotalDamage() - target.getArmor();
         target.damage(totalDamage);
+        if (target.isDead()){
+            System.out.println(target.getName() + " is dead!");
+            this.addGold(target.getGoldValue());
+        }
     }
 
     /**

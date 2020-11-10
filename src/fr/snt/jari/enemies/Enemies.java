@@ -4,7 +4,7 @@ import fr.snt.jari.Player;
 
 abstract public class Enemies{
     protected String name;
-    protected int health, attack, armor;
+    protected int health, attack, armor, goldValue;
 
     public int getHealth() {
         return health;
@@ -34,12 +34,15 @@ abstract public class Enemies{
         target.damage(totalDamage);
     }
 
+    public int getGoldValue(){
+        return this.goldValue;
+    }
+
     /**
      * @return true if target is dead
      */
     public boolean isDead(){
         if (this.health <= 0){
-            System.out.println(this.getName() + " is dead!");
             return true;
         } else{
             return false;

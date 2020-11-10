@@ -1,12 +1,13 @@
-package fr.snt.jari.enemies;
+package fr.snt.jari;
 
 public class Weapons {
     private String name;
-    private int attack;
+    private int attack, cost;
 
-    public void Weapon(String name, int attack){
+    public Weapons(String name, int attack, int cost){
         this.name = name;
         this.attack = attack;
+        this.cost = cost;
     }
 
     public String getName() {
@@ -15,5 +16,9 @@ public class Weapons {
 
     public int getAttack() {
         return attack;
+    }
+
+    public int getCost() {
+        return cost;
     }
 }
