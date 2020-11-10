@@ -1,0 +1,27 @@
+Player: levels?
+Name
+Health
+Attack
+Armor
+Weapon
+Gold?
+
+
+Enemies:   hp and attack increases with time
+Name
+Health
+Attack
+Armor
+GoldGivenUponDeath?
+
+
+
+To make levels idea:
+have a  main file in which you import the level classes with a constructor with the player as input
+so that it keeps the same player.
+
+main file
+-> level1(Player player)    // maybe have levelx return a true or false to kno when to stop or not a loop (assert)
+-> level2(Player player)    // or invoque an end screen when dead that offers to restart and lauches the main again
+->....
+
