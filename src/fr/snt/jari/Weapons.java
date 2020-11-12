@@ -1,8 +1,8 @@
 package fr.snt.jari;
 
 public class Weapons {
-    private String name;
-    private int attack, cost;
+    private final String name;
+    private final int attack, cost;
 
     public Weapons(String name, int attack, int cost){
         this.name = name;

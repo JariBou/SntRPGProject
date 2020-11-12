@@ -1,11 +1,14 @@
 package fr.snt.jari.levels;
 
 import fr.snt.jari.Player;
+import fr.snt.jari.Weapons;
 import fr.snt.jari.enemies.Zombie;
+
+import java.util.ArrayList;
 
 public class Level2 extends BaseLevel{
 
-    public Level2(Player player){
+    public Level2(Player player, ArrayList<Weapons> weaponsList){
         this.player = player;
         Zombie zombie1 = new Zombie("Zombie 1", 20, 3, 1, 3);
 
@@ -31,8 +34,8 @@ public class Level2 extends BaseLevel{
         }
 
         player.endLevel();
-        shop();
-        new Boss1(player);
+        shop(weaponsList);
+        new Boss1(player, weaponsList);
         //Start Here
     }
 }

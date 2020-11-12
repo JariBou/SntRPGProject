@@ -5,8 +5,10 @@ import fr.snt.jari.levels.GameOverLevel;
 
 public class Player {
     private final String name;
-    private int health,maxHealth, attack, armor, gold;
+    private int health, maxHealth, attack, gold;
+    private final int armor;
     private Weapons weapon;
+    // Player Levels and poison mechanics
     private int levelCount, poison, poisonLevel;
 
     public Player(String name, int maxHealth, int attack, int armor){

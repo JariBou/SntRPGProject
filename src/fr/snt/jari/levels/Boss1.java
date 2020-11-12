@@ -1,11 +1,14 @@
 package fr.snt.jari.levels;
 
 import fr.snt.jari.Player;
+import fr.snt.jari.Weapons;
 import fr.snt.jari.enemies.bosses.Arachnea;
+
+import java.util.ArrayList;
 
 public class Boss1 extends BaseLevel{
 
-    public Boss1(Player player){
+    public Boss1(Player player, ArrayList<Weapons> weaponsList){
         this.player = player;
         Arachnea boss = new Arachnea();
 
@@ -25,7 +28,7 @@ public class Boss1 extends BaseLevel{
         }
 
         player.endLevel();
-        shop();
+        shop(weaponsList);
     }
 
 }
