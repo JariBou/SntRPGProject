@@ -3,7 +3,6 @@ package fr.snt.jari.levels;
 import fr.snt.jari.Player;
 import fr.snt.jari.Weapons;
 import fr.snt.jari.enemies.Armoured_Zombie;
-import fr.snt.jari.enemies.Zombie;
 
 import java.util.ArrayList;
 
@@ -13,11 +12,7 @@ public class Level1 extends BaseLevel{
 
         ArrayList<Weapons> weaponsList = new ArrayList<>();
         weaponsList.add(new Weapons("Knife", 2, 2));
-        weaponsList.add(new Weapons("Sword", 5, 5));
-        //System.out.println("Weapons list: \n");
-        //for (Weapons i : weaponsList) {
-        //    System.out.println(i.getName() + "   Attack: " + i.getAttack() + "   Cost: " + i.getCost());
-        //}
+        weaponsList.add(new Weapons("Sword", 6, 5));
 
 
         System.out.println("Enter your name: ");

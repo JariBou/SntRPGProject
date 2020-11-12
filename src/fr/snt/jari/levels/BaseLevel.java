@@ -8,8 +8,6 @@ import java.util.Scanner;
 
 public abstract class BaseLevel {
     protected final Scanner sc = new Scanner(System.in);
-    protected final Weapons knife = new Weapons("Knife", 3, 1);
-    protected final Weapons sword = new Weapons("Sword", 6, 3);
     protected Player player;
     protected String choice;
     private Weapons weapon;
@@ -19,12 +17,12 @@ public abstract class BaseLevel {
         System.out.println("Do you want to buy a weapon?         Your gold: " + player.getGold());
         String choice = sc.nextLine();
         if (choice.equals("yes")) {
-
+            int count = 1;
             System.out.println("Weapons list: \n");
             for (Weapons i : WL) {
-                System.out.println(i.getName() + "   Attack: " + i.getAttack() + "   Cost: " + i.getCost());
+                System.out.println(count + ". " + i.getName() + "   Attack: " + i.getAttack() + "   Cost: " + i.getCost());
+                count++;
             }
-
             choice = sc.nextLine();
             try {
                 this.weapon = WL.get(Integer.parseInt(choice) - 1);
@@ -42,6 +40,7 @@ public abstract class BaseLevel {
                 shop(WL);
             }
         }
+        System.out.println();
     }
 
 
