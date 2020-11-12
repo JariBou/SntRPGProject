@@ -2,9 +2,9 @@ Player: levels?
 Name
 Health
 Attack
-Armor
+Armor     //For now armor is a flat reduction; maybe a percentage later on
 Weapon
-Gold?
+Gold
 
 
 Enemies:   hp and attack increases with time
@@ -12,7 +12,7 @@ Name
 Health
 Attack
 Armor
-GoldGivenUponDeath?
+GoldGivenUponDeath
 
 
 GUI class is just a preview; real one to do with netbeans for flexibility

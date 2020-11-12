@@ -1,11 +1,13 @@
 package fr.snt.jari;
 
 import fr.snt.jari.enemies.Enemies;
+import fr.snt.jari.levels.GameOverLevel;
 
 public class Player {
     private final String name;
     private int health,maxHealth, attack, armor, gold;
     private Weapons weapon;
+    private int levelCount, poison, poisonLevel;
 
     public Player(String name, int maxHealth, int attack, int armor){
         this.name = name;
@@ -23,6 +25,7 @@ public class Player {
 
     public void setWeapon(Weapons weapon) {
         this.weapon = weapon;
+        System.out.println("Successfully equipped '" + weapon.getName() + "'!");
     }
 
     public String getWeapon() {
@@ -41,7 +44,7 @@ public class Player {
         this.gold -= amount;
     }
 
-    public void setMaxHealth(int maxHealth) {
+    private void setMaxHealth(int maxHealth) {
         this.maxHealth = maxHealth;
     }
 
@@ -53,8 +56,26 @@ public class Player {
         return maxHealth;
     }
 
-    public void resetHealth() {
+    private void levelUp(){
+        this.setMaxHealth(getMaxHealth() + 3);
+        levelCount++;
+        if (levelCount == 4){
+            levelCount = 0;
+            this.setAttack(getAttack() + 1);
+        }
+    }
+
+    private void resetHealth() {
         this.health = this.maxHealth;
+    }
+
+    /**
+     *  To be called at the end of a level
+     */
+    public void endLevel(){
+        setPoison(0, 0);
+        levelUp();
+        resetHealth();
     }
 
     public boolean hasWeapon(){
@@ -63,10 +84,6 @@ public class Player {
 
     public int getArmor() {
         return armor;
-    }
-
-    public void setArmor(int armor) {
-        this.armor = armor;
     }
 
     public int getAttack() {
@@ -81,7 +98,7 @@ public class Player {
         this.health -= attack;
     }
 
-    public int getTotalDamage(){
+    private int getTotalDamage(){
         if (this.hasWeapon()){
             return this.getAttack() + weapon.getAttack();
         } else{
@@ -89,12 +106,38 @@ public class Player {
         }
     }
 
+    public void setPoison(int turns, int poisonLevel){
+        this.poison = turns;
+        this.poisonLevel = poisonLevel;
+    }
+
+    /**
+     * To call at the end of EACH turn
+     */
+    public void update(){
+        if (isDead()){
+                new GameOverLevel(this);
+            }
+        else if (poison > 0){
+            this.health -= poisonLevel;
+            poison--;
+        }
+    }
+
     public void attack(Enemies target){
         int totalDamage = this.getTotalDamage() - target.getArmor();
         target.damage(totalDamage);
-        if (target.isDead()){
-            System.out.println(target.getName() + " is dead!");
-            this.addGold(target.getGoldValue());
+        if (!target.dodged) {
+            if (target.guarded){
+                System.out.println(this.getName() + " attacked " + target.getName() + " for " + (totalDamage - target.getArmor()) + " damage!");
+            } else {
+                System.out.println(this.getName() + " attacked " + target.getName() + " for " + totalDamage + " damage!");
+                if (!target.isAlive()) {
+                    System.out.println(target.getName() + " is dead!");
+                    this.addGold(target.getGoldValue());
+                    System.out.println("You were awarded with " + target.getGoldValue() + "gold!");
+                }
+            }
         }
     }
 
