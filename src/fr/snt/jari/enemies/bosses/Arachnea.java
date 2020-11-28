@@ -16,7 +16,7 @@ public class Arachnea extends Enemies {
 
     @Override
     public void attack(Player target) {
-        int totalDamage = this.getAttack() - target.getArmor();
+        int totalDamage = this.getAttack() - target.getBaseArmor();
         target.damage(totalDamage);
         int poison_chance = rd.nextInt(15);
         if (poison_chance == 7){

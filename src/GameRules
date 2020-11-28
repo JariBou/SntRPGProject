@@ -1,10 +1,12 @@
-Player: levels?
+Player:
 Name
 Health
 Attack
 Armor     //For now armor is a flat reduction; maybe a percentage later on
 Weapon
+Armour
 Gold
+Levels
 
 
 Enemies:   hp and attack increases with time
@@ -15,15 +17,13 @@ Armor
 GoldGivenUponDeath
 
 
-GUI class is just a preview; real one to do with netbeans for flexibility
-
 
 To make levels idea:
 have a  main file in which you import the level classes with a constructor with the player as input
 so that it keeps the same player.
 
 main file
--> level1(Player player)    // maybe have levelx return a true or false to kno when to stop or not a loop (assert)
+-> level1(Player player)    // maybe have levelx return a true or false to know when to stop or not a loop (assert)
 -> level2(Player player)    // or invoque an end screen when dead that offers to restart and lauches the main again
 ->....
 

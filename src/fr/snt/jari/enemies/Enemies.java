@@ -34,7 +34,7 @@ abstract public class Enemies{
     }
 
     public void attack(Player target){
-        int totalDamage = this.getAttack() - target.getArmor();
+        int totalDamage = this.getAttack() - target.getBaseArmor();
         target.damage(totalDamage);
         System.out.println(this.getName() + " attacked " + target.getName() + " for " + totalDamage + " damage!");
     }

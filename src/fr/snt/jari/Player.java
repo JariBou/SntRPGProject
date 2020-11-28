@@ -1,13 +1,20 @@
 package fr.snt.jari;
 
 import fr.snt.jari.enemies.Enemies;
+import fr.snt.jari.equipables.Armors;
+import fr.snt.jari.equipables.Equipables;
+import fr.snt.jari.equipables.Weapons;
 import fr.snt.jari.levels.GameOverLevel;
+
+import java.util.ArrayList;
 
 public class Player {
     private final String name;
     private int health, maxHealth, attack, gold;
-    private final int armor;
+    private final int baseArmor;
     private Weapons weapon;
+    private Armors Armor;
+    private ArrayList<Equipables> Inventory;
     // Player Levels and poison mechanics
     private int levelCount, poison, poisonLevel;
 
@@ -16,8 +23,9 @@ public class Player {
         this.maxHealth = maxHealth;
         this.health = maxHealth;
         this.attack = attack;
-        this.armor = armor;
+        this.baseArmor = armor;
         this.weapon = null;
+        this.Armor = null;
         this.gold = 0;
     }
 
@@ -30,8 +38,8 @@ public class Player {
         System.out.println("Successfully equipped '" + weapon.getName() + "'!");
     }
 
-    public String getWeapon() {
-        return weapon.getName();
+    public Weapons getWeapon() {
+        return weapon;
     }
 
     public int getGold() {
@@ -84,8 +92,24 @@ public class Player {
         return this.weapon != null;
     }
 
-    public int getArmor() {
-        return armor;
+    public void setArmor(Armors armor){
+        this.Armor = armor;
+    }
+
+    public Armors getArmor(){
+        return Armor;
+    }
+
+    public boolean hasArmor(){
+        return this.Armor != null;
+    }
+
+    public int getBaseArmor() {
+        if (hasArmor()) {
+            return this.baseArmor + this.Armor.getArmorValue();
+        } else{
+            return this.baseArmor;
+        }
     }
 
     public int getAttack() {
@@ -155,4 +179,33 @@ public class Player {
         }
     }
 
+    //Inventory Managemen Functions -----------------------
+    public void addToInventory(Equipables item){
+        this.Inventory.add(item);
+    }
+
+    public void removeFromPosInventory(int position){
+        this.Inventory.remove(position);
+    }
+
+    public void removeItemFromInventory(Equipables item){
+        this.Inventory.remove(item);
+    }
+
+    public void clearInventory(){
+        this.Inventory.clear();
+    }
+
+    public Equipables getItemInInventory(int position){
+        return this.Inventory.get(position);
+    }
+
+    public ArrayList<Equipables> getInventory() {
+        return this.Inventory;
+    }
+
+    public boolean isItemInInventory(Equipables item){
+        return this.Inventory.contains(item);
+    }
+    //------------------------------------------------------
 }
