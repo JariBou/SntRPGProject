@@ -36,7 +36,7 @@ public class Level2 extends BaseLevel{
 
         player.endLevel();
         shop(weaponsList, armorsList);
-        new Boss1(player, weaponsList);
+        new Boss1(player, weaponsList, armorsList);
         //Start Here
     }
 }
