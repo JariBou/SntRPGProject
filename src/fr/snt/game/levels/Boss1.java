@@ -1,6 +1,7 @@
 package fr.snt.game.levels;
 
 import fr.snt.game.Player;
+import fr.snt.game.equipables.Armors;
 import fr.snt.game.equipables.Weapons;
 import fr.snt.game.enemies.bosses.Arachnea;
 
@@ -8,7 +9,7 @@ import java.util.ArrayList;
 
 public class Boss1 extends BaseLevel{
 
-    public Boss1(Player player, ArrayList<Weapons> weaponsList){
+    public Boss1(Player player, ArrayList<Weapons> weaponsList, ArrayList<Armors> armorsList){
         this.player = player;
         Arachnea boss = new Arachnea();
 
@@ -28,7 +29,7 @@ public class Boss1 extends BaseLevel{
         }
 
         player.endLevel();
-        shop(weaponsList);
+        shop(weaponsList, armorsList);
     }
 
 }

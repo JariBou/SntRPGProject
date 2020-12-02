@@ -1,6 +1,7 @@
 package fr.snt.game.levels;
 
 import fr.snt.game.Player;
+import fr.snt.game.equipables.Armors;
 import fr.snt.game.equipables.Weapons;
 import fr.snt.game.enemies.Zombie;
 
@@ -8,7 +9,7 @@ import java.util.ArrayList;
 
 public class Level2 extends BaseLevel{
 
-    public Level2(Player player, ArrayList<Weapons> weaponsList){
+    public Level2(Player player, ArrayList<Weapons> weaponsList, ArrayList<Armors> armorsList){
         this.player = player;
         Zombie zombie1 = new Zombie("Zombie 1", 20, 3, 1, 3);
 
@@ -34,7 +35,7 @@ public class Level2 extends BaseLevel{
         }
 
         player.endLevel();
-        shop(weaponsList);
+        shop(weaponsList, armorsList);
         new Boss1(player, weaponsList);
         //Start Here
     }

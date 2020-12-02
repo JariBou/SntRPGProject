@@ -1,6 +1,7 @@
 package fr.snt.game.levels;
 
 import fr.snt.game.Player;
+import fr.snt.game.equipables.Armors;
 import fr.snt.game.equipables.Weapons;
 import fr.snt.game.enemies.Armoured_Zombie;
 
@@ -13,6 +14,7 @@ public class Level1 extends BaseLevel{
         ArrayList<Weapons> weaponsList = new ArrayList<>();
         weaponsList.add(new Weapons("Knife", 2, 2));
         weaponsList.add(new Weapons("Sword", 6, 5));
+        ArrayList<Armors> armorsList = new ArrayList<>();
 
 
         System.out.println("Enter your name: ");
@@ -42,12 +44,12 @@ public class Level1 extends BaseLevel{
         }
 
         player.endLevel();
-        shop(weaponsList);
+        shop(weaponsList, armorsList);
 
         // Bla Bla Bla
 
         // In the end
-        new Level2(this.player, weaponsList);
+        new Level2(this.player, weaponsList, armorsList);
     }
 
 }
