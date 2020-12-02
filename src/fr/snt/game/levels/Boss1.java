@@ -1,8 +1,8 @@
-package fr.snt.jari.levels;
+package fr.snt.game.levels;
 
-import fr.snt.jari.Player;
-import fr.snt.jari.equipables.Weapons;
-import fr.snt.jari.enemies.bosses.Arachnea;
+import fr.snt.game.Player;
+import fr.snt.game.equipables.Weapons;
+import fr.snt.game.enemies.bosses.Arachnea;
 
 import java.util.ArrayList;
 

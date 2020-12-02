@@ -1,7 +1,7 @@
-package fr.snt.jari.enemies.bosses;
+package fr.snt.game.enemies.bosses;
 
-import fr.snt.jari.Player;
-import fr.snt.jari.enemies.Enemies;
+import fr.snt.game.Player;
+import fr.snt.game.enemies.Enemies;
 
 public class Arachnea extends Enemies {
 

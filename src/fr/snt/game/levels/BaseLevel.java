@@ -1,7 +1,7 @@
-package fr.snt.jari.levels;
+package fr.snt.game.levels;
 
-import fr.snt.jari.Player;
-import fr.snt.jari.equipables.Weapons;
+import fr.snt.game.Player;
+import fr.snt.game.equipables.Weapons;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -38,6 +38,7 @@ public abstract class BaseLevel {
                         // Buyable
                         player.removeGold(weapon.getCost());
                         player.setWeapon(weapon);
+                        player.addToInventory(weapon);
                         WL.remove(weapon);
                         System.out.println("Do you want to buys something else?");
                         choice = sc.nextLine();

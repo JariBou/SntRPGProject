@@ -1,4 +1,4 @@
-package fr.snt.jari.enemies;
+package fr.snt.game.enemies;
 
 public class Zombie extends Enemies{
 

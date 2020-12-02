@@ -1,10 +1,10 @@
-package fr.snt.jari;
+package fr.snt.game;
 
-import fr.snt.jari.enemies.Enemies;
-import fr.snt.jari.equipables.Armors;
-import fr.snt.jari.equipables.Equipables;
-import fr.snt.jari.equipables.Weapons;
-import fr.snt.jari.levels.GameOverLevel;
+import fr.snt.game.enemies.Enemies;
+import fr.snt.game.equipables.Armors;
+import fr.snt.game.equipables.Equipables;
+import fr.snt.game.equipables.Weapons;
+import fr.snt.game.levels.GameOverLevel;
 
 import java.util.ArrayList;
 

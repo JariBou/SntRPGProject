@@ -1,6 +1,6 @@
-package fr.snt.jari;
+package fr.snt.game;
 
-import fr.snt.jari.levels.Level1;
+import fr.snt.game.levels.Level1;
 
 public class run {
 

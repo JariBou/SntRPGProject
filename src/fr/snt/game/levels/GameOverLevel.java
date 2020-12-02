@@ -1,6 +1,6 @@
-package fr.snt.jari.levels;
+package fr.snt.game.levels;
 
-import fr.snt.jari.Player;
+import fr.snt.game.Player;
 
 public class GameOverLevel extends BaseLevel{
 

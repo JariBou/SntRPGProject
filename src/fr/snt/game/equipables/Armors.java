@@ -1,4 +1,4 @@
-package fr.snt.jari.equipables;
+package fr.snt.game.equipables;
 
 public class Armors extends Equipables {
     private final int armorValue;

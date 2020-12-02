@@ -1,6 +1,6 @@
-package fr.snt.jari.enemies;
+package fr.snt.game.enemies;
 
-import fr.snt.jari.Player;
+import fr.snt.game.Player;
 
 import java.util.Random;
 

@@ -1,4 +1,4 @@
-package fr.snt.jari.equipables;
+package fr.snt.game.equipables;
 
 public class Weapons extends Equipables{
     private final int attack;

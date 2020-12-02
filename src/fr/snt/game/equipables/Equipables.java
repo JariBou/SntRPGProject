@@ -1,4 +1,4 @@
-package fr.snt.jari.equipables;
+package fr.snt.game.equipables;
 
 public abstract class Equipables {
     protected String name;
