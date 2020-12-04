@@ -9,8 +9,7 @@ import java.util.ArrayList;
 
 public class Boss1 extends BaseLevel{
 
-    public Boss1(Player player, ArrayList<Weapons> weaponsList, ArrayList<Armors> armorsList){
-        this.player = player;
+    public Boss1(){
         Arachnea boss = new Arachnea();
 
         System.out.println(boss.getName() + " appears!");
@@ -29,7 +28,7 @@ public class Boss1 extends BaseLevel{
         }
 
         player.endLevel();
-        shop(weaponsList, armorsList);
+        shop();
     }
 
 }

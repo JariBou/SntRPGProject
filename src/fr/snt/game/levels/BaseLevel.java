@@ -9,13 +9,17 @@ import java.util.Scanner;
 
 public abstract class BaseLevel {
     protected final Scanner sc = new Scanner(System.in);
-    protected Player player;
+    static Player player;
     protected String choice;
     private Weapons weapon;
     private Armors armor;
+    static ArrayList<Weapons> WL;
+    static ArrayList<Armors> AL;
 
+    // TODO: group repeated parts of the code into functions
+    // FIXME: Check that there cannot be any error when choosing
 
-    public void shop(ArrayList<Weapons> WL, ArrayList<Armors> AL) {
+    public void shop() {
         System.out.println(player.getGold());
         System.out.println("Do you want to buy Something?         Your gold: " + player.getGold());
         String choice = sc.nextLine();
@@ -33,9 +37,9 @@ public abstract class BaseLevel {
                     choice = sc.nextLine();
                     try {
                         this.weapon = WL.get(Integer.parseInt(choice) - 1);
-                    } catch (NumberFormatException e) {
+                    } catch (NumberFormatException | IndexOutOfBoundsException e) {
                         System.out.println("Wrong input: " + e);
-                        shop(WL, AL);
+                        shop();
                     }
                     if (weapon.getCost() <= player.getGold()) {
                         // Buyable
@@ -51,7 +55,7 @@ public abstract class BaseLevel {
 
                     } else {
                         System.out.println("Not Enough money!\n");
-                        shop(WL, AL);
+                        shop();
                     }
                 }
 
@@ -66,9 +70,9 @@ public abstract class BaseLevel {
                     choice = sc.nextLine();
                     try {
                         this.armor = AL.get(Integer.parseInt(choice) - 1);
-                    } catch (NumberFormatException e) {
+                    } catch (NumberFormatException | IndexOutOfBoundsException e) {
                         System.out.println("Wrong input: " + e);
-                        shop(WL, AL);
+                        shop();
                     }
                     if (armor.getCost() <= player.getGold()) {
                         // Buyable
@@ -84,8 +88,11 @@ public abstract class BaseLevel {
 
                     } else {
                         System.out.println("Not Enough money!\n");
-                        shop(WL, AL);
+                        shop();
                     }
+                } else{
+                    System.out.println("Wrong input!");
+                    shop();
                 }
 
             }

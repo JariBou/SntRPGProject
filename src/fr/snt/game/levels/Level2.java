@@ -9,8 +9,9 @@ import java.util.ArrayList;
 
 public class Level2 extends BaseLevel{
 
-    public Level2(Player player, ArrayList<Weapons> weaponsList, ArrayList<Armors> armorsList){
-        this.player = player;
+    public Level2(){
+        System.out.println(player.getItemInInventory(0).getName());
+
         Zombie zombie1 = new Zombie("Zombie 1", 20, 3, 1, 3);
 
         System.out.println("A Zombie appears! \nWill you fight him? yes/no");
@@ -35,8 +36,8 @@ public class Level2 extends BaseLevel{
         }
 
         player.endLevel();
-        shop(weaponsList, armorsList);
-        new Boss1(player, weaponsList, armorsList);
+        shop();
+        new Boss1();
         //Start Here
     }
 }

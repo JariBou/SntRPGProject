@@ -10,16 +10,17 @@ import java.util.ArrayList;
 public class Level1 extends BaseLevel{
 
     public Level1(){
+        WL = new ArrayList<Weapons>();
+        AL = new ArrayList<Armors>();
 
-        ArrayList<Weapons> weaponsList = new ArrayList<>();
-        weaponsList.add(new Weapons("Knife", 2, 2));
-        weaponsList.add(new Weapons("Sword", 6, 5));
-        ArrayList<Armors> armorsList = new ArrayList<>();
+
+        WL.add(new Weapons("Knife", 2, 2));
+        WL.add(new Weapons("Sword", 6, 5));
 
 
         System.out.println("Enter your name: ");
         String name = sc.nextLine();
-        this.player = new Player(name, 24, 5, 1);
+        player = new Player(name, 24, 5, 1);
         Armoured_Zombie zombie1 = new Armoured_Zombie("Zombie 1", 20, 3, 1, 3);
 
         System.out.println("A Zombie appears! \nWill you fight him? yes/no");
@@ -44,12 +45,12 @@ public class Level1 extends BaseLevel{
         }
 
         player.endLevel();
-        shop(weaponsList, armorsList);
+        shop();
 
         // Bla Bla Bla
 
         // In the end
-        new Level2(this.player, weaponsList, armorsList);
+        new Level2();
     }
 
 }

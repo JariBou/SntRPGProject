@@ -14,11 +14,12 @@ public class Player {
     private final int baseArmor;
     private Weapons weapon;
     private Armors Armor;
-    private ArrayList<Equipables> Inventory;
+    private final ArrayList<Equipables> Inventory;
     // Player Levels and poison mechanics
     private int levelCount, poison, poisonLevel;
 
     public Player(String name, int maxHealth, int attack, int armor){
+        this.Inventory = new ArrayList<Equipables>();
         this.name = name;
         this.maxHealth = maxHealth;
         this.health = maxHealth;
@@ -142,7 +143,7 @@ public class Player {
      */
     public void update(){
         if (isDead()){
-                new GameOverLevel(this);
+                new GameOverLevel();
             }
         else if (poison > 0){
             this.health -= poisonLevel;
