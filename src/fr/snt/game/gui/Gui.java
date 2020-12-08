@@ -1,4 +1,4 @@
-package fr.snt.game;
+package fr.snt.game.gui;
 
 import javax.swing.*;
 import java.awt.*;
