@@ -1,9 +1,7 @@
 package fr.snt.game;
 
 import fr.snt.game.enemies.Enemies;
-import fr.snt.game.equipables.Armors;
-import fr.snt.game.equipables.Equipables;
-import fr.snt.game.equipables.Weapons;
+import fr.snt.game.equipables.*;
 import fr.snt.game.levels.GameOverLevel;
 
 import java.util.ArrayList;
