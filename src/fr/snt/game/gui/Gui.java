@@ -8,7 +8,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.Struct;
 
 import static  javax.swing.WindowConstants.*;
 

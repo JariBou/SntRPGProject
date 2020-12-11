@@ -42,6 +42,7 @@ public class Level1 extends BaseLevel{
                 zombie1.attack(player);
             }
             player.update();
+            zombie1.update();
         }
 
         player.endLevel();

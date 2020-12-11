@@ -1,7 +1,5 @@
 package fr.snt.game.levels;
 
-import fr.snt.game.Player;
-
 public class GameOverLevel extends BaseLevel{
 
     public GameOverLevel(){

@@ -1,11 +1,6 @@
 package fr.snt.game.levels;
 
-import fr.snt.game.Player;
-import fr.snt.game.equipables.Armors;
-import fr.snt.game.equipables.Weapons;
 import fr.snt.game.enemies.Zombie;
-
-import java.util.ArrayList;
 
 public class Level2 extends BaseLevel{
 
