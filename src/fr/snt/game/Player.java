@@ -5,18 +5,20 @@ import fr.snt.game.equipables.*;
 import fr.snt.game.levels.GameOverLevel;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Player {
     private final String name;
-    private int health, maxHealth, attack, gold;
     private final int baseArmor;
+    private final ArrayList<Equipables> Inventory;
+    private final Random r = new Random();
+    private int health, maxHealth, attack, gold;
     private Weapons weapon;
     private Armors Armor;
-    private final ArrayList<Equipables> Inventory;
     // Player Levels and poison mechanics
     private int levelCount, poison, poisonLevel;
 
-    public Player(String name, int maxHealth, int attack, int armor){
+    public Player(String name, int maxHealth, int attack, int armor) {
         this.Inventory = new ArrayList<Equipables>();
         this.name = name;
         this.maxHealth = maxHealth;
@@ -32,43 +34,39 @@ public class Player {
         return name;
     }
 
+    public Weapons getWeapon() {
+        return weapon;
+    }
+
     public void setWeapon(Weapons weapon) {
         this.weapon = weapon;
         System.out.println("Successfully equipped '" + weapon.getName() + "'!");
-    }
-
-    public Weapons getWeapon() {
-        return weapon;
     }
 
     public int getGold() {
         return gold;
     }
 
-    public void addGold(int amount){
+    public void addGold(int amount) {
         this.gold += amount;
     }
 
-    public void removeGold(int amount){
+    public void removeGold(int amount) {
         this.gold -= amount;
-    }
-
-    private void setMaxHealth(int maxHealth) {
-        this.maxHealth = maxHealth;
-    }
-
-    public void setAttack(int attack) {
-        this.attack = attack;
     }
 
     public int getMaxHealth() {
         return maxHealth;
     }
 
-    private void levelUp(){
+    private void setMaxHealth(int maxHealth) {
+        this.maxHealth = maxHealth;
+    }
+
+    private void levelUp() {
         this.setMaxHealth(getMaxHealth() + 3);
         levelCount++;
-        if (levelCount == 4){
+        if (levelCount == 4) {
             levelCount = 0;
             this.setAttack(getAttack() + 1);
         }
@@ -79,34 +77,34 @@ public class Player {
     }
 
     /**
-     *  To be called at the end of a level
+     * To be called at the end of a level
      */
-    public void endLevel(){
+    public void endLevel() {
         setPoison(0, 0);
         levelUp();
         resetHealth();
     }
 
-    public boolean hasWeapon(){
+    public boolean hasWeapon() {
         return this.weapon != null;
     }
 
-    public void setArmor(Armors armor){
-        this.Armor = armor;
-    }
-
-    public Armors getArmor(){
+    public Armors getArmor() {
         return Armor;
     }
 
-    public boolean hasArmor(){
+    public void setArmor(Armors armor) {
+        this.Armor = armor;
+    }
+
+    public boolean hasArmor() {
         return this.Armor != null;
     }
 
     public int getBaseArmor() {
         if (hasArmor()) {
             return this.baseArmor + this.Armor.getArmorValue();
-        } else{
+        } else {
             return this.baseArmor;
         }
     }
@@ -115,23 +113,37 @@ public class Player {
         return attack;
     }
 
+    public void setAttack(int attack) {
+        this.attack = attack;
+    }
+
     public int getHealth() {
         return health;
     }
 
     public void damage(int attack){
-        this.health -= attack;
+
+        if (this.getArmor().hasSpEffect()) {
+            if (this.getArmor().getSpEffectType().equals("block")) {
+                int blockChance = r.nextInt(10);
+                if (blockChance == 4) {
+                    return;
+                }
+            }
+        }else {
+            this.health -= attack;
+        }
     }
 
-    private int getTotalDamage(){
-        if (this.hasWeapon()){
+    private int getTotalDamage() {
+        if (this.hasWeapon()) {
             return this.getAttack() + weapon.getAttack();
-        } else{
+        } else {
             return this.getAttack();
         }
     }
 
-    public void setPoison(int turns, int poisonLevel){
+    public void setPoison(int turns, int poisonLevel) {
         this.poison = turns;
         this.poisonLevel = poisonLevel;
     }
@@ -139,21 +151,20 @@ public class Player {
     /**
      * To call at the end of EACH turn
      */
-    public void update(){
-        if (isDead()){
-                new GameOverLevel();
-            }
-        else if (poison > 0){
+    public void update() {
+        if (isDead()) {
+            new GameOverLevel();
+        } else if (poison > 0) {
             this.health -= poisonLevel;
             poison--;
         }
     }
 
-    public void attack(Enemies target){
+    public void attack(Enemies target) {
         int totalDamage = this.getTotalDamage() - target.getArmor();
         target.damage(totalDamage);
         if (!target.dodged) {
-            if (target.guarded){
+            if (target.guarded) {
                 System.out.println(this.getName() + " attacked " + target.getName() + " for " + (totalDamage - target.getArmor()) + " damage!");
             } else {
                 System.out.println(this.getName() + " attacked " + target.getName() + " for " + totalDamage + " damage!");
@@ -169,33 +180,33 @@ public class Player {
     /**
      * @return true if target is dead
      */
-    public boolean isDead(){
-        if (this.health <= 0){
+    public boolean isDead() {
+        if (this.health <= 0) {
             System.out.println(this.getName() + " is dead!");
             return true;
-        } else{
+        } else {
             return false;
         }
     }
 
     //Inventory Managemen Functions -----------------------
-    public void addToInventory(Equipables item){
+    public void addToInventory(Equipables item) {
         this.Inventory.add(item);
     }
 
-    public void removeFromPosInventory(int position){
+    public void removeFromPosInventory(int position) {
         this.Inventory.remove(position);
     }
 
-    public void removeItemFromInventory(Equipables item){
+    public void removeItemFromInventory(Equipables item) {
         this.Inventory.remove(item);
     }
 
-    public void clearInventory(){
+    public void clearInventory() {
         this.Inventory.clear();
     }
 
-    public Equipables getItemInInventory(int position){
+    public Equipables getItemInInventory(int position) {
         return this.Inventory.get(position);
     }
 
@@ -203,7 +214,7 @@ public class Player {
         return this.Inventory;
     }
 
-    public boolean isItemInInventory(Equipables item){
+    public boolean isItemInInventory(Equipables item) {
         return this.Inventory.contains(item);
     }
     //------------------------------------------------------
