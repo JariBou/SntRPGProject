@@ -17,6 +17,19 @@ Armor
 GoldGivenUponDeath
 
 
+Armours:
+SpecialEffects:
+    - "Block"  increased block value
+    - "dmgDim" flat damage reduction
+    - "atkBonus" flat bonus damage
+
+Weapons:
+SpecialEffects:
+    - "percent"  percentage increased atk damage
+    - "burn"     burning overTurn damage    damage=2
+    - "atkBonus" flat bonus damage
+
+
 
 To make levels idea:
 have a  main file in which you import the level classes with a constructor with the player as input
