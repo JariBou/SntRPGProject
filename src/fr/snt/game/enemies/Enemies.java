@@ -12,6 +12,9 @@ abstract public class Enemies{
     protected Random rd = new Random();
     public boolean dodged = false;
     public boolean guarded = false;
+    // Burning mechanics
+    protected int burn, burnLvl;
+    //TODO: Implement burn mechanic on attack Player side
 
     public int getHealth() {
         return health;
@@ -49,4 +52,12 @@ abstract public class Enemies{
     public boolean isAlive(){
         return this.health > 0;
     }
+
+    public void update(){
+        if (burn > 0){
+            this.health -= 2;
+            burn--;
+        }
+    }
+
 }
