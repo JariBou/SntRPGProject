@@ -55,7 +55,7 @@ abstract public class Enemies{
 
     public void update(){
         if (burn > 0){
-            this.health -= 2;
+            this.health -= 2*burnLvl;
             burn--;
         }
     }
