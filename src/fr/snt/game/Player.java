@@ -1,17 +1,18 @@
 package fr.snt.game;
 
 import fr.snt.game.enemies.Enemies;
-import fr.snt.game.equipables.*;
+import fr.snt.game.equipables.Armors;
+import fr.snt.game.equipables.Equipables;
+import fr.snt.game.equipables.Weapons;
 import fr.snt.game.levels.GameOverLevel;
 
 import java.util.ArrayList;
-import java.util.Random;
+
 
 public class Player {
     private final String name;
     private final int baseArmor;
     private final ArrayList<Equipables> Inventory;
-    private final Random r = new Random();
     private int health, maxHealth, attack, gold;
     private Weapons weapon;
     private Armors Armor;
@@ -28,6 +29,10 @@ public class Player {
         this.weapon = null;
         this.Armor = null;
         this.gold = 0;
+    }
+
+    private double rand() {
+        return Math.random();
     }
 
     public String getName() {
@@ -121,16 +126,16 @@ public class Player {
         return health;
     }
 
-    public void damage(int attack){
+    public void damage(int attack) {
 
         if (this.getArmor().hasSpEffect()) {
             if (this.getArmor().getSpEffectType().equals("block")) {
-                int blockChance = r.nextInt(10);
-                if (blockChance == 4) {
+                double blockChance = rand();
+                if (blockChance < 0.15) { // 15% chance of dodging
                     return;
                 }
             }
-        }else {
+        } else {
             this.health -= attack;
         }
     }
@@ -163,8 +168,9 @@ public class Player {
     public void attack(Enemies target) {
         int totalDamage = this.getTotalDamage() - target.getArmor();
         target.damage(totalDamage);
-        if (this.weapon.getSpEffectType().equals("burn")){
-            if (r.nextInt() == 4){
+        if (this.weapon.getSpEffectType().equals("burn")) {
+            double spChance = rand();
+            if (spChance < 0.2) { // 20% chance of burning
                 target.setBurning(weapon.getBurn(), weapon.getBurnLvl());
             }
         }

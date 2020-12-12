@@ -9,9 +9,13 @@ import java.awt.event.MouseEvent;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static  javax.swing.WindowConstants.*;
+import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
+
 
 public class Gui {
+    private final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    private final int offsetX = (screenSize.width / 15);
+    private final int offsetY = screenSize.height / 12;
     private JFrame rootPanel;
     private JPanel bg;
     private JFrame combatPanel;
@@ -19,16 +23,12 @@ public class Gui {
     private JLabel label1;
     private Popup popup;
     private boolean popupShown;
-    private final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
-    private final int offsetX = (screenSize.width/15);
-    private final int offsetY = screenSize.height/12;
-
-    public Gui(){
+    public Gui() {
         rootPanel = new JFrame("Game");
         rootPanel.setDefaultCloseOperation(EXIT_ON_CLOSE);
         rootPanel.setLayout(null);
-        rootPanel.setSize(screenSize.width*4/5, screenSize.height*3/4);
+        rootPanel.setSize(screenSize.width * 4 / 5, screenSize.height * 3 / 4);
         rootPanel.setLocationRelativeTo(null);
         rootPanel.setResizable(false);
 
@@ -42,8 +42,7 @@ public class Gui {
         String imPath = currentRelativePath.toAbsolutePath().toString();
         ImageIcon icon = new ImageIcon(imPath + "/src/assets/images/9k.png");
         label1 = new JLabel("Hello");
-        label1.setBounds(20,20,icon.getIconWidth(),icon.getIconHeight());
-
+        label1.setBounds(20, 20, icon.getIconWidth(), icon.getIconHeight());
 
 
         button1 = new JButton(icon);
@@ -60,7 +59,7 @@ public class Gui {
                     text.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.gray));
                     text.setOpaque(true);
                     text.setBackground(new Color(192, 192, 192, 140)); // light gray with alpha   FIXME: Alpha not working for some reason
-                    popup = PopupFactory.getSharedInstance().getPopup(button1, text, (int) (button1.getLocationOnScreen().x + button1.getWidth()*1.25), button1.getLocationOnScreen().y - 20);
+                    popup = PopupFactory.getSharedInstance().getPopup(button1, text, (int) (button1.getLocationOnScreen().x + button1.getWidth() * 1.25), button1.getLocationOnScreen().y - 20);
                     popup.show();
                     popupShown = true;
                 }
@@ -77,12 +76,11 @@ public class Gui {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Clicked");
-                JLabel text = new JLabel("<html>You've clicked at:<br/> " +"dzdzdzzq"+ "<br/> hello <br/> tester");
+                JLabel text = new JLabel("<html>You've clicked at:<br/> " + "dzdzdzzq" + "<br/> hello <br/> tester");
                 System.out.println(text.getBounds().height);
             }
         });
         button1.setBounds(200, 100, 70, 40);
-
 
 
         JButton button2 = new JButton(icon);
@@ -99,7 +97,7 @@ public class Gui {
                     text.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, Color.gray));
                     text.setOpaque(true);
                     text.setBackground(new Color(192, 192, 192, 140)); // light gray with alpha   FIXME: Alpha not working for some reason
-                    popup = PopupFactory.getSharedInstance().getPopup(button2, text, (int) (button2.getLocationOnScreen().x + button2.getWidth()*1.25), button2.getLocationOnScreen().y - 20);
+                    popup = PopupFactory.getSharedInstance().getPopup(button2, text, (int) (button2.getLocationOnScreen().x + button2.getWidth() * 1.25), button2.getLocationOnScreen().y - 20);
                     popup.show();
                     popupShown = true;
                 }
@@ -116,14 +114,11 @@ public class Gui {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Clicked");
-                JLabel text = new JLabel("<html>You've clicked at:<br/> " +"dzdzdzzq"+ "<br/> hello <br/> tester");
+                JLabel text = new JLabel("<html>You've clicked at:<br/> " + "dzdzdzzq" + "<br/> hello <br/> tester");
                 System.out.println(text.getBounds().height);
             }
         });
         button2.setBounds(200 + offsetX, 100, 70, 40);
-
-
-
 
 
         //rootPanel.add(label1);

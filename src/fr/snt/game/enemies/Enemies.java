@@ -2,22 +2,24 @@ package fr.snt.game.enemies;
 
 import fr.snt.game.Player;
 
-import java.util.Random;
 
-abstract public class Enemies{
+abstract public class Enemies {
+    // Dodge mechanic
+    public boolean dodged = false;
+    public boolean guarded = false;
     // Base attributes
     protected String name;
     protected int health, attack, armor, goldValue;
-    // Dodge mechanic
-    protected final Random rd = new Random();
-    public boolean dodged = false;
-    public boolean guarded = false;
     // Burning mechanics
     protected int burn, burnLvl;
     //TODO: Implement burn mechanic on attack Player side
 
     public int getHealth() {
         return health;
+    }
+
+    protected double rand() {
+        return Math.random();
     }
 
     public String getName() {
@@ -28,7 +30,7 @@ abstract public class Enemies{
         return attack;
     }
 
-    public void damage(int attack){
+    public void damage(int attack) {
         this.health -= attack;
     }
 
@@ -36,31 +38,31 @@ abstract public class Enemies{
         return armor;
     }
 
-    public void attack(Player target){
+    public void attack(Player target) {
         int totalDamage = this.getAttack() - target.getBaseArmor();
         target.damage(totalDamage);
         System.out.println(this.getName() + " attacked " + target.getName() + " for " + totalDamage + " damage!");
     }
 
-    public int getGoldValue(){
+    public int getGoldValue() {
         return this.goldValue;
     }
 
     /**
      * @return true if target is Alive
      */
-    public boolean isAlive(){
+    public boolean isAlive() {
         return this.health > 0;
     }
 
-    public void update(){
-        if (burn > 0){
-            this.health -= 2*burnLvl;
+    public void update() {
+        if (burn > 0) {
+            this.health -= 2 * burnLvl;
             burn--;
         }
     }
 
-    public void setBurning(int burn, int burnLvl){
+    public void setBurning(int burn, int burnLvl) {
         this.burn = burn;
         this.burnLvl = burnLvl;
     }

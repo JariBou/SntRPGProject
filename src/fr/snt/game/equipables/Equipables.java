@@ -1,9 +1,11 @@
 package fr.snt.game.equipables;
 
 public abstract class Equipables {
-    protected String name, spEffectDescription, spEffectType;
-    protected int cost;
-    protected boolean spEffect = false;
+    String name, spEffectDescription, spEffectType;
+    int cost;
+    boolean spEffect = false;
+
+    //TODO: maybe keep equipables stats in a .properties file?
 
     public String getName() {
         return name;
@@ -13,20 +15,20 @@ public abstract class Equipables {
         return cost;
     }
 
-    public boolean hasSpEffect(){
+    public boolean hasSpEffect() {
         return spEffect;
     }
 
-    public String getSpEffectType(){
+    public String getSpEffectType() {
         return spEffectType;
-    }
-
-    public void setSpEffectDescription(String description){
-        this.spEffectDescription = description;
     }
 
     public String getSpEffectDescription() {
         return spEffectDescription;
+    }
+
+    public void setSpEffectDescription(String description) {
+        this.spEffectDescription = description;
     }
 
 }

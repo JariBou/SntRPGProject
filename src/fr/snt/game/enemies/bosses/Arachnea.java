@@ -3,9 +3,10 @@ package fr.snt.game.enemies.bosses;
 import fr.snt.game.Player;
 import fr.snt.game.enemies.Enemies;
 
+
 public class Arachnea extends Enemies {
 
-    public Arachnea(){
+    public Arachnea() {
         // To balance
         this.name = "Arachnea";
         this.health = 100;
@@ -18,10 +19,11 @@ public class Arachnea extends Enemies {
     public void attack(Player target) {
         int totalDamage = this.getAttack() - target.getBaseArmor();
         target.damage(totalDamage);
-        int poison_chance = rd.nextInt(15);
-        if (poison_chance == 7){
+        double poison_chance = rand();
+        if (poison_chance < 0.08) { // 8% chance
             target.setPoison(3, 2);
         }
         System.out.println(this.getName() + " attacked " + target.getName() + " for " + totalDamage + " damage!");
     }
+
 }

@@ -1,17 +1,17 @@
 package fr.snt.game.equipables;
 
-public class Weapons extends Equipables{
+public class Weapons extends Equipables {
     private final int attack;
     private int burnLvl = 0;
     private int burn = 0;
 
-    public Weapons(String name, int attack, int cost){
+    public Weapons(String name, int attack, int cost) {
         this.name = name;
         this.attack = attack;
         this.cost = cost;
     }
 
-    public Weapons(String name, int attack, int cost, boolean spEffect, String spEffectType){
+    public Weapons(String name, int attack, int cost, boolean spEffect, String spEffectType) {
         this.name = name;
         this.attack = attack;
         this.cost = cost;
@@ -19,7 +19,7 @@ public class Weapons extends Equipables{
         this.spEffectType = spEffectType;
     }
 
-    public Weapons(String name, int attack, int cost, boolean spEffect, String spEffectType, int burn,int burnLvl){
+    public Weapons(String name, int attack, int cost, boolean spEffect, String spEffectType, int burn, int burnLvl) {
         this.name = name;
         this.attack = attack;
         this.cost = cost;
@@ -33,11 +33,12 @@ public class Weapons extends Equipables{
         return attack;
     }
 
-    public int getBurnLvl(){
+    public int getBurnLvl() {
         return burnLvl;
     }
 
     public int getBurn() {
         return burn;
     }
+
 }

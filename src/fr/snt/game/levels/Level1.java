@@ -1,15 +1,16 @@
 package fr.snt.game.levels;
 
 import fr.snt.game.Player;
+import fr.snt.game.enemies.Armoured_Zombie;
 import fr.snt.game.equipables.Armors;
 import fr.snt.game.equipables.Weapons;
-import fr.snt.game.enemies.Armoured_Zombie;
 
 import java.util.ArrayList;
 
-public class Level1 extends BaseLevel{
 
-    public Level1(){
+public class Level1 extends BaseLevel {
+
+    public Level1() {
         WL = new ArrayList<Weapons>();
         AL = new ArrayList<Armors>();
 
@@ -25,17 +26,17 @@ public class Level1 extends BaseLevel{
 
         System.out.println("A Zombie appears! \nWill you fight him? yes/no");
         String choice = sc.nextLine();
-        if (choice.equals("yes")){
+        if (choice.equals("yes")) {
             System.out.println("You decided to fight! Good soldier!");
-        } else{
+        } else {
             System.out.println("Na you are brave so yo fight him!");
         }
-        while (zombie1.isAlive()){
+        while (zombie1.isAlive()) {
             System.out.println("Zombie 1  -  health: " + zombie1.getHealth());
             System.out.println("Your Health: " + player.getHealth());
             System.out.println("Do you want to attack?  yes/no");
             choice = sc.nextLine();
-            if (choice.equals("yes")){
+            if (choice.equals("yes")) {
                 player.attack(zombie1);
             }
             if (zombie1.isAlive()) {

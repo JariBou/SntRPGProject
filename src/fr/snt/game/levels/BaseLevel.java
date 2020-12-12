@@ -7,14 +7,15 @@ import fr.snt.game.equipables.Weapons;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+
 public abstract class BaseLevel {
-    protected final Scanner sc = new Scanner(System.in);
     static Player player;
-    protected String choice;
-    private Weapons weapon;
-    private Armors armor;
     static ArrayList<Weapons> WL;
     static ArrayList<Armors> AL;
+    final Scanner sc = new Scanner(System.in);
+    String choice;
+    private Weapons weapon;
+    private Armors armor;
 
     // TODO: group repeated parts of the code into functions
     // FIXME: Check that there cannot be any error when choosing
@@ -50,7 +51,7 @@ public abstract class BaseLevel {
                         System.out.println("Do you want to buys something else?");
                         choice = sc.nextLine();
                         if (choice.equals("no")) {
-                           break;
+                            break;
                         }
 
                     } else {
@@ -83,14 +84,14 @@ public abstract class BaseLevel {
                         System.out.println("Do you want to buys something else?");
                         choice = sc.nextLine();
                         if (choice.equals("no")) {
-                           break;
+                            break;
                         }
 
                     } else {
                         System.out.println("Not Enough money!\n");
                         shop();
                     }
-                } else{
+                } else {
                     System.out.println("Wrong input!");
                     shop();
                 }
@@ -99,4 +100,5 @@ public abstract class BaseLevel {
         }
         System.out.println();
     }
+
 }
