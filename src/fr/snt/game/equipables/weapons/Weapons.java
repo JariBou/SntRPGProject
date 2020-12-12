@@ -27,6 +27,7 @@ public class Weapons extends Equipables {
         this.name = properties.getProperty("name");
         this.attack = parseInt(properties.getProperty("attack"));
         this.cost = parseInt(properties.getProperty("cost"));
+        this.Description = properties.getProperty("description");
         if (Boolean.parseBoolean(properties.getProperty("spEffect"))) {
             this.spEffect = true;
             // TODO:Add other effects and loaders
