@@ -5,7 +5,7 @@ import java.nio.file.Paths;
 
 
 public abstract class Equipables {
-    protected String name, Description, spEffectType;
+    protected String name, description, spEffectType;
     protected int cost;
     protected boolean spEffect = false;
     Path currentRelativePath = Paths.get("");
@@ -30,7 +30,7 @@ public abstract class Equipables {
     }
 
     public String Description() {
-        return Description;
+        return description;
     }
 
 }

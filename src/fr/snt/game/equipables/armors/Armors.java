@@ -25,7 +25,7 @@ public class Armors extends Equipables {
         this.name = properties.getProperty("name");
         this.armorValue = parseInt(properties.getProperty("armorValue"));
         this.cost = parseInt(properties.getProperty("cost"));
-        this.Description = properties.getProperty("description");
+        this.description = properties.getProperty("description");
         if (Boolean.getBoolean(properties.getProperty("spEffect"))) {
             // TODO:Add other effects and loaders
             switch (properties.getProperty("spEffectType")) {
