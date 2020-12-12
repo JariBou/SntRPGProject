@@ -24,6 +24,7 @@ public class Armors extends Equipables {
         this.armorValue = parseInt(properties.getProperty("armorValue"));
         this.cost = parseInt(properties.getProperty("cost"));
         if (Boolean.getBoolean(properties.getProperty("spEffect"))){
+            // TODO:Add other effects and loaders
             switch (properties.getProperty("spEffectType")) {
                 case "dmgDim" -> {
                     this.spEffectType = "dmgDim";
