@@ -5,7 +5,7 @@ import fr.snt.game.levels.Level1;
 
 public class run {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         //MainScript ms = new MainScript();
         //ms.main();
         new Level1();

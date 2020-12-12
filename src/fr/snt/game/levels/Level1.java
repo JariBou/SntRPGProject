@@ -6,18 +6,19 @@ import fr.snt.game.equipables.armors.Armors;
 import fr.snt.game.equipables.weapons.Weapons;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 
 public class Level1 extends BaseLevel {
 
-    public Level1() {
+    public Level1() throws Exception {
         WL = new ArrayList<Weapons>();
         AL = new ArrayList<Armors>();
 
-
         WL.add(new Weapons("knife"));
         WL.add(new Weapons("sword"));
-
+        WL.removeIf(Objects::isNull);  // If Loading fails, removes the null object
+        System.out.println(WL.get(0).getName());
 
         System.out.println("Enter your name: ");
         String name = sc.nextLine();

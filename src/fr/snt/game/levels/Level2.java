@@ -5,7 +5,7 @@ import fr.snt.game.enemies.Zombie;
 
 public class Level2 extends BaseLevel {
 
-    public Level2() {
+    public Level2() throws Exception {
         System.out.println(player.getItemInInventory(0).getName());
 
         Zombie zombie1 = new Zombie("Zombie 1", 20, 3, 1, 3);

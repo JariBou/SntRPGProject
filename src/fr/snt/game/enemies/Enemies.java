@@ -4,12 +4,12 @@ import fr.snt.game.Player;
 
 
 abstract public class Enemies {
-    // Dodge mechanic
-    public boolean dodged = false;
-    public boolean guarded = false;
     // Base attributes
     protected String name;
     protected int health, attack, armor, goldValue;
+    // Dodge and guard mechanic
+    public boolean dodged = false;
+    public boolean guarded = false;
     // Burning mechanics
     protected int burn, burnLvl;
     //TODO: Implement burn mechanic on attack Player side
@@ -40,7 +40,7 @@ abstract public class Enemies {
 
     public void attack(Player target) {
         int totalDamage;
-        if (target.hasArmor() && target.getArmor().hasSpEffect() && target.getArmor().getSpEffectType().equals("dmgDim")){
+        if (target.hasArmor() && target.getArmor().hasSpEffect() && target.getArmor().getSpEffectType().equals("dmgDim")) {
             totalDamage = this.getAttack() - target.getArmor().getDmgDim() - target.getBaseArmor();
         } else {
             totalDamage = this.getAttack() - target.getBaseArmor();

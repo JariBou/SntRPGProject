@@ -1,8 +1,8 @@
 package fr.snt.game;
 
 import fr.snt.game.enemies.Enemies;
-import fr.snt.game.equipables.armors.Armors;
 import fr.snt.game.equipables.Equipables;
+import fr.snt.game.equipables.armors.Armors;
 import fr.snt.game.equipables.weapons.Weapons;
 import fr.snt.game.levels.GameOverLevel;
 
@@ -116,7 +116,7 @@ public class Player {
     }
 
     public int getAttack() {
-        if (this.hasWeapon() && Objects.requireNonNull(this.weapon).getSpEffectType().equals("percent")){
+        if (this.hasWeapon() && Objects.requireNonNull(this.weapon).getSpEffectType().equals("percent")) {
             return (int) (attack * weapon.getDmgMultiplier());
         }
         return attack;
@@ -160,7 +160,7 @@ public class Player {
     /**
      * To call at the end of EACH turn
      */
-    public void update() {
+    public void update() throws Exception {
         if (isDead()) {
             new GameOverLevel();
         } else if (poison > 0) {
@@ -170,18 +170,26 @@ public class Player {
     }
 
     public void attack(Enemies target) {
-        int totalDamage = this.getTotalDamage() - target.getArmor();
-        target.damage(totalDamage);
-        if (this.weapon.getSpEffectType().equals("burn")) {
+
+        if (this.weapon.hasSpEffect() && this.weapon.getSpEffectType().equals("burn")) { //replace by a switch later on
             double spChance = rand();
             if (spChance < 0.2) { // 20% chance of burning
                 target.setBurning(weapon.getBurn(), weapon.getBurnLvl());
             }
         }
         if (!target.dodged) {
+            int totalDamage = this.getTotalDamage() - target.getArmor();
             if (target.guarded) {
                 System.out.println(this.getName() + " attacked " + target.getName() + " for " + (totalDamage - target.getArmor()) + " damage!");
+                target.damage(totalDamage - target.getArmor());
             } else {
+                if (this.weapon.hasSpEffect() && this.weapon.getSpEffectType().equals("burn")) { //replace by a switch later on
+                    double spChance = rand();
+                    if (spChance < 0.2) { // 20% chance of burning
+                        target.setBurning(weapon.getBurn(), weapon.getBurnLvl());
+                    }
+                }
+                target.damage(totalDamage);
                 System.out.println(this.getName() + " attacked " + target.getName() + " for " + totalDamage + " damage!");
                 if (!target.isAlive()) {
                     System.out.println(target.getName() + " is dead!");

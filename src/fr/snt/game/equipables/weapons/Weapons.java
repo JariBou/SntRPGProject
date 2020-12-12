@@ -4,12 +4,8 @@ import fr.snt.game.equipables.Equipables;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Properties;
-import java.util.ResourceBundle;
+
 import static java.lang.Integer.parseInt;
 
 
@@ -19,18 +15,19 @@ public class Weapons extends Equipables {
     private int burn = 0;
     private float dmgMultiplier = 1.0f;
 
-    public Weapons(String name) {
-        name+=".properties";
+    public Weapons(String itemName) throws Exception {
+        itemName += ".properties";
         Properties properties = new Properties();
         try {
-            properties.load(new FileInputStream(imPath + "\\src\\fr\\snt\\game\\equipables\\weapons\\" + name));
-        }catch (IOException e){
-            System.out.println("Unexpected Error: " + e);
+            properties.load(new FileInputStream(imPath + "\\src\\fr\\snt\\game\\equipables\\weapons\\" + itemName));
+        } catch (IOException e) {
+            throw new Exception("Unexpected Error \nFile " + itemName + " not found \nCannot load object: "
+                    + itemName.replace(".properties", "") + "\n" + e);
         }
         this.name = properties.getProperty("name");
         this.attack = parseInt(properties.getProperty("attack"));
         this.cost = parseInt(properties.getProperty("cost"));
-        if (Boolean.parseBoolean(properties.getProperty("spEffect"))){
+        if (Boolean.parseBoolean(properties.getProperty("spEffect"))) {
             this.spEffect = true;
             // TODO:Add other effects and loaders
             switch (properties.getProperty("spEffectType")) {
@@ -60,7 +57,7 @@ public class Weapons extends Equipables {
         return burn;
     }
 
-    public float getDmgMultiplier(){
+    public float getDmgMultiplier() {
         return dmgMultiplier;
     }
 

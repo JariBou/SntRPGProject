@@ -5,7 +5,7 @@ import fr.snt.game.enemies.bosses.Arachnea;
 
 public class Boss1 extends BaseLevel {
 
-    public Boss1() {
+    public Boss1() throws Exception {
         Arachnea boss = new Arachnea();
 
         System.out.println(boss.getName() + " appears!");
