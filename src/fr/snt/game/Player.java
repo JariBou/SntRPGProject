@@ -7,6 +7,7 @@ import fr.snt.game.equipables.Weapons;
 import fr.snt.game.levels.GameOverLevel;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 
 public class Player {
@@ -52,7 +53,7 @@ public class Player {
         return gold;
     }
 
-    public void addGold(int amount) {
+    private void addGold(int amount) {
         this.gold += amount;
     }
 
@@ -60,7 +61,7 @@ public class Player {
         this.gold -= amount;
     }
 
-    public int getMaxHealth() {
+    private int getMaxHealth() {
         return maxHealth;
     }
 
@@ -90,7 +91,7 @@ public class Player {
         resetHealth();
     }
 
-    public boolean hasWeapon() {
+    private boolean hasWeapon() {
         return this.weapon != null;
     }
 
@@ -115,6 +116,9 @@ public class Player {
     }
 
     public int getAttack() {
+        if (this.hasWeapon() && Objects.requireNonNull(this.weapon).getSpEffectType().equals("percent")){
+            return (int) (attack * weapon.getDmgMultiplier());
+        }
         return attack;
     }
 

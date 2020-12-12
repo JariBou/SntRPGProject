@@ -5,7 +5,7 @@ public abstract class Equipables {
     int cost;
     boolean spEffect = false;
 
-    //TODO: maybe keep equipables stats in a .properties file?
+    //TODO: maybe keep equipables stats in a .properties file? Yeah god idea, too much different initializers
 
     public String getName() {
         return name;
