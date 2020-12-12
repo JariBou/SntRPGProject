@@ -14,7 +14,7 @@ public class Player {
     private final String name;
     private final int baseArmor;
     private final ArrayList<Equipables> Inventory;
-    private int health, maxHealth, attack, gold;
+    private int health, maxHealth, attack, gold, playerLevel;
     private Weapons weapon;
     private Armors Armor;
     // Player Levels and poison mechanics
@@ -30,6 +30,7 @@ public class Player {
         this.weapon = null;
         this.Armor = null;
         this.gold = 0;
+        this.playerLevel = 1;
     }
 
     private double rand() {
@@ -72,10 +73,15 @@ public class Player {
     private void levelUp() {
         this.setMaxHealth(getMaxHealth() + 3);
         levelCount++;
+        playerLevel++;
         if (levelCount == 4) {
             levelCount = 0;
             this.setAttack(getAttack() + 1);
         }
+    }
+
+    public int getPlayerLevel() {
+        return playerLevel;
     }
 
     private void resetHealth() {
@@ -212,7 +218,7 @@ public class Player {
         }
     }
 
-    //Inventory Managemen Functions -----------------------
+    //Inventory Management Functions -----------------------
     public void addToInventory(Equipables item) {
         this.Inventory.add(item);
     }
