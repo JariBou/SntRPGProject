@@ -72,13 +72,10 @@ public class Gui {
 
             }
         });
-        button1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Clicked");
-                JLabel text = new JLabel("<html>You've clicked at:<br/> " + "dzdzdzzq" + "<br/> hello <br/> tester");
-                System.out.println(text.getBounds().height);
-            }
+        button1.addActionListener(e -> {
+            System.out.println("Clicked");
+            JLabel text = new JLabel("<html>You've clicked at:<br/> " + "dzdzdzzq" + "<br/> hello <br/> tester");
+            System.out.println(text.getBounds().height);
         });
         button1.setBounds(200, 100, 70, 40);
 
@@ -110,13 +107,10 @@ public class Gui {
 
             }
         });
-        button2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Clicked");
-                JLabel text = new JLabel("<html>You've clicked at:<br/> " + "dzdzdzzq" + "<br/> hello <br/> tester");
-                System.out.println(text.getBounds().height);
-            }
+        button2.addActionListener(e -> {
+            System.out.println("Clicked");
+            JLabel text = new JLabel("<html>You've clicked at:<br/> " + "dzdzdzzq" + "<br/> hello <br/> tester");
+            System.out.println(text.getBounds().height);
         });
         button2.setBounds(200 + offsetX, 100, 70, 40);
 
