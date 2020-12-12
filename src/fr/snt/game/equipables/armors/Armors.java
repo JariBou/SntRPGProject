@@ -1,4 +1,7 @@
-package fr.snt.game.equipables;
+package fr.snt.game.equipables.armors;
+
+import fr.snt.game.equipables.Equipables;
+
 
 public class Armors extends Equipables {
     private final int armorValue;
