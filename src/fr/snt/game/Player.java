@@ -163,6 +163,11 @@ public class Player {
     public void attack(Enemies target) {
         int totalDamage = this.getTotalDamage() - target.getArmor();
         target.damage(totalDamage);
+        if (this.weapon.getSpEffectType().equals("burn")){
+            if (r.nextInt() == 4){
+                target.setBurning(weapon.getBurn(), weapon.getBurnLvl());
+            }
+        }
         if (!target.dodged) {
             if (target.guarded) {
                 System.out.println(this.getName() + " attacked " + target.getName() + " for " + (totalDamage - target.getArmor()) + " damage!");

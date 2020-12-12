@@ -9,7 +9,7 @@ abstract public class Enemies{
     protected String name;
     protected int health, attack, armor, goldValue;
     // Dodge mechanic
-    protected Random rd = new Random();
+    protected final Random rd = new Random();
     public boolean dodged = false;
     public boolean guarded = false;
     // Burning mechanics
@@ -58,6 +58,11 @@ abstract public class Enemies{
             this.health -= 2*burnLvl;
             burn--;
         }
+    }
+
+    public void setBurning(int burn, int burnLvl){
+        this.burn = burn;
+        this.burnLvl = burnLvl;
     }
 
 }
