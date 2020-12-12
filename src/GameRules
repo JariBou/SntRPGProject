@@ -1,30 +1,30 @@
 Player:
-Name
-Health
-Attack
-Armor     //For now armor is a flat reduction; maybe a percentage later on
-Weapon
-Armour
-Gold
-Levels
+-Name
+-Health
+-Attack
+-Armor     //For now armor is a flat reduction; maybe a percentage later on
+-Weapon
+-Armour
+-Gold
+-Levels
 
 
 Enemies:   hp and attack increases with time
-Name
-Health
-Attack
-Armor
-GoldGivenUponDeath
+-Name
+-Health
+-Attack
+-Armor
+-GoldGivenUponDeath
 
 
 Armours:
-SpecialEffects:
+>SpecialEffects:
     - "Block"  increased block value
     - "dmgDim" flat damage reduction
     - "atkBonus" flat bonus damage
 
 Weapons:
-SpecialEffects:
+>SpecialEffects:
     - "percent"  percentage increased atk damage
     - "burn"     burning overTurn damage    damage=2*burnLvl
     - "atkBonus" flat bonus damage
