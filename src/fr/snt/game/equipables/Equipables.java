@@ -1,9 +1,15 @@
 package fr.snt.game.equipables;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+
 public abstract class Equipables {
-    String name, spEffectDescription, spEffectType;
-    int cost;
-    boolean spEffect = false;
+    protected String name, spEffectDescription, spEffectType;
+    protected int cost;
+    protected boolean spEffect = false;
+    Path currentRelativePath = Paths.get("");
+    protected String imPath = currentRelativePath.toAbsolutePath().toString();
 
     //TODO: maybe keep equipables stats in a .properties file? Yeah god idea, too much different initializers
 
