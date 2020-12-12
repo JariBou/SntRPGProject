@@ -19,7 +19,7 @@ Enemies:   hp and attack increases with time
 
 Armours:
 >SpecialEffects:
-    - "Block"  increased block value
+    - "block"  increased block value
     - "dmgDim" flat damage reduction
     - "atkBonus" flat bonus damage
 
