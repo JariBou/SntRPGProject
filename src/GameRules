@@ -27,7 +27,6 @@ Weapons:
 >SpecialEffects:
     - "percent"  percentage increased atk damage
     - "burn"     burning overTurn damage    damage=2*burnLvl
-    - "atkBonus" flat bonus damage
 
 
 
