@@ -15,8 +15,8 @@ public class Level1 extends BaseLevel {
         AL = new ArrayList<Armors>();
 
 
-        WL.add(new Weapons("Knife", 2, 2));
-        WL.add(new Weapons("Sword", 6, 5));
+        WL.add(new Weapons("knife"));
+        WL.add(new Weapons("sword"));
 
 
         System.out.println("Enter your name: ");

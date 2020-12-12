@@ -39,7 +39,12 @@ abstract public class Enemies {
     }
 
     public void attack(Player target) {
-        int totalDamage = this.getAttack() - target.getBaseArmor();
+        int totalDamage;
+        if (target.hasArmor() && target.getArmor().hasSpEffect() && target.getArmor().getSpEffectType().equals("dmgDim")){
+            totalDamage = this.getAttack() - target.getArmor().getDmgDim() - target.getBaseArmor();
+        } else {
+            totalDamage = this.getAttack() - target.getBaseArmor();
+        }
         target.damage(totalDamage);
         System.out.println(this.getName() + " attacked " + target.getName() + " for " + totalDamage + " damage!");
     }
