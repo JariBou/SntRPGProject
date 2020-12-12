@@ -26,7 +26,7 @@ Armours:
 Weapons:
 >SpecialEffects:
     - "percent"  percentage increased atk damage
-    - "burn"     burning overTurn damage    damage=2*burnLvl
+    - "burn"     burning overTurn damage    damage=burnLvl
 
 
 
