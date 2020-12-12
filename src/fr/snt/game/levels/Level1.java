@@ -6,7 +6,6 @@ import fr.snt.game.equipables.armors.Armors;
 import fr.snt.game.equipables.weapons.Weapons;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 
 public class Level1 extends BaseLevel {
