@@ -17,7 +17,6 @@ public class Level1 extends BaseLevel {
 
         WL.add(new Weapons("knife"));
         WL.add(new Weapons("sword"));
-        WL.removeIf(Objects::isNull);  // If Loading fails, removes the null object
         System.out.println(WL.get(0).getName());
 
         System.out.println("Enter your name: ");
