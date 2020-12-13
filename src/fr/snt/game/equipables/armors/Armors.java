@@ -6,12 +6,14 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+import static java.lang.Float.parseFloat;
 import static java.lang.Integer.parseInt;
 
 
 public class Armors extends Equipables {
     private final int armorValue;
     private int dmgDim, atkBonus = 0;
+    private float lsRatio = 0f;
 
     public Armors(String itemName) throws Exception {
         itemName += ".properties";
@@ -37,6 +39,10 @@ public class Armors extends Equipables {
                     this.spEffectType = "atkBonus";
                     this.atkBonus = parseInt(properties.getProperty("atkBonus"));
                 }
+                case "lastStand" -> {
+                    this.spEffectType = "lastStand";
+                    this.lsRatio = parseFloat(properties.getProperty("lsRatio"));
+                }
             }
         }
     }
@@ -51,6 +57,10 @@ public class Armors extends Equipables {
 
     public int getDmgDim() {
         return dmgDim;
+    }
+
+    public float getLsRatio(){
+        return lsRatio;
     }
 
 }

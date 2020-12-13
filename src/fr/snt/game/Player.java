@@ -200,8 +200,11 @@ public class Player {
                         case "percentDmg":
                             totalDamage = (int) ((1 + (target.getPercentMissingHealth() * this.weapon.getPercentRatio()))
                                     * totalDamage); // to be balanced
-
                             break;
+                    }
+                } if (this.hasArmor() && this.Armor.hasSpEffect()){
+                    if (this.Armor.getSpEffectType().equals("lastStand")){
+                        totalDamage = (int) ((1 + (this.getPercentMissingHealth() * this.Armor.getLsRatio())) * totalDamage);
                     }
                 }
                 target.damage(totalDamage);
