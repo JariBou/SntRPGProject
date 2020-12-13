@@ -177,9 +177,9 @@ public class Player {
     }
 
     public void attack(Enemies target) {
-        if (!target.dodged) {
+        if (!target.hasDodged()) {
             int totalDamage = this.getTotalDamage() - target.getArmor();
-            if (target.guarded) {
+            if (target.hasGuarded()) {
                 System.out.println(this.getName() + " attacked " + target.getName() + " for " + (totalDamage - target.getArmor()) + " damage!");
                 target.damage(totalDamage - target.getArmor());
             } else {

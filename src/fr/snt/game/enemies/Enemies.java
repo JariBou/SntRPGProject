@@ -9,8 +9,8 @@ abstract public class Enemies {
     protected int health, attack, armor, goldValue;
     protected int maxHealth;
     // Dodge and guard mechanic
-    public boolean dodged = false;
-    public boolean guarded = false;
+    protected boolean dodged = false;
+    protected boolean guarded = false;
     // Burning mechanics
     protected int burn, burnLvl;
     //  Freezing mechanics
@@ -98,6 +98,14 @@ abstract public class Enemies {
     public void setFrozen(){
         frozen = true;
         frozenTurns = 3;
+    }
+
+    public boolean hasDodged(){
+        return dodged;
+    }
+
+    public boolean hasGuarded(){
+        return guarded;
     }
 
 }
