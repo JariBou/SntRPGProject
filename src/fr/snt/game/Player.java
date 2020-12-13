@@ -207,6 +207,14 @@ public class Player {
         }
     }
 
+    public int getMissingHealth(){
+        return this.maxHealth - this.health;
+    }
+
+    public double getPercentMissingHealth(){
+        return (double) (this.getMissingHealth() / this.maxHealth);
+    }
+
     /**
      * @return true if target is dead
      */

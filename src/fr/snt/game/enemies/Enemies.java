@@ -7,6 +7,7 @@ abstract public class Enemies {
     // Base attributes
     protected String name;
     protected int health, attack, armor, goldValue;
+    protected int maxHealth;
     // Dodge and guard mechanic
     public boolean dodged = false;
     public boolean guarded = false;
@@ -55,6 +56,14 @@ abstract public class Enemies {
             target.damage(totalDamage);
             System.out.println(this.getName() + " attacked " + target.getName() + " for " + totalDamage + " damage!");
         }
+    }
+
+    public int getMissingHealth(){
+        return this.maxHealth - this.health;
+    }
+
+    public double getPercentMissingHealth(){
+        return (double) (this.getMissingHealth() / this.maxHealth);
     }
 
     public int getGoldValue() {
