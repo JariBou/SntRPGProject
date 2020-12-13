@@ -186,14 +186,22 @@ public class Player {
                 if (this.hasWeapon() && this.weapon.hasSpEffect()){
                     String spType = this.weapon.getSpEffectType();
                     double spChance = rand();
-                    if (spType.equals("burn")){
-                        if (spChance < 0.2) { // 20% chance of burning
-                            target.setBurning(weapon.getBurn(), weapon.getBurnLvl());
-                        }
-                    } else if (spType.equals("freeze")){
-                        if (spChance < this.weapon.getFreezeChance()){
-                            target.setFrozen();
-                        }
+                    switch (spType) {
+                        case "burn":
+                            if (spChance < 0.2) { // 20% chance of burning
+                                target.setBurning(weapon.getBurn(), weapon.getBurnLvl());
+                            }
+                            break;
+                        case "freeze":
+                            if (spChance < this.weapon.getFreezeChance()) {
+                                target.setFrozen();
+                            }
+                            break;
+                        case "percentDmg":
+                            totalDamage = (int) ((1 + (target.getPercentMissingHealth() * this.weapon.getPercentRatio()))
+                                    * totalDamage); // to be balanced
+
+                            break;
                     }
                 }
                 target.damage(totalDamage);

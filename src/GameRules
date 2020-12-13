@@ -22,11 +22,15 @@ Armours:
     - "block"  increased block value
     - "dmgDim" flat damage reduction
     - "atkBonus" flat bonus damage
+    - bonus atk according to player missing health?
+    - bonus atk according to player current health?
 
 Weapons:
 >SpecialEffects:
     - "percent"  percentage increased atk damage
     - "burn"     burning overTurn damage    damage=burnLvl
+    - vampiric?
+    - damage according to missing enemy health?
 
 
 
