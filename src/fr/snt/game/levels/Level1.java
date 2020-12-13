@@ -16,7 +16,8 @@ public class Level1 extends BaseLevel {
 
         WL.add(new Weapons("knife"));
         WL.add(new Weapons("sword"));
-        System.out.println(WL.get(0).getName());
+        WL.add(new Weapons("freezing_wand"));
+        System.out.println(WL.get(2).getFreezeChance());
 
         System.out.println("Enter your name: ");
         String name = sc.nextLine();

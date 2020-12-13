@@ -12,6 +12,9 @@ abstract public class Enemies {
     public boolean guarded = false;
     // Burning mechanics
     protected int burn, burnLvl;
+    //  Freezing mechanics
+    protected boolean frozen = false;
+    protected int frozenTurns = 0;
     //TODO: Implement burn mechanic on attack Player side
 
     public int getHealth() {
@@ -39,14 +42,19 @@ abstract public class Enemies {
     }
 
     public void attack(Player target) {
-        int totalDamage;
-        if (target.hasArmor() && target.getArmor().hasSpEffect() && target.getArmor().getSpEffectType().equals("dmgDim")) {
-            totalDamage = this.getAttack() - target.getArmor().getDmgDim() - target.getBaseArmor();
+        if (frozen) {
+            System.out.println(this.getName() + " was frozen, couldn't attack!");
+            return;
         } else {
-            totalDamage = this.getAttack() - target.getBaseArmor();
+            int totalDamage;
+            if (target.hasArmor() && target.getArmor().hasSpEffect() && target.getArmor().getSpEffectType().equals("dmgDim")) {
+                totalDamage = this.getAttack() - target.getArmor().getDmgDim() - target.getBaseArmor();
+            } else {
+                totalDamage = this.getAttack() - target.getBaseArmor();
+            }
+            target.damage(totalDamage);
+            System.out.println(this.getName() + " attacked " + target.getName() + " for " + totalDamage + " damage!");
         }
-        target.damage(totalDamage);
-        System.out.println(this.getName() + " attacked " + target.getName() + " for " + totalDamage + " damage!");
     }
 
     public int getGoldValue() {
@@ -65,11 +73,22 @@ abstract public class Enemies {
             this.health -= burnLvl;
             burn--;
         }
+        if (frozen){
+            frozenTurns--;
+            if (frozenTurns == 0){
+                frozen = false;
+            }
+        }
     }
 
     public void setBurning(int burn, int burnLvl) {
         this.burn = burn;
         this.burnLvl = burnLvl;
+    }
+
+    public void setFrozen(){
+        frozen = true;
+        frozenTurns = 3;
     }
 
 }

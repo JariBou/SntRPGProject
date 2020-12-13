@@ -7,12 +7,14 @@ import java.io.IOException;
 import java.util.Properties;
 
 import static java.lang.Integer.parseInt;
+import static java.lang.Double.parseDouble;
 
 
 public class Weapons extends Equipables {
     private final int attack;
     private int burnLvl = 0;
     private int burn = 0;
+    private double freezeChance = 0f;
     private float dmgMultiplier = 1.0f;
 
     public Weapons(String itemName) throws Exception {
@@ -41,6 +43,10 @@ public class Weapons extends Equipables {
                     this.spEffectType = "percent";
                     this.dmgMultiplier = parseInt(properties.getProperty("dmgMultiplier"));
                 }
+                case "freeze" -> {
+                    this.spEffectType = "freeze";
+                    this.freezeChance = parseDouble(properties.getProperty("freezeChance"));
+                }
             }
         }
     }
@@ -60,6 +66,10 @@ public class Weapons extends Equipables {
 
     public float getDmgMultiplier() {
         return dmgMultiplier;
+    }
+
+    public double getFreezeChance() {
+        return freezeChance;
     }
 
 }

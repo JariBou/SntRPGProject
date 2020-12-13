@@ -122,9 +122,6 @@ public class Player {
     }
 
     public int getAttack() {
-        if (this.hasWeapon() && Objects.requireNonNull(this.weapon).getSpEffectType().equals("percent")) {
-            return (int) (attack * weapon.getDmgMultiplier());
-        }
         return attack;
     }
 
@@ -152,7 +149,11 @@ public class Player {
 
     private int getTotalDamage() {
         if (this.hasWeapon()) {
-            return this.getAttack() + weapon.getAttack();
+            if (this.weapon.hasSpEffect() && Objects.requireNonNull(this.weapon).getSpEffectType().equals("percent")) {
+                return (int) ((attack + weapon.getAttack()) * weapon.getDmgMultiplier());
+            } else {
+                return this.getAttack() + weapon.getAttack();
+            }
         } else {
             return this.getAttack();
         }
@@ -176,23 +177,23 @@ public class Player {
     }
 
     public void attack(Enemies target) {
-
-        if (this.weapon.hasSpEffect() && this.weapon.getSpEffectType().equals("burn")) { //replace by a switch later on
-            double spChance = rand();
-            if (spChance < 0.2) { // 20% chance of burning
-                target.setBurning(weapon.getBurn(), weapon.getBurnLvl());
-            }
-        }
         if (!target.dodged) {
             int totalDamage = this.getTotalDamage() - target.getArmor();
             if (target.guarded) {
                 System.out.println(this.getName() + " attacked " + target.getName() + " for " + (totalDamage - target.getArmor()) + " damage!");
                 target.damage(totalDamage - target.getArmor());
             } else {
-                if (this.weapon.hasSpEffect() && this.weapon.getSpEffectType().equals("burn")) { //replace by a switch later on
+                if (this.hasWeapon() && this.weapon.hasSpEffect()){
+                    String spType = this.weapon.getSpEffectType();
                     double spChance = rand();
-                    if (spChance < 0.2) { // 20% chance of burning
-                        target.setBurning(weapon.getBurn(), weapon.getBurnLvl());
+                    if (spType.equals("burn")){
+                        if (spChance < 0.2) { // 20% chance of burning
+                            target.setBurning(weapon.getBurn(), weapon.getBurnLvl());
+                        }
+                    } else if (spType.equals("freeze")){
+                        if (spChance < this.weapon.getFreezeChance()){
+                            target.setFrozen();
+                        }
                     }
                 }
                 target.damage(totalDamage);
