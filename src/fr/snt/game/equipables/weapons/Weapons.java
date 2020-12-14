@@ -80,4 +80,5 @@ public class Weapons extends Equipables {
     public float getPercentRatio() {
         return percentRatio;
     }
+
 }

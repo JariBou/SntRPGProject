@@ -6,8 +6,7 @@ import fr.snt.game.Player;
 abstract public class Enemies {
     // Base attributes
     protected String name;
-    protected int health, attack, armor, goldValue;
-    protected int maxHealth;
+    protected int health, attack, armor, goldValue, maxHealth;
     // Dodge and guard mechanic
     protected boolean dodged = false;
     protected boolean guarded = false;
@@ -58,12 +57,12 @@ abstract public class Enemies {
         }
     }
 
-    public int getMissingHealth(){
+    public float getMissingHealth(){
         return this.maxHealth - this.health;
     }
 
-    public double getPercentMissingHealth(){
-        return (double) (this.getMissingHealth() / this.maxHealth);
+    public float getPercentMissingHealth(){
+        return (this.getMissingHealth()) / (float)(this.maxHealth);
     }
 
     public int getGoldValue() {

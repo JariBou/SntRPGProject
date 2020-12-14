@@ -159,6 +159,10 @@ public class Player {
         }
     }
 
+    private float getPercentHealth(){
+        return (float)(this.health) / (float)(this.getMaxHealth());
+    }
+
     public void setPoison(int turns, int poisonLevel) {
         this.poison = turns;
         this.poisonLevel = poisonLevel;
@@ -205,6 +209,8 @@ public class Player {
                 } if (this.hasArmor() && this.Armor.hasSpEffect()){
                     if (this.Armor.getSpEffectType().equals("lastStand")){
                         totalDamage = (int) ((1 + (this.getPercentMissingHealth() * this.Armor.getLsRatio())) * totalDamage);
+                    } else if (this.Armor.getSpEffectType().equals("wall")) {
+                        totalDamage = (int) (totalDamage * (this.getPercentHealth() * this.Armor.getWallRatio()));
                     }
                 }
                 target.damage(totalDamage);

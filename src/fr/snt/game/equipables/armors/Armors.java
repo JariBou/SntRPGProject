@@ -13,6 +13,7 @@ import static java.lang.Integer.parseInt;
 public class Armors extends Equipables {
     private final int armorValue;
     private int dmgDim, atkBonus = 0;
+    private float wallRatio = 1.0f;
     private float lsRatio = 0f;
 
     public Armors(String itemName) throws Exception {
@@ -43,6 +44,10 @@ public class Armors extends Equipables {
                     this.spEffectType = "lastStand";
                     this.lsRatio = parseFloat(properties.getProperty("lsRatio"));
                 }
+                case "wall" -> {
+                    this.spEffectType = "wall";
+                    this.wallRatio = parseFloat(properties.getProperty("wallRatio"));
+                }
             }
         }
     }
@@ -61,6 +66,10 @@ public class Armors extends Equipables {
 
     public float getLsRatio(){
         return lsRatio;
+    }
+
+    public float getWallRatio(){
+        return this.wallRatio;
     }
 
 }
