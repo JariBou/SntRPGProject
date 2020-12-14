@@ -1,4 +1,4 @@
-package fr.snt.game.equipables.weapons;
+package fr.snt.game.equipables;
 
 import fr.snt.game.equipables.Equipables;
 

@@ -1,8 +1,8 @@
 package fr.snt.game.levels;
 
 import fr.snt.game.Player;
-import fr.snt.game.equipables.armors.Armors;
-import fr.snt.game.equipables.weapons.Weapons;
+import fr.snt.game.equipables.Armors;
+import fr.snt.game.equipables.Weapons;
 
 import java.util.ArrayList;
 import java.util.Scanner;

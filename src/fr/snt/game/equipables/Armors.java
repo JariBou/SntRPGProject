@@ -1,4 +1,4 @@
-package fr.snt.game.equipables.armors;
+package fr.snt.game.equipables;
 
 import fr.snt.game.equipables.Equipables;
 
