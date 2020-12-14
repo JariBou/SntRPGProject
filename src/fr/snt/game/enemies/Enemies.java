@@ -13,8 +13,9 @@ abstract public class Enemies {
     // Burning mechanics
     protected int burn, burnLvl;
     //  Freezing mechanics
-    protected boolean frozen = false;
     protected int frozenTurns = 0;
+    // Paralyzed mechanics
+    protected int paraTurns = 0;
     //TODO: Implement burn mechanic on attack Player side
 
     public int getHealth() {
@@ -42,27 +43,34 @@ abstract public class Enemies {
     }
 
     public void attack(Player target) {
-        if (frozen) {
+        if (frozenTurns > 0) {
             System.out.println(this.getName() + " was frozen, couldn't attack!");
             return;
-        } else {
-            int totalDamage;
-            if (target.hasArmor() && target.getArmor().hasSpEffect() && target.getArmor().getSpEffectType().equals("dmgDim")) {
-                totalDamage = this.getAttack() - target.getArmor().getDmgDim() - target.getBaseArmor();
-            } else {
-                totalDamage = this.getAttack() - target.getBaseArmor();
-            }
-            target.damage(totalDamage);
-            System.out.println(this.getName() + " attacked " + target.getName() + " for " + totalDamage + " damage!");
         }
+        if (paraTurns > 0) {
+            double paraChance = rand();
+            if (paraChance < 0.30) {
+                System.out.println(this.getName() + " was paralyzed, he failed to attack!");
+                return;
+            }
+        }
+        int totalDamage;
+        if (target.hasArmor() && target.getArmor().hasSpEffect() && target.getArmor().getSpEffectType().equals("dmgDim")) {
+            totalDamage = this.getAttack() - target.getArmor().getDmgDim() - target.getBaseArmor();
+        } else {
+            totalDamage = this.getAttack() - target.getBaseArmor();
+        }
+        target.damage(totalDamage);
+        System.out.println(this.getName() + " attacked " + target.getName() + " for " + totalDamage + " damage!");
+
     }
 
-    public float getMissingHealth(){
+    public float getMissingHealth() {
         return this.maxHealth - this.health;
     }
 
-    public float getPercentMissingHealth(){
-        return (this.getMissingHealth()) / (float)(this.maxHealth);
+    public float getPercentMissingHealth() {
+        return (this.getMissingHealth()) / (float) (this.maxHealth);
     }
 
     public int getGoldValue() {
@@ -81,11 +89,11 @@ abstract public class Enemies {
             this.health -= burnLvl;
             burn--;
         }
-        if (frozen){
+        if (frozenTurns > 0) {
             frozenTurns--;
-            if (frozenTurns == 0){
-                frozen = false;
-            }
+        }
+        if (paraTurns > 0) {
+            paraTurns--;
         }
     }
 
@@ -94,16 +102,19 @@ abstract public class Enemies {
         this.burnLvl = burnLvl;
     }
 
-    public void setFrozen(){
-        frozen = true;
-        frozenTurns = 3;
+    public void setFrozen(int frozenTurns) {
+        this.frozenTurns = frozenTurns;
     }
 
-    public boolean hasDodged(){
+    public void setParalyzed(int paraTurns) {
+        this.paraTurns = paraTurns;
+    }
+
+    public boolean hasDodged() {
         return dodged;
     }
 
-    public boolean hasGuarded(){
+    public boolean hasGuarded() {
         return guarded;
     }
 

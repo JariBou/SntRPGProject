@@ -142,12 +142,12 @@ public class Player {
                     return;
                 }
             }
-        } else {
-            this.health -= attack;
         }
+        this.health -= attack;
+
     }
 
-    private int getTotalDamage() {
+    private int getDamage() {
         if (this.hasWeapon()) {
             if (this.weapon.hasSpEffect() && Objects.requireNonNull(this.weapon).getSpEffectType().equals("percent")) {
                 return (int) ((attack + weapon.getAttack()) * weapon.getDmgMultiplier());
@@ -159,8 +159,8 @@ public class Player {
         }
     }
 
-    private float getPercentHealth(){
-        return (float)(this.health) / (float)(this.getMaxHealth());
+    private float getPercentHealth() {
+        return (float) (this.health) / (float) (this.getMaxHealth());
     }
 
     public void setPoison(int turns, int poisonLevel) {
@@ -182,54 +182,65 @@ public class Player {
 
     public void attack(Enemies target) {
         if (!target.hasDodged()) {
-            int totalDamage = this.getTotalDamage() - target.getArmor();
-            if (target.hasGuarded()) {
-                System.out.println(this.getName() + " attacked " + target.getName() + " for " + (totalDamage - target.getArmor()) + " damage!");
-                target.damage(totalDamage - target.getArmor());
-            } else {
-                if (this.hasWeapon() && this.weapon.hasSpEffect()){
-                    String spType = this.weapon.getSpEffectType();
-                    double spChance = rand();
-                    switch (spType) {
-                        case "burn":
-                            if (spChance < 0.2) { // 20% chance of burning
-                                target.setBurning(weapon.getBurn(), weapon.getBurnLvl());
-                            }
-                            break;
-                        case "freeze":
-                            if (spChance < this.weapon.getFreezeChance()) {
-                                target.setFrozen();
-                            }
-                            break;
-                        case "percentDmg":
-                            totalDamage = (int) ((1 + (target.getPercentMissingHealth() * this.weapon.getPercentRatio()))
-                                    * totalDamage); // to be balanced
-                            break;
-                    }
-                } if (this.hasArmor() && this.Armor.hasSpEffect()){
-                    if (this.Armor.getSpEffectType().equals("lastStand")){
-                        totalDamage = (int) ((1 + (this.getPercentMissingHealth() * this.Armor.getLsRatio())) * totalDamage);
-                    } else if (this.Armor.getSpEffectType().equals("wall")) {
-                        totalDamage = (int) (totalDamage * (this.getPercentHealth() * this.Armor.getWallRatio()));
-                    }
-                }
-                target.damage(totalDamage);
-                System.out.println(this.getName() + " attacked " + target.getName() + " for " + totalDamage + " damage!");
-                if (!target.isAlive()) {
-                    System.out.println(target.getName() + " is dead!");
-                    this.addGold(target.getGoldValue());
-                    System.out.println("You were awarded with " + target.getGoldValue() + "gold!");
-                }
+            int totalDamage = getTotalDamage(target);
+            target.damage(totalDamage);
+            System.out.println(this.getName() + " attacked " + target.getName() + " for " + totalDamage + " damage!");
+            if (!target.isAlive()) {
+                System.out.println(target.getName() + " is dead!");
+                this.addGold(target.getGoldValue());
+                System.out.println("You were awarded with " + target.getGoldValue() + "gold!");
             }
         }
     }
 
-    public int getMissingHealth(){
+    public int getTotalDamage(Enemies target) {
+        int totalDamage = this.getDamage() - target.getArmor();
+        if (target.hasGuarded()) {
+            System.out.println(this.getName() + " attacked " + target.getName() + " for " + (totalDamage - target.getArmor()) + " damage!");
+            return (totalDamage - target.getArmor());
+        } else {
+            if (this.hasWeapon() && this.weapon.hasSpEffect()) {
+                String spType = this.weapon.getSpEffectType();
+                double spChance = rand();
+                switch (spType) {
+                    case "burn":
+                        if (spChance < 0.2) { // 20% chance of burning
+                            target.setBurning(weapon.getBurn(), weapon.getBurnLvl());
+                        }
+                        break;
+                    case "freeze":
+                        if (spChance < this.weapon.getFreezeChance()) {
+                            target.setFrozen(3);
+                        }
+                        break;
+                    case "percentDmg":
+                        totalDamage = (int) ((1 + (target.getPercentMissingHealth() * this.weapon.getPercentRatio()))
+                                * totalDamage); // to be balanced
+                        break;
+                }
+            }
+            if (this.hasArmor() && this.Armor.hasSpEffect()) {
+                if (this.Armor.getSpEffectType().equals("lastStand")) {
+                    return (int) ((1 + (this.getPercentMissingHealth() * this.Armor.getLsRatio())) * totalDamage);
+                } else if (this.Armor.getSpEffectType().equals("wall")) {
+                    float ratio = this.getPercentHealth() * this.Armor.getWallRatio();
+                    if (ratio >= 0.20){
+                        return  (int) (totalDamage * (this.getPercentHealth() * this.Armor.getWallRatio()));
+                    } else{
+                        return  (int) (totalDamage * 0.20);
+                    }
+                }
+            }
+            return totalDamage;
+        }
+    }
+
+    public int getMissingHealth() {
         return this.maxHealth - this.health;
     }
 
-    public double getPercentMissingHealth(){
-        return (double) (this.getMissingHealth() / this.maxHealth);
+    public float getPercentMissingHealth() {
+        return ((float) this.getMissingHealth() / (float) this.maxHealth);
     }
 
     /**
