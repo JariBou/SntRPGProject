@@ -1,7 +1,5 @@
 package fr.snt.game.equipables;
 
-import fr.snt.game.equipables.Equipables;
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
@@ -17,6 +15,7 @@ public class Weapons extends Equipables {
     private float percentRatio = 0f;
     private float freezeChance = 0f;
     private float dmgMultiplier = 1.0f;
+    private float vampRatio = 0.0f;
 
     public Weapons(String itemName) throws Exception {
         itemName += ".properties";
@@ -52,6 +51,10 @@ public class Weapons extends Equipables {
                     this.spEffectType = "percentDmg";
                     this.percentRatio = parseFloat(properties.getProperty("percentRatio"));
                 }
+                case "vampiric" ->{
+                    this.spEffectType = "vampiric";
+                    this.vampRatio = parseFloat(properties.getProperty("vampRatio"));
+                }
             }
         }
     }
@@ -79,6 +82,10 @@ public class Weapons extends Equipables {
 
     public float getPercentRatio() {
         return percentRatio;
+    }
+
+    public float getVampRatio(){
+        return vampRatio;
     }
 
 }

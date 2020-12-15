@@ -1,7 +1,5 @@
 package fr.snt.game.equipables;
 
-import fr.snt.game.equipables.Equipables;
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;

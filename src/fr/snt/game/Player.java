@@ -184,6 +184,7 @@ public class Player {
         if (!target.hasDodged()) {
             int totalDamage = getTotalDamage(target);
             target.damage(totalDamage);
+            this.health += totalDamage * this.weapon.getVampRatio();      //Implementation for LifeSteal
             System.out.println(this.getName() + " attacked " + target.getName() + " for " + totalDamage + " damage!");
             if (!target.isAlive()) {
                 System.out.println(target.getName() + " is dead!");
