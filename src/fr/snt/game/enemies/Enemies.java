@@ -16,7 +16,7 @@ abstract public class Enemies {
     protected int frozenTurns = 0;
     // Paralyzed mechanics
     protected int paraTurns = 0;
-    //TODO: Implement burn mechanic on attack Player side
+    //TODO: Implement paralyzed mechanic on attack Player side
 
     public int getHealth() {
         return health;
