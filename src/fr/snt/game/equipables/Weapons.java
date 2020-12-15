@@ -16,6 +16,7 @@ public class Weapons extends Equipables {
     private float freezeChance = 0f;
     private float dmgMultiplier = 1.0f;
     private float vampRatio = 0.0f;
+    private int lStealLvl = 0;
 
     public Weapons(String itemName) throws Exception {
         itemName += ".properties";
@@ -51,9 +52,14 @@ public class Weapons extends Equipables {
                     this.spEffectType = "percentDmg";
                     this.percentRatio = parseFloat(properties.getProperty("percentRatio"));
                 }
-                case "vampiric" ->{
+                case "vampiric" -> {
                     this.spEffectType = "vampiric";
                     this.vampRatio = parseFloat(properties.getProperty("vampRatio"));
+                }
+                case "lSteal" -> {
+                    this.spEffectType = "lSteal";
+                    this.lStealLvl = parseInt(properties.getProperty("lStealLvl"));
+
                 }
             }
         }
@@ -86,6 +92,10 @@ public class Weapons extends Equipables {
 
     public float getVampRatio(){
         return vampRatio;
+    }
+
+    public int getLStealLvl() {
+        return lStealLvl;
     }
 
 }

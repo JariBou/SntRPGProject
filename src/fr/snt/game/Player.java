@@ -184,7 +184,7 @@ public class Player {
         if (!target.hasDodged()) {
             int totalDamage = getTotalDamage(target);
             target.damage(totalDamage);
-            this.health += totalDamage * this.weapon.getVampRatio();      //Implementation for LifeSteal
+            this.heal((int)(totalDamage * this.weapon.getVampRatio()));      //Implementation for LifeSteal
             System.out.println(this.getName() + " attacked " + target.getName() + " for " + totalDamage + " damage!");
             if (!target.isAlive()) {
                 System.out.println(target.getName() + " is dead!");
@@ -218,6 +218,9 @@ public class Player {
                         totalDamage = (int) ((1 + (target.getPercentMissingHealth() * this.weapon.getPercentRatio()))
                                 * totalDamage); // to be balanced
                         break;
+                    case "lSteal":
+                        target.damage(this.weapon.getLStealLvl());
+                        this.heal(this.weapon.getLStealLvl());
                 }
             }
             if (this.hasArmor() && this.Armor.hasSpEffect()) {
@@ -234,6 +237,10 @@ public class Player {
             }
             return totalDamage;
         }
+    }
+
+    private void heal(int amount) {
+        this.health += amount;
     }
 
     public int getMissingHealth() {
