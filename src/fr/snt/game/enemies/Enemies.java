@@ -16,6 +16,7 @@ abstract public class Enemies {
     protected int frozenTurns = 0;
     // Paralyzed mechanics
     protected int paraTurns = 0;
+    protected float paraChance = 0.0f;
     //TODO: Implement paralyzed mechanic on attack Player side
 
     public int getHealth() {
@@ -48,8 +49,7 @@ abstract public class Enemies {
             return;
         }
         if (paraTurns > 0) {
-            double paraChance = rand();
-            if (paraChance < 0.30) {
+            if (paraChance < paraChance) {
                 System.out.println(this.getName() + " was paralyzed, he failed to attack!");
                 return;
             }
