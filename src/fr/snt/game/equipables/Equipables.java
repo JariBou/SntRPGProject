@@ -29,7 +29,7 @@ public abstract class Equipables {
         return spEffectType;
     }
 
-    public String Description() {
+    public String getDescription() {
         return description;
     }
 
