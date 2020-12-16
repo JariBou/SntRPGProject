@@ -19,7 +19,6 @@ abstract public class Enemies {
     protected float paraChance = 0.0f;
     // lSteal mechanics
     protected int lStealLvl = 0;
-    //TODO: Implement paralyzed mechanic on attack Player side
 
     public int getHealth() {
         return health;
