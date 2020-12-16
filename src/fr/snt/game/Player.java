@@ -233,6 +233,8 @@ public class Player {
                     } else{
                         return  (int) (totalDamage * 0.20);
                     }
+                } else if (this.Armor.getSpEffectType().equals("atkBonus")){
+                    return totalDamage + this.Armor.getAtkBonus();
                 }
             }
             return totalDamage;
