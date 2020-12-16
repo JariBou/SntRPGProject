@@ -13,10 +13,13 @@ public class Weapons extends Equipables {
     private int burnLvl = 0;
     private int burn = 0;
     private float percentRatio = 0f;
+    private int freezeTurns = 0;
     private float freezeChance = 0f;
     private float dmgMultiplier = 1.0f;
     private float vampRatio = 0.0f;
     private int lStealLvl = 0;
+    private int paraTurns = 0;
+    private float paraChance = 0.0f;
 
     public Weapons(String itemName) throws Exception {
         itemName += ".properties";
@@ -46,6 +49,7 @@ public class Weapons extends Equipables {
                 }
                 case "freeze" -> {
                     this.spEffectType = "freeze";
+                    this.freezeTurns = parseInt(properties.getProperty("freezeTurns"));
                     this.freezeChance = parseFloat(properties.getProperty("freezeChance"));
                 }
                 case "percentDmg" -> {
@@ -59,7 +63,11 @@ public class Weapons extends Equipables {
                 case "lSteal" -> {
                     this.spEffectType = "lSteal";
                     this.lStealLvl = parseInt(properties.getProperty("lStealLvl"));
-
+                }
+                case "thunder" -> {
+                    this.spEffectType = "thunder";
+                    this.paraTurns = parseInt(properties.getProperty("paraTurns"));
+                    this.paraChance = parseFloat(properties.getProperty("paraChance"));
                 }
             }
         }
@@ -96,6 +104,18 @@ public class Weapons extends Equipables {
 
     public int getLStealLvl() {
         return lStealLvl;
+    }
+
+    public int getFreezeTurns() {
+        return freezeTurns;
+    }
+
+    public int getThunderTurns() {
+        return paraTurns;
+    }
+
+    public float getThunderChance() {
+        return paraChance;
     }
 
 }

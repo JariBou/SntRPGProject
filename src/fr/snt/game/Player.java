@@ -211,7 +211,7 @@ public class Player {
                         break;
                     case "freeze":
                         if (spChance < this.weapon.getFreezeChance()) {
-                            target.setFrozen(3);
+                            target.setFrozen(this.weapon.getFreezeTurns());
                         }
                         break;
                     case "percentDmg":
@@ -221,20 +221,27 @@ public class Player {
                     case "lSteal":
                         target.damage(this.weapon.getLStealLvl());
                         this.heal(this.weapon.getLStealLvl());
+                        break;
+                    case "thunder":
+                        if (spChance < this.weapon.getThunderChance()){
+                            target.setParalyzed(this.weapon.getThunderTurns());
+                        }
+                        break;
                 }
             }
             if (this.hasArmor() && this.Armor.hasSpEffect()) {
-                if (this.Armor.getSpEffectType().equals("lastStand")) {
-                    return (int) ((1 + (this.getPercentMissingHealth() * this.Armor.getLsRatio())) * totalDamage);
-                } else if (this.Armor.getSpEffectType().equals("wall")) {
-                    float ratio = this.getPercentHealth() * this.Armor.getWallRatio();
-                    if (ratio >= 0.20){
-                        return  (int) (totalDamage * (this.getPercentHealth() * this.Armor.getWallRatio()));
-                    } else{
-                        return  (int) (totalDamage * 0.20);
-                    }
-                } else if (this.Armor.getSpEffectType().equals("atkBonus")){
-                    return totalDamage + this.Armor.getAtkBonus();
+                switch (this.Armor.getSpEffectType()) {
+                    case "lastStand":
+                        return (int) ((1 + (this.getPercentMissingHealth() * this.Armor.getLsRatio())) * totalDamage);
+                    case "wall":
+                        float ratio = this.getPercentHealth() * this.Armor.getWallRatio();
+                        if (ratio >= 0.20) {
+                            return (int) (totalDamage * (this.getPercentHealth() * this.Armor.getWallRatio()));
+                        } else {
+                            return (int) (totalDamage * 0.20);
+                        }
+                    case "atkBonus":
+                        return totalDamage + this.Armor.getAtkBonus();
                 }
             }
             return totalDamage;
