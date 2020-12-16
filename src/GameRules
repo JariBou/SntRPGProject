@@ -19,7 +19,7 @@ Enemies:   hp and attack increases with time
 
 Armours:
 >SpecialEffects:
-    - "block"  increased block value
+    - "block"  increased block value    // Not yet implemented
     - "dmgDim" flat damage reduction
     - "atkBonus" flat bonus damage
     - bonus atk according to player missing health?
@@ -29,8 +29,9 @@ Weapons:
 >SpecialEffects:
     - "percent"  percentage increased atk damage
     - "burn"     burning overTurn damage    damage=burnLvl
-    - vampiric?
-    - damage according to missing enemy health?
+    - vampiric   {applied over totalDamage}
+    - damage according to missing enemy health
+    - lSteal
 
 
 
