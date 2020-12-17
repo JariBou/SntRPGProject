@@ -7,12 +7,7 @@ public class Armoured_Zombie extends Enemies {
     private int gTurns = 0;
 
     public Armoured_Zombie(String name, int maxHealth, int attack, int armor, int goldValue) {
-        this.name = name;
-        this.maxHealth = maxHealth;
-        this.health = this.maxHealth;
-        this.attack = attack;
-        this.armor = armor;
-        this.goldValue = goldValue;
+        super(name, maxHealth, attack, armor, goldValue);
     }
 
     @Override
