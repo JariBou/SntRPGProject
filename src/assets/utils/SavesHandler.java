@@ -5,7 +5,6 @@ import fr.snt.game.equipables.Armors;
 import fr.snt.game.equipables.Weapons;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.Properties;
 import static java.lang.String.valueOf;
 
@@ -30,7 +29,7 @@ public class SavesHandler {
         prop.setProperty("attack", valueOf(player.getAttack()));
         prop.setProperty("armor", valueOf(player.getBaseArmor()));
         prop.setProperty("gold", valueOf(player.getGold()));
-        prop.setProperty("playerLvl", valueOf(player.getPlayerLevel()) + ":" + valueOf(player.getLevelCount()));
+        prop.setProperty("playerLvl", player.getPlayerLevel() + ":" + player.getLevelCount());
 
         if (player.hasWeapon()) {
             prop.setProperty("currWeapon", player.getWeapon().getItemName());
@@ -61,7 +60,7 @@ public class SavesHandler {
 
         // Save the file
         OutputStream out = new FileOutputStream(path);
-        prop.store(out, null);
+        prop.store(out, "Player Save");
     }
 
 
