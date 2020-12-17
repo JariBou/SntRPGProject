@@ -6,6 +6,8 @@ import fr.snt.game.equipables.Armors;
 import fr.snt.game.equipables.Weapons;
 import fr.snt.game.levels.GameOverLevel;
 
+import static assets.utils.UtilMethods.getType;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -62,7 +64,7 @@ public class Player {
         this.gold -= amount;
     }
 
-    private int getMaxHealth() {
+    public int getMaxHealth() {
         return maxHealth;
     }
 
@@ -84,6 +86,10 @@ public class Player {
         return playerLevel;
     }
 
+    public int getLevelCount(){
+        return levelCount;
+    }
+
     private void resetHealth() {
         this.health = this.maxHealth;
     }
@@ -97,7 +103,7 @@ public class Player {
         resetHealth();
     }
 
-    private boolean hasWeapon() {
+    public boolean hasWeapon() {
         return this.weapon != null;
     }
 
@@ -295,6 +301,24 @@ public class Player {
 
     public ArrayList<Equipables> getInventory() {
         return this.Inventory;
+    }
+
+    public ArrayList<Weapons> getWeapons(){
+        ArrayList<Weapons> wList = new ArrayList<>();
+        for (Equipables w : getInventory()) {
+            if (getType(w.getClass()).equals("Weapons")){
+                wList.add((Weapons) w);
+            }
+        } return wList;
+    }
+
+    public ArrayList<Armors> getArmors(){
+        ArrayList<Armors> aList = new ArrayList<>();
+        for (Equipables w : getInventory()) {
+            if (getType(w.getClass()).equals("Armors")){
+                aList.add((Armors) w);
+            }
+        } return aList;
     }
 
     public boolean isItemInInventory(Equipables item) {

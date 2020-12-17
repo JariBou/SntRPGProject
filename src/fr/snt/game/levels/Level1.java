@@ -1,5 +1,6 @@
 package fr.snt.game.levels;
 
+import assets.utils.SavesHandler;
 import fr.snt.game.Player;
 import fr.snt.game.enemies.Armoured_Zombie;
 import fr.snt.game.equipables.Armors;
@@ -19,10 +20,19 @@ public class Level1 extends BaseLevel {
         WL.add(new Weapons("freezing_wand"));
         System.out.println(WL.get(2).getFreezeChance());
 
+
+
         System.out.println("Enter your name: ");
         String name = sc.nextLine();
         player = new Player(name, 24, 5, 1);
         Armoured_Zombie zombie1 = new Armoured_Zombie("Zombie 1", 20, 3, 1, 3);
+
+        player.addToInventory(WL.get(1));
+        player.addToInventory(WL.get(0));
+        player.setWeapon(WL.get(1));
+
+        SavesHandler.save(player, "src\\assets\\save1.properties");
+
 
         System.out.println("A Zombie appears! \nWill you fight him? yes/no");
         String choice = sc.nextLine();
