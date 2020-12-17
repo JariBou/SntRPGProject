@@ -7,12 +7,8 @@ import fr.snt.game.enemies.Enemies;
 public class Arachnea extends Enemies {
 
     public Arachnea() {
+        super("Arachnea", 100, 15, 7, 15);
         // To balance
-        this.name = "Arachnea";
-        this.health = 100;
-        this.attack = 15;
-        this.armor = 7;
-        this.goldValue = 15;
     }
 
     @Override
