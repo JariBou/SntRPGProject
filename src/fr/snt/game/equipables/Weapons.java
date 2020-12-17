@@ -22,6 +22,7 @@ public class Weapons extends Equipables {
     private float paraChance = 0.0f;
 
     public Weapons(String itemName) throws Exception {
+        this.itemName = itemName;
         itemName += ".properties";
         Properties properties = new Properties();
         try {

@@ -5,6 +5,7 @@ import java.nio.file.Paths;
 
 
 public abstract class Equipables {
+    protected String itemName;
     protected String name, description, spEffectType;
     protected int cost;
     protected boolean spEffect = false;
@@ -12,6 +13,8 @@ public abstract class Equipables {
     protected String imPath = currentRelativePath.toAbsolutePath().toString();
 
     //TODO: maybe keep equipables stats in a .properties file? Yeah god idea, too much different initializers
+
+
 
     public String getName() {
         return name;
@@ -31,6 +34,10 @@ public abstract class Equipables {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getItemName(){
+        return this.itemName;
     }
 
 }

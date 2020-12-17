@@ -15,6 +15,7 @@ public class Armors extends Equipables {
     private float lsRatio = 0f;
 
     public Armors(String itemName) throws Exception {
+        this.itemName = itemName;
         itemName += ".properties";
         Properties properties = new Properties();
         try {
