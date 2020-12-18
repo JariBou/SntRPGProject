@@ -5,7 +5,7 @@ import fr.snt.game.equipables.Armors;
 import fr.snt.game.equipables.Weapons;
 
 import java.io.*;
-import java.security.KeyStore;
+import java.util.ArrayList;
 import java.util.Properties;
 
 import static java.lang.String.valueOf;
@@ -69,7 +69,7 @@ public class SavesHandler {
     }
 
     public static boolean testLoad() throws Exception {
-        File f = new File("\\src\\fr\\snt\\game\\equipables\\armors");
+        File f = new File("src\\fr\\snt\\game\\equipables\\armors");
         File[] listFiles = f.listFiles();
         try {
             assert listFiles != null;
@@ -81,7 +81,7 @@ public class SavesHandler {
         } catch (Exception e) {
             throw new Exception("Error while loading Armors: " + e);
         }
-        f = new File("\\src\\fr\\snt\\game\\equipables\\weapons");
+        f = new File("src\\fr\\snt\\game\\equipables\\weapons");
         listFiles = f.listFiles();
         try {
             assert listFiles != null;
@@ -93,8 +93,33 @@ public class SavesHandler {
         } catch (Exception e) {
             throw new Exception("Error while loading Weapons: " + e);
         }
-        // If loading was successful
         return true;
+    }
+
+    public static ArrayList<Armors> loadA() throws Exception {
+        File f = new File("src\\fr\\snt\\game\\equipables\\armors");
+        File[] listFiles = f.listFiles();
+        ArrayList<Armors> AL = new ArrayList<>();
+        assert listFiles != null;
+        for (File s : listFiles) {
+            if (!s.getName().endsWith("example.properties")) {
+                AL.add(new Armors(s.getName().replace(".properties", "")));
+            }
+        }
+        return AL;
+    }
+
+    public static ArrayList<Weapons> loadW() throws Exception {
+        File f = new File("src\\fr\\snt\\game\\equipables\\weapons");
+        File[] listFiles = f.listFiles();
+        ArrayList<Weapons> WL = new ArrayList<>();
+        assert listFiles != null;
+        for (File s : listFiles) {
+            if (!s.getName().endsWith("example.properties")) {
+                WL.add(new Weapons(s.getName().replace(".properties", "")));
+            }
+        }
+        return WL;
     }
 
 }

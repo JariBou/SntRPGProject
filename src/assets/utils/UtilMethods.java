@@ -3,6 +3,7 @@ package assets.utils;
 import java.util.Arrays;
 
 
+@SuppressWarnings("rawtypes")
 public class UtilMethods {
 
     public static String getType(Class c){

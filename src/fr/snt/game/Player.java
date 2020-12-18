@@ -283,11 +283,11 @@ public class Player {
         this.Inventory.add(item);
     }
 
-    public void removeFromPosInventory(int position) {
+    public void removeFromInventory(int position) {
         this.Inventory.remove(position);
     }
 
-    public void removeItemFromInventory(Equipables item) {
+    public void removeFromInventory(Equipables item) {
         this.Inventory.remove(item);
     }
 
@@ -321,7 +321,7 @@ public class Player {
         } return aList;
     }
 
-    public boolean isItemInInventory(Equipables item) {
+    public boolean isInInventory(Equipables item) {
         return this.Inventory.contains(item);
     }
     //------------------------------------------------------

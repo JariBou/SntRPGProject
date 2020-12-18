@@ -1,6 +1,7 @@
 package fr.snt.game.levels;
 
 import fr.snt.game.Player;
+import fr.snt.game.enemies.Enemies;
 import fr.snt.game.equipables.Armors;
 import fr.snt.game.equipables.Weapons;
 
@@ -99,6 +100,30 @@ public abstract class BaseLevel {
             }
         }
         System.out.println();
+    }
+
+    public void combat(Enemies mob) throws Exception {
+        System.out.println("A Zombie appears! \nWill you fight him? yes/no");
+        String choice = sc.nextLine();
+        if (choice.equals("yes")) {
+            System.out.println("You decided to fight! Good soldier!");
+        } else {
+            System.out.println("Na you are brave so yo fight him!");
+        }
+        while (mob.isAlive()) {
+            System.out.println(mob.getName() + " -  health: " + mob.getHealth());
+            System.out.println("Your Health: " + player.getHealth());
+            System.out.println("Do you want to attack?  yes/no");
+            choice = sc.nextLine();
+            if (choice.equals("yes")) {
+                player.attack(mob);
+            }
+            if (mob.isAlive()) {
+                mob.attack(player);
+            }
+            player.update();
+            mob.update();
+        }
     }
 
 }
