@@ -7,9 +7,14 @@ import fr.snt.game.equipables.Weapons;
 import fr.snt.game.levels.GameOverLevel;
 
 import static assets.utils.UtilMethods.getType;
+import static java.lang.Integer.parseInt;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Properties;
 
 
 public class Player {
@@ -21,6 +26,38 @@ public class Player {
     private Armors Armor;
     // Player Levels and poison mechanics
     private int levelCount, poison, poisonLevel;
+
+    public Player(String saveName) throws Exception {
+        saveName += ".properties";
+        Properties prop = new Properties();
+        try {
+            prop.load(new FileInputStream("src\\fr\\snt\\game\\saves"));
+        } catch (IOException e) {
+            throw new Exception("Unexpected Error while loadind '" + saveName + "'\n" + e);
+        }
+        this.name = prop.getProperty("name");
+        this.baseArmor = parseInt(prop.getProperty("armor"));
+        this.maxHealth = parseInt(prop.getProperty("maxHealth"));
+        this.attack = parseInt(prop.getProperty("attack"));
+        String[] playerLvls = prop.getProperty("playerLvl").split(":");
+        this.playerLevel = parseInt(playerLvls[0]);
+        this.levelCount = parseInt(playerLvls[1]);
+        this.gold = parseInt(prop.getProperty("gold"));
+
+        this.weapon = new Weapons(prop.getProperty("currWeapon"));
+        this.Armor = new Armors(prop.getProperty("currArmor"));
+
+        // Inv -------------------------------------------------
+        this.Inventory = new ArrayList<Equipables>();
+        String[] weapons = prop.getProperty("Weapons").split(":");
+        for (String s : weapons){
+            this.Inventory.add(new Weapons(s));
+        }
+        String[] armors = prop.getProperty("Armors").split(":");
+        for (String s : armors){
+            this.Inventory.add(new Armors(s));
+        }
+    }
 
     public Player(String name, int maxHealth, int attack, int armor) {
         this.Inventory = new ArrayList<Equipables>();

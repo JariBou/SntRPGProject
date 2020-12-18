@@ -9,12 +9,15 @@ import static java.lang.Integer.parseInt;
 
 
 public class Armors extends Equipables {
-    private final int armorValue;
+    private int armorValue;
     private int dmgDim, atkBonus = 0;
     private float wallRatio = 1.0f;
     private float lsRatio = 0f;
 
     public Armors(String itemName) throws Exception {
+        if (itemName.equals("null")){
+            return;
+        }
         this.itemName = itemName;
         itemName += ".properties";
         Properties properties = new Properties();

@@ -9,7 +9,7 @@ import static java.lang.Float.parseFloat;
 
 
 public class Weapons extends Equipables {
-    private final int attack;
+    private int attack;
     private int burnLvl = 0;
     private int burn = 0;
     private float percentRatio = 0f;
@@ -22,6 +22,9 @@ public class Weapons extends Equipables {
     private float paraChance = 0.0f;
 
     public Weapons(String itemName) throws Exception {
+        if (itemName.equals("null")){
+            return;
+        }
         this.itemName = itemName;
         itemName += ".properties";
         Properties properties = new Properties();
