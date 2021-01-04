@@ -14,8 +14,6 @@ public abstract class Equipables {
 
     //TODO: maybe keep equipables stats in a .properties file? Yeah god idea, too much different initializers
 
-
-
     public String getName() {
         return name;
     }
