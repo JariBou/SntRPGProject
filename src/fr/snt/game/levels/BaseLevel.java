@@ -3,10 +3,13 @@ package fr.snt.game.levels;
 import fr.snt.game.Player;
 import fr.snt.game.enemies.Enemies;
 import fr.snt.game.equipables.Armors;
+import fr.snt.game.equipables.Equipables;
 import fr.snt.game.equipables.Weapons;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import static assets.utils.UtilMethods.getType;
 
 
 public abstract class BaseLevel {
@@ -14,7 +17,7 @@ public abstract class BaseLevel {
     static ArrayList<Weapons> WL;
     static ArrayList<Armors> AL;
     final Scanner sc = new Scanner(System.in);
-    String choice;
+    String choice, message;
     private Weapons weapon;
     private Armors armor;
 
@@ -22,7 +25,6 @@ public abstract class BaseLevel {
     // FIXME: Check that there cannot be any error when choosing
 
     public void shop() {
-        System.out.println(player.getGold());
         System.out.println("Do you want to buy Something?         Your gold: " + player.getGold());
         String choice = sc.nextLine();
         while (true) {
@@ -103,7 +105,7 @@ public abstract class BaseLevel {
     }
 
     public void combat(Enemies mob) throws Exception {
-        System.out.println("A Zombie appears! \nWill you fight him? yes/no");
+        System.out.println(mob.getName() + " appears! \nWill you fight him? yes/no");
         String choice = sc.nextLine();
         if (choice.equals("yes")) {
             System.out.println("You decided to fight! Good soldier!");
@@ -124,6 +126,109 @@ public abstract class BaseLevel {
             player.update();
             mob.update();
         }
+    }
+
+    private void displayInventory(){
+        int count = 1;
+        message = player.hasWeapon() ? ("Equipped weapon: " + player.getWeapon().getName()) : ("Equipped weapon: None");
+        message += player.hasArmor() ? ("\nEquipped Armor: " + player.getArmor().getName()) : ("Equipped Armor: None");
+        System.out.println(message);
+        for (Equipables e : player.getInventory()){
+            System.out.println(count + ". " + e.getName() + "     Type: " + getType(e.getClass()));
+            count++;
+        }
+    }
+
+    private int choose(){
+        choice = sc.nextLine();
+        try {
+            return Integer.parseInt(choice);
+        } catch (NumberFormatException e){
+            System.out.println("Wrong input! Try again");
+            choose();
+        }
+        return 0;
+    }
+
+    public void equiDialogW(Equipables item){
+        System.out.println("Do you want to equip the Weapon?");
+        choice = sc.nextLine();
+        if (choice.equals("yes")){
+            player.setWeapon((Weapons) (item));
+        } else if (!choice.equals("no")){
+            System.out.println("Wrong input! Try again");
+            equiDialogW(item);
+        }
+    }
+
+    public void equiDialogA(Equipables item){
+        System.out.println("Do you want to equip the Armor?");
+        choice = sc.nextLine();
+        if (choice.equals("yes")){
+            player.setArmor((Armors) (item));
+        } else if (!choice.equals("no")){
+            System.out.println("Wrong input! Try again");
+            equiDialogA(item);
+        }
+    }
+
+    private void manageItem(int nb){
+        nb--;
+        Equipables item = player.getItemInInventory(nb);
+        if (getType(item.getClass()).equals("Weapons")){
+            System.out.println(item.getName());
+            System.out.println("attack: " + ((Weapons) item).getAttack());
+            System.out.println("Description: " + item.getDescription());
+            if (item.hasSpEffect()){
+                System.out.println("SP effect: " + item.getSpEffectType());
+                System.out.println(((Weapons) item).getSPs().toString());
+            }
+            if (player.getWeapon() != item){
+                equiDialogW(item);
+            }
+        }else{
+            System.out.println(item.getName());
+            System.out.println("armor: " + ((Armors) item).getArmorValue());
+            System.out.println("Description: " + item.getDescription());
+            if (item.hasSpEffect()){
+                System.out.println("SP effect: " + item.getSpEffectType());
+                System.out.println(((Armors) item).getSPs());
+            }
+            if (player.getArmor() != item){
+                equiDialogA(item);
+            }
+
+        }
+        manageItem1();
+    }
+
+    public void manageItem1(){
+        System.out.println("Would you like to manage another item?");
+        choice = sc.nextLine();
+        if (choice.equals("yes")){
+            manage1();
+        } else if (!choice.equals("no")){
+            System.out.println("Wrong input! Try again");
+        }
+    }
+
+    public void manage(){
+        System.out.println("Would you like to manage you inventory?");
+        choice = sc.nextLine();
+        if (choice.equals("yes")){
+            manage1();
+        } else if (choice.equals("no")){
+            return;
+        }else{
+            System.out.println("Wrong input");
+            manage();
+        }
+    }
+
+    public void manage1(){
+        displayInventory();
+        int nb = choose();
+        manageItem(nb);
     }
 
 }

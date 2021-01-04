@@ -2,6 +2,7 @@ package fr.snt.game.equipables;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Properties;
 
 import static java.lang.Float.parseFloat;
@@ -73,6 +74,21 @@ public class Armors extends Equipables {
 
     public float getWallRatio(){
         return this.wallRatio;
+    }
+
+    public ArrayList<String> getSPs(){
+        if (this.hasSpEffect()){
+            ArrayList<String> array = new ArrayList<>();
+            switch (this.spEffectType){
+                case "dmgDim" -> array.add("dmg diminution: " + this.getDmgDim() + "dmg");
+                case "atkBonus" -> array.add("atk bonus: " + this.getAtkBonus() + "dmg");
+                case "lastStand" -> array.add("last stand ratio: " + this.getLsRatio());
+                case "wall" -> array.add("wall ratio: " + this.getWallRatio());
+            }
+            return array;
+        } else {
+            return new ArrayList<>();
+        }
     }
 
 }

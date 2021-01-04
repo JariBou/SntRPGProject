@@ -2,6 +2,7 @@ package fr.snt.game.equipables;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Properties;
 
 import static java.lang.Integer.parseInt;
@@ -120,6 +121,31 @@ public class Weapons extends Equipables {
 
     public float getThunderChance() {
         return paraChance;
+    }
+
+    public ArrayList<String> getSPs(){
+        if (this.hasSpEffect()){
+            ArrayList<String> array = new ArrayList<>();
+            switch (this.spEffectType){
+                case "burn" -> {
+                    array.add("burn lvl: " + this.getBurnLvl());
+                    array.add("burn turns: " + this.getBurn());
+                }case "freeze" -> {
+                    array.add("freeze chance: " + this.getFreezeChance()*100 +"%");
+                    array.add("freeze turns: " + this.getFreezeTurns());
+                }case "thunder" -> {
+                    array.add("para chance: " + this.getThunderChance()*100 + "%");
+                    array.add("para turns: " + this.getThunderTurns());
+                }
+                case "percent" -> array.add("dmg multiplier: " + this.getDmgMultiplier());
+                case "percentDmg" -> array.add("percentHealthRatio: " + this.getPercentRatio());
+                case "vampiric" -> array.add("vampiric ratio: " + this.getVampRatio());
+                case "lSteal" -> array.add("life steal: " + this.getLStealLvl() + " hp");
+            }
+            return array;
+        } else {
+            return new ArrayList<>();
+        }
     }
 
 }
