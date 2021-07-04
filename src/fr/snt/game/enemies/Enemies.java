@@ -2,6 +2,8 @@ package fr.snt.game.enemies;
 
 import fr.snt.game.Player;
 
+import java.util.Properties;
+
 
 abstract public class Enemies {
     // Base attributes
@@ -16,7 +18,7 @@ abstract public class Enemies {
     protected int frozenTurns = 0;
     // Paralyzed mechanics
     protected int paraTurns = 0;
-    protected float paraChance = 0.0f;
+    protected float paraChance = 0.4f;
 
     public Enemies(String name, int maxHealth, int attack, int armor, int goldValue) {
         this.name = name;
@@ -25,6 +27,15 @@ abstract public class Enemies {
         this.attack = attack;
         this.armor = armor;
         this.goldValue = goldValue;
+    }
+
+    public Enemies(Properties prop) {
+        this.name = prop.getProperty("name");
+        this.maxHealth = Integer.parseInt(prop.getProperty("maxHealth"));
+        this.health = this.maxHealth;
+        this.attack = Integer.parseInt(prop.getProperty("attack"));
+        this.armor = Integer.parseInt(prop.getProperty("armor"));
+        this.goldValue = Integer.parseInt(prop.getProperty("goldValue"));
     }
 
     public int getHealth() {
@@ -57,7 +68,8 @@ abstract public class Enemies {
             return;
         }
         if (paraTurns > 0) {
-            if (paraChance < paraChance) {
+            double paraRoll = rand();
+            if (paraRoll < paraChance) {
                 System.out.println(this.getName() + " was paralyzed, he failed to attack!");
                 return;
             }
@@ -124,6 +136,30 @@ abstract public class Enemies {
 
     public boolean hasGuarded() {
         return guarded;
+    }
+
+    public int getMaxHealth() {
+        return maxHealth;
+    }
+
+    public int getBurn() {
+        return burn;
+    }
+
+    public int getBurnLvl() {
+        return burnLvl;
+    }
+
+    public int getFrozenTurns() {
+        return frozenTurns;
+    }
+
+    public float getParaChance() {
+        return paraChance;
+    }
+
+    public int getParaTurns() {
+        return paraTurns;
     }
 
 }

@@ -2,12 +2,18 @@ package fr.snt.game.enemies;
 
 import fr.snt.game.Player;
 
+import java.util.Properties;
+
 
 public class Armoured_Zombie extends Enemies {
     private int gTurns = 0;
 
     public Armoured_Zombie(String name, int maxHealth, int attack, int armor, int goldValue) {
         super(name, maxHealth, attack, armor, goldValue);
+    }
+
+    public Armoured_Zombie(Properties prop) {
+        super(prop);
     }
 
     @Override
@@ -35,6 +41,10 @@ public class Armoured_Zombie extends Enemies {
         if (gTurns == 3) {
             guarded = true;
         }
+    }
+
+    public int getgTurns(){
+        return gTurns;
     }
 
 }

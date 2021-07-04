@@ -3,12 +3,18 @@ package fr.snt.game.enemies.bosses;
 import fr.snt.game.Player;
 import fr.snt.game.enemies.Enemies;
 
+import java.util.Properties;
+
 
 public class Arachnea extends Enemies {
 
     public Arachnea() {
         super("Arachnea", 100, 15, 7, 15);
         // To balance
+    }
+
+    public Arachnea(Properties prop) {
+        super(prop);
     }
 
     @Override

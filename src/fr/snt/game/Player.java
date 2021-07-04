@@ -92,7 +92,7 @@ public class Player {
         return gold;
     }
 
-    private void addGold(int amount) {
+    public void addGold(int amount) {
         this.gold += amount;
     }
 
