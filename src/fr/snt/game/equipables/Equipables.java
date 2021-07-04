@@ -9,10 +9,8 @@ public abstract class Equipables {
     protected String name, description, spEffectType;
     protected int cost;
     protected boolean spEffect = false;
-    Path currentRelativePath = Paths.get("");
-    protected String imPath = currentRelativePath.toAbsolutePath().toString();
-
-    //TODO: maybe keep equipables stats in a .properties file? Yeah god idea, too much different initializers
+    final Path currentRelativePath = Paths.get("");
+    protected final String imPath = currentRelativePath.toAbsolutePath().toString();
 
     public String getName() {
         return name;

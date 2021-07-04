@@ -3,8 +3,6 @@ package fr.snt.game.levels;
 import assets.utils.SavesHandler;
 import fr.snt.game.Player;
 import fr.snt.game.enemies.Armoured_Zombie;
-import fr.snt.game.equipables.Equipables;
-import fr.snt.game.equipables.Weapons;
 
 import static assets.utils.SavesHandler.testLoad;
 import static assets.utils.SavesHandler.loadA;

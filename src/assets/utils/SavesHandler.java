@@ -9,7 +9,6 @@ import fr.snt.game.equipables.Armors;
 import fr.snt.game.equipables.Weapons;
 
 import java.io.*;
-import java.security.KeyStore;
 import java.util.ArrayList;
 import java.util.Properties;
 
@@ -131,7 +130,7 @@ public class SavesHandler {
     public static boolean saveState(ArrayList<Enemies> enemies, Player player, String path) {
         // Save the enemies state
         for (Enemies en : enemies) {
-            Class cls = en.getClass();
+            Class<? extends Enemies> cls = en.getClass();
             if (cls == Zombie.class){
                 System.out.println("is a Zombie");
             } else if (cls == Armoured_Zombie.class) {

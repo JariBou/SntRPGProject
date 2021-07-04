@@ -7,17 +7,11 @@ import fr.snt.game.equipables.Weapons;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-
-import static assets.utils.SavesHandler.testLoad;
-import static assets.utils.SavesHandler.loadA;
-import static assets.utils.SavesHandler.loadW;
 
 import static assets.utils.SavesHandler.*;
 import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
@@ -26,17 +20,19 @@ import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 public class Gui {
     private final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     private final int offsetX = (screenSize.width / 17);
-    private final int offsetY = screenSize.height / 12;
-    private JFrame rootPanel;
+    // --Commented out by Inspection (04/07/2021 22:01):private final int offsetY = screenSize.height / 12;
+    private final JFrame rootPanel;
     private JPanel bg;
-    private JFrame combatPanel;
-    private JButton button1;
+// --Commented out by Inspection START (04/07/2021 22:01):
+//    // --Commented out by Inspection (04/07/2021 22:01):private JFrame combatPanel;
+//    // --Commented out by Inspection (04/07/2021 22:01):private JButton button1;
+// --Commented out by Inspection STOP (04/07/2021 22:01)
     private JLabel label1;
     private Popup popup;
     private boolean popupShown;
-    private ArrayList<Weapons> WL;
-    private ArrayList<Armors> AL;
-    private Player player;
+    private final ArrayList<Weapons> WL;
+    private final ArrayList<Armors> AL;
+    private final Player player;
 
     public Gui() throws Exception {
         rootPanel = new JFrame("Game");
@@ -65,7 +61,7 @@ public class Gui {
         rootPanel.repaint();
 
 
-        int buttonWidth = (int) (screenSize.width * 4 / (5 * 20));
+        int buttonWidth = screenSize.width * 4 / (5 * 20);
         @SuppressWarnings("SuspiciousNameCombination") int buttonHeight = buttonWidth;
 
         bg = new JPanel();
@@ -203,7 +199,7 @@ public class Gui {
         rootPanel.getContentPane().removeAll();
         rootPanel.repaint();
 
-        int buttonWidth = (int) (screenSize.width * 4 / (5 * 20));
+        int buttonWidth = screenSize.width * 4 / (5 * 20);
         @SuppressWarnings("SuspiciousNameCombination") int buttonHeight = buttonWidth;
 
         bg = new JPanel();
@@ -318,9 +314,7 @@ public class Gui {
         JButton attackButton = new JButton();
         attackButton.setBounds(20, 500, 100, 20);
         attackButton.setText("Attack");
-        attackButton.addActionListener(e -> {
-            this.switchCombat();
-        });
+        attackButton.addActionListener(e -> this.switchCombat());
         rootPanel.add(attackButton);
         rootPanel.add(bg);
         rootPanel.repaint();

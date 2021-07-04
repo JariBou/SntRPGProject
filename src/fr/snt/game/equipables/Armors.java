@@ -34,7 +34,6 @@ public class Armors extends Equipables {
         this.description = properties.getProperty("description");
         if (Boolean.parseBoolean(properties.getProperty("spEffect"))) {
             this.spEffect = true;
-            // TODO:Add other effects and loaders
             switch (properties.getProperty("spEffectType")) {
                 case "dmgDim" -> {
                     this.spEffectType = "dmgDim";

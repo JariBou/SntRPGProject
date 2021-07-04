@@ -7,8 +7,9 @@ import java.util.Properties;
 
 abstract public class Enemies {
     // Base attributes
-    protected String name;
-    protected int health, attack, armor, goldValue, maxHealth;
+    protected final String name;
+    protected int health;
+    protected final int attack, armor, goldValue, maxHealth;
     // Dodge and guard mechanic
     protected boolean dodged = false;
     protected boolean guarded = false;
@@ -18,7 +19,7 @@ abstract public class Enemies {
     protected int frozenTurns = 0;
     // Paralyzed mechanics
     protected int paraTurns = 0;
-    protected float paraChance = 0.4f;
+    protected final float paraChance = 0.4f;
 
     public Enemies(String name, int maxHealth, int attack, int armor, int goldValue) {
         this.name = name;

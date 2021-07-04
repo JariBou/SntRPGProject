@@ -43,7 +43,6 @@ public class Weapons extends Equipables {
         this.imgsrc = properties.getProperty("imgsrc");
         if (Boolean.parseBoolean(properties.getProperty("spEffect"))) {
             this.spEffect = true;
-            // TODO:Add other effects and loaders
             switch (properties.getProperty("spEffectType")) {
                 case "burn" -> {
                     this.spEffectType = "burn";

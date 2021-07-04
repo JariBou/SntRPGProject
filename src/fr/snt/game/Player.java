@@ -47,7 +47,7 @@ public class Player {
         this.Armor = new Armors(prop.getProperty("currArmor"));
 
         // Inv -------------------------------------------------
-        this.Inventory = new ArrayList<Equipables>();
+        this.Inventory = new ArrayList<>();
         String[] weapons = prop.getProperty("Weapons").split(":");
         for (String s : weapons){
             this.Inventory.add(new Weapons(s));
@@ -59,7 +59,7 @@ public class Player {
     }
 
     public Player(String name, int maxHealth, int attack, int armor) {
-        this.Inventory = new ArrayList<Equipables>();
+        this.Inventory = new ArrayList<>();
         this.name = name;
         this.maxHealth = maxHealth;
         this.health = maxHealth;
