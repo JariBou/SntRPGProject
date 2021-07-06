@@ -11,9 +11,14 @@ public abstract class Equipables {
     protected boolean spEffect = false;
     final Path currentRelativePath = Paths.get("");
     protected final String imPath = currentRelativePath.toAbsolutePath().toString();
+    protected String imgsrc;
 
     public String getName() {
         return name;
+    }
+
+    public String getImgsrc() {
+        return imgsrc != null ? imgsrc : "/src/assets/images/weapons/botrk.png";
     }
 
     public int getCost() {

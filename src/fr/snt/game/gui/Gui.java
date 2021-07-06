@@ -22,6 +22,8 @@ public class Gui {
     private final int offsetX = (screenSize.width / 17);
     // --Commented out by Inspection (04/07/2021 22:01):private final int offsetY = screenSize.height / 12;
     private final JFrame rootPanel;
+    private final int buttonWidth;
+    private final int buttonHeight;
     private JPanel bg;
 // --Commented out by Inspection START (04/07/2021 22:01):
 //    // --Commented out by Inspection (04/07/2021 22:01):private JFrame combatPanel;
@@ -33,6 +35,7 @@ public class Gui {
     private final ArrayList<Weapons> WL;
     private final ArrayList<Armors> AL;
     private final Player player;
+    private final String imPath;
 
     public Gui() throws Exception {
         rootPanel = new JFrame("Game");
@@ -47,6 +50,11 @@ public class Gui {
         WL = loadW();
         AL = loadA();
 
+        Path currentRelativePath = Paths.get("");
+        this.imPath = currentRelativePath.toAbsolutePath().toString();
+        this.buttonWidth = screenSize.width * 4 / (5 * 20);
+        this.buttonHeight = screenSize.width * 4 / (5 * 20);
+
         player = new Player("Jari", 24, 5, 1);
         player.addToInventory(WL.get(2));
         player.addToInventory(AL.get(2));
@@ -60,10 +68,6 @@ public class Gui {
         rootPanel.getContentPane().removeAll();
         rootPanel.repaint();
 
-
-        int buttonWidth = screenSize.width * 4 / (5 * 20);
-        @SuppressWarnings("SuspiciousNameCombination") int buttonHeight = buttonWidth;
-
         bg = new JPanel();
         bg.setOpaque(true);
         bg.setSize(rootPanel.getSize());
@@ -75,8 +79,7 @@ public class Gui {
         wLabel.setBounds(20, 20, 200, 28);
         rootPanel.add(wLabel);
 
-        Path currentRelativePath = Paths.get("");
-        String imPath = currentRelativePath.toAbsolutePath().toString();
+
         //ImageIcon icon = new ImageIcon(imPath + "/src/assets/images/weapons/botrk.png");
 
         int offset_times = 0;
@@ -199,9 +202,6 @@ public class Gui {
         rootPanel.getContentPane().removeAll();
         rootPanel.repaint();
 
-        int buttonWidth = screenSize.width * 4 / (5 * 20);
-        @SuppressWarnings("SuspiciousNameCombination") int buttonHeight = buttonWidth;
-
         bg = new JPanel();
         bg.setOpaque(true);
         bg.setSize(rootPanel.getSize());
@@ -213,8 +213,6 @@ public class Gui {
         wLabel.setBounds(20, 20, 200, 28);
         rootPanel.add(wLabel);
 
-        Path currentRelativePath = Paths.get("");
-        String imPath = currentRelativePath.toAbsolutePath().toString();
         //ImageIcon icon = new ImageIcon(imPath + "/src/assets/images/weapons/botrk.png");
 
         int offset_times = 0;
@@ -254,11 +252,11 @@ public class Gui {
                 }
             });
             placeholder_button.addActionListener(e -> {
-                player.setWeapon(w);
                 popup.hide();
                 popupShown = false;
-                this.switchInventory();
-                System.out.println("Clicked on " + w.getName());
+                if (player.hasWeapon() & player.getWeapon() == w) {this.unequip(w);}
+                else {this.equip(w);}
+
             });
 
             placeholder_button.setBounds(20 + offsetX*offset_times, 60, buttonWidth, buttonHeight);
@@ -300,11 +298,10 @@ public class Gui {
                 }
             });
             placeholder_button.addActionListener(e -> {
-                player.setArmor(a);
                 popup.hide();
                 popupShown = false;
-                this.switchInventory();
-                System.out.println("Clicked on " + a.getName());
+                if (player.hasArmor() & player.getArmor() == a) {this.unequip(a);}
+                else {this.equip(a);}
             });
             placeholder_button.setBounds(20 + offsetX*offset_times, 300, buttonWidth, buttonHeight);
             rootPanel.add(placeholder_button);
@@ -344,7 +341,61 @@ public class Gui {
         player.addToInventory(item);
         player.addGold(-item.getCost());
         System.out.println(player.getGold());
+        this.equip(item);
         return true;
+    }
+
+    private void unequip(Equipables item) {
+        ImageIcon dialog_ico = new ImageIcon(new ImageIcon(imPath + item.getImgsrc())
+                .getImage().getScaledInstance((int) (buttonWidth/1.5), (int) (buttonHeight/1.5), Image.SCALE_DEFAULT));
+        Object[] options = {"Yes",
+                "No"};
+        int n = JOptionPane.showOptionDialog(rootPanel,
+                "Would you like to unequip "
+                        + item.getName() + "?",
+                "Unequip?",
+                JOptionPane.YES_NO_CANCEL_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                dialog_ico,
+                options,
+                options[1]);
+        if (n == 0) {
+            if (item.getClass() == Weapons.class) {
+                player.removeWeapon();
+            } else {
+                player.removeArmor();
+            }
+            this.switchInventory();
+        }
+        System.out.println("Clicked on " + item.getName());
+
+    }
+
+    private void equip(Equipables item) {
+        ImageIcon dialog_ico = new ImageIcon(new ImageIcon(imPath + item.getImgsrc())
+                .getImage().getScaledInstance((int) (buttonWidth/1.5), (int) (buttonHeight/1.5), Image.SCALE_DEFAULT));
+        Object[] options = {"Yes",
+                "No"};
+        int n = JOptionPane.showOptionDialog(rootPanel,
+                "Would you like to equip "
+                        + item.getName() + "?\n" + "Current: " + (item.getClass() == Weapons.class ?
+                        (player.hasWeapon() ? player.getWeapon().getName() : "None") :
+                        (player.hasArmor() ? player.getArmor().getName() : "None")),
+                "Equip?",
+                JOptionPane.YES_NO_CANCEL_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                dialog_ico,
+                options,
+                options[1]);
+        if (n == 0) {
+            if (item.getClass() == Weapons.class) {
+                player.setWeapon((Weapons) item);
+            } else {
+                player.setArmor((Armors) item);
+            }
+            this.switchInventory();
+        }
+        System.out.println("Clicked on " + item.getName());
     }
 
 }

@@ -88,6 +88,14 @@ public class Player {
         System.out.println("Successfully equipped '" + weapon.getName() + "'!");
     }
 
+    public void removeWeapon(){
+        this.weapon = null;
+    }
+
+    public void removeArmor(){
+        this.Armor = null;
+    }
+
     public int getGold() {
         return gold;
     }

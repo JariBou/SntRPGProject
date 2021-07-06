@@ -11,7 +11,6 @@ import static java.lang.Float.parseFloat;
 
 public class Weapons extends Equipables {
     private int attack;
-    private String imgsrc;
     private int burnLvl = 0;
     private int burn = 0;
     private float percentRatio = 0f;
@@ -82,10 +81,6 @@ public class Weapons extends Equipables {
 
     public int getAttack() {
         return attack;
-    }
-
-    public String getImgsrc() {
-        return imgsrc;
     }
 
     public int getBurnLvl() {
