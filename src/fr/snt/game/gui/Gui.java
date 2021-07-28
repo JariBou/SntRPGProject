@@ -46,6 +46,8 @@ public class Gui {
         rootPanel.setResizable(false);
         rootPanel.setVisible(true);
 
+        UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+
         assert testLoad();
         WL = loadW();
         AL = loadA();
