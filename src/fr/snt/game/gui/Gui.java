@@ -333,6 +333,12 @@ public class Gui {
         shop.setText("Shop");
         shop.addActionListener(e -> this.switchShop());
         rootPanel.add(shop);
+
+        JButton atk_button = new JButton();
+        atk_button.setBounds(50, this.rootPanel.getHeight() - 100, 100, 50);
+        atk_button.setText("Attack");
+        atk_button.addActionListener(e -> System.out.println("Clicked"));
+        rootPanel.add(atk_button);
     }
 
     private boolean buy(Equipables item) {
