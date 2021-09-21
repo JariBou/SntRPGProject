@@ -11,9 +11,8 @@ import static java.lang.Integer.parseInt;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.Properties;
+import java.lang.reflect.Field;
+import java.util.*;
 
 
 public class Player {
@@ -25,6 +24,7 @@ public class Player {
     private Armors Armor;
     // Player Levels and poison mechanics
     private int levelCount, poison, poisonLevel;
+    private ArrayList<String> fields = new ArrayList<>();
 
     public Player(String saveName) throws Exception {
         saveName += ".properties";
@@ -368,5 +368,58 @@ public class Player {
     public boolean isInInventory(Equipables item) {
         return this.Inventory.contains(item);
     }
+
+    public ArrayList<String> getInventoryItemNames() {
+        if (this.Inventory.size() < 1) {
+            return new ArrayList<>(List.of(""));
+        }
+        ArrayList<String> array = new ArrayList<>();
+        for (Equipables obj : this.Inventory) {
+            array.add(obj.getItemName());
+        }
+        return array;
+    }
     //------------------------------------------------------
+
+    public void test() {
+        Map<String, String> data = new HashMap<>();
+
+        for (Field field : this.getClass().getDeclaredFields()) {
+            fields.add(field.getName());
+            try {
+                Object obj = field.get(this);
+                String value = "null";
+                if (field.getName().equals("fields")) {continue;}
+                if (obj == null) {
+                    System.out.println(field.getName() + ": " + value);
+                    data.put(field.getName(), value);
+                    continue;
+                }
+                switch (field.getName()) {
+                     case "weapon" -> {
+                         value = (obj.getClass() == Weapons.class) ? ((Weapons) obj).getItemName() : "null";
+                         System.out.println(field.getName() + ": " + value);
+                     }
+                    case "Armor" -> {
+                        value = (obj.getClass() == Armors.class) ? ((Armors) obj).getItemName() : "null";
+                        System.out.println(field.getName() + ": " + value);
+                    }
+                    case "Inventory" -> {
+                         value = this.getInventoryItemNames().toString();
+                         System.out.println(field.getName() + ": " + value);
+                    }
+                    default -> {
+                         value = (field.get(this) != null) ? field.get(this).toString() : "null";
+                        System.out.println(field.getName() + ": " + value);
+                    }
+                }
+                data.put(field.getName(), value);
+                //System.out.println(field.getName() + ": " + field.get(this));
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println(data);
+    }
+
 }

@@ -58,9 +58,11 @@ public class Gui {
         this.buttonHeight = screenSize.width * 4 / (5 * 20);
 
         player = new Player("Jari", 24, 5, 1);
-        player.addToInventory(WL.get(2));
-        player.addToInventory(AL.get(2));
+        //player.addToInventory(WL.get(2));
+        //player.addToInventory(AL.get(2));
+        //player.setWeapon(player.getWeapons().get(0));
         player.addGold(999);
+        player.test();
 
         this.switchShop();
 
@@ -108,23 +110,17 @@ public class Gui {
                         popup = PopupFactory.getSharedInstance().getPopup(placeholder_button, text,
                                 (int) (placeholder_button.getLocationOnScreen().x + placeholder_button.getWidth() * 1.25),
                                 placeholder_button.getLocationOnScreen().y - 20);
-                        popup.show();
-                        popupShown = true;
+                        pop_show();
                     }
                 }
 
                 @Override
-                public void mouseExited(MouseEvent e) {
-                    popup.hide();
-                    popupShown = false;
-                }
+                public void mouseExited(MouseEvent e) {pop_hide();}
             });
             if (!hasItem) {
                 placeholder_button.addActionListener(e -> {
-                    System.out.println("Bought " + w.getName() + " for " + w.getCost() + "GP");
                     if (this.buy(w)) {
-                        popup.hide();
-                        popupShown = false;
+                        pop_hide();
                         this.switchShop();
                     }
                     System.out.println("Clicked");
@@ -134,6 +130,13 @@ public class Gui {
             rootPanel.add(placeholder_button);
             offset_times++;
         }
+
+        JLabel aLabel = new JLabel();
+        aLabel.setText("Armors");
+        aLabel.setFont(new Font("Verdana", Font.PLAIN, 25));
+        aLabel.setBounds(20, 260, 200, 28);
+        rootPanel.add(aLabel);
+
         ImageIcon icon = new ImageIcon(new ImageIcon(imPath + "/src/assets/images/weapons/botrk.png")
                 .getImage().getScaledInstance(buttonWidth, buttonHeight, Image.SCALE_DEFAULT));
         offset_times = 0;
@@ -156,24 +159,17 @@ public class Gui {
                         popup = PopupFactory.getSharedInstance().getPopup(placeholder_button, text,
                                 (int) (placeholder_button.getLocationOnScreen().x + placeholder_button.getWidth() * 1.25),
                                 placeholder_button.getLocationOnScreen().y - 20);
-                        popup.show();
-                        popupShown = true;
+                        pop_show();
                     }
                 }
 
                 @Override
-                public void mouseExited(MouseEvent e) {
-                    popup.hide();
-                    popupShown = false;
-
-                }
+                public void mouseExited(MouseEvent e) {pop_hide();}
             });
             if (!hasItem) {
                 placeholder_button.addActionListener(e -> {
-                    System.out.println("Bought " + a.getName() + " for " + a.getCost() + "GP");
                     if (this.buy(a)) {
-                        popup.hide();
-                        popupShown = false;
+                        pop_hide();
                         this.switchShop();
                     }
                     System.out.println("Clicked");
@@ -241,30 +237,29 @@ public class Gui {
                         popup = PopupFactory.getSharedInstance().getPopup(placeholder_button, text,
                                 (int) (placeholder_button.getLocationOnScreen().x + placeholder_button.getWidth() * 1.25),
                                 placeholder_button.getLocationOnScreen().y - 20);
-                        popup.show();
-                        popupShown = true;
+                        pop_show();
                     }
                 }
 
                 @Override
-                public void mouseExited(MouseEvent e) {
-                    popup.hide();
-                    popupShown = false;
-
-                }
+                public void mouseExited(MouseEvent e) {pop_hide();}
             });
             placeholder_button.addActionListener(e -> {
-                popup.hide();
-                popupShown = false;
+                this.pop_hide();
                 if (player.hasWeapon() & player.getWeapon() == w) {this.unequip(w);}
                 else {this.equip(w);}
-
             });
 
             placeholder_button.setBounds(20 + offsetX*offset_times, 60, buttonWidth, buttonHeight);
             rootPanel.add(placeholder_button);
             offset_times++;
         }
+        JLabel aLabel = new JLabel();
+        aLabel.setText("Armors");
+        aLabel.setFont(new Font("Verdana", Font.PLAIN, 25));
+        aLabel.setBounds(20, 260, 200, 28);
+        rootPanel.add(aLabel);
+
         ImageIcon icon = new ImageIcon(new ImageIcon(imPath + "/src/assets/images/weapons/botrk.png")
                 .getImage().getScaledInstance(buttonWidth, buttonHeight, Image.SCALE_DEFAULT));
         offset_times = 0;
@@ -287,21 +282,15 @@ public class Gui {
                         popup = PopupFactory.getSharedInstance().getPopup(placeholder_button, text,
                                 (int) (placeholder_button.getLocationOnScreen().x + placeholder_button.getWidth() * 1.25),
                                 placeholder_button.getLocationOnScreen().y - 20);
-                        popup.show();
-                        popupShown = true;
+                        pop_show();
                     }
                 }
 
                 @Override
-                public void mouseExited(MouseEvent e) {
-                    popup.hide();
-                    popupShown = false;
-
-                }
+                public void mouseExited(MouseEvent e) {pop_hide();}
             });
             placeholder_button.addActionListener(e -> {
-                popup.hide();
-                popupShown = false;
+                this.pop_hide();
                 if (player.hasArmor() & player.getArmor() == a) {this.unequip(a);}
                 else {this.equip(a);}
             });
@@ -342,15 +331,33 @@ public class Gui {
     }
 
     private boolean buy(Equipables item) {
-        if (player.getGold() < item.getCost()) {
-            return false;
-        }
+        if (player.getGold() < item.getCost()) return false;
+        if (!this.confirm(item)) return false;
+
         System.out.println(player.getGold());
         player.addToInventory(item);
         player.addGold(-item.getCost());
+        System.out.println("Bought " + item.getName() + " for " + item.getCost() + "GP");
         System.out.println(player.getGold());
         this.equip(item);
         return true;
+    }
+
+    private boolean confirm(Equipables item) {
+        ImageIcon dialog_ico = new ImageIcon(new ImageIcon(imPath + item.getImgsrc())
+                .getImage().getScaledInstance((int) (buttonWidth/1.5), (int) (buttonHeight/1.5), Image.SCALE_DEFAULT));
+        Object[] options = {"Yes",
+                "No"};
+        int n = JOptionPane.showOptionDialog(rootPanel,
+                "Do you want to buy '"
+                        + item.getName() + "'?\n" + "Price: " + item.getCost() + "\nYour money: " + player.getGold(),
+                "Equip?",
+                JOptionPane.YES_NO_CANCEL_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                dialog_ico,
+                options,
+                options[1]);
+        return n == 0;
     }
 
     private void unequip(Equipables item) {
@@ -404,6 +411,16 @@ public class Gui {
             this.switchInventory();
         }
         System.out.println("Clicked on " + item.getName());
+    }
+
+    private void pop_hide() {
+        popup.hide();
+        popupShown = false;
+    }
+
+    private void pop_show() {
+        popup.show();
+        popupShown = true;
     }
 
 }
