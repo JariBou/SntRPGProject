@@ -1,5 +1,6 @@
 package fr.snt.game.gui;
 
+import assets.utils.SavesHandler;
 import fr.snt.game.Player;
 import fr.snt.game.equipables.Armors;
 import fr.snt.game.equipables.Equipables;
@@ -57,12 +58,15 @@ public class Gui {
         this.buttonWidth = screenSize.width * 4 / (5 * 20);
         this.buttonHeight = screenSize.width * 4 / (5 * 20);
 
-        player = new Player("Jari", 24, 5, 1);
-        //player.addToInventory(WL.get(2));
-        //player.addToInventory(AL.get(2));
-        //player.setWeapon(player.getWeapons().get(0));
+        player = new Player("test1.properties");
+        player.addToInventory(WL.get(2));
+        player.addToInventory(AL.get(2));
+        player.setWeapon(player.getWeapons().get(0));
         player.addGold(999);
-        player.test();
+        //player.test();
+        player.getStats();
+
+       // SavesHandler.save(player, "src/fr/snt/game/saves/test1.properties");
 
         this.switchShop();
 

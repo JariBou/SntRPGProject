@@ -16,46 +16,88 @@ import java.util.*;
 
 
 public class Player {
-    private final String name;
-    private final int baseArmor;
-    private final ArrayList<Equipables> Inventory;
+    private String name;
+    private int baseArmor;
+    private ArrayList<Equipables> Inventory = new ArrayList<>();
     private int health, maxHealth, attack, gold, playerLevel;
     private Weapons weapon;
     private Armors Armor;
     // Player Levels and poison mechanics
     private int levelCount, poison, poisonLevel;
-    private ArrayList<String> fields = new ArrayList<>();
+    private final ArrayList<String> fields = new ArrayList<>();
 
     public Player(String saveName) throws Exception {
-        saveName += ".properties";
+        saveName += saveName.endsWith(".properties") ? "" : ".properties";
         Properties prop = new Properties();
         try {
-            prop.load(new FileInputStream("src\\fr\\snt\\game\\saves"));
+            prop.load(new FileInputStream("src\\fr\\snt\\game\\saves\\" + saveName));
         } catch (IOException e) {
             throw new Exception("Unexpected Error while loadind '" + saveName + "'\n" + e);
         }
-        this.name = prop.getProperty("name");
-        this.baseArmor = parseInt(prop.getProperty("armor"));
-        this.maxHealth = parseInt(prop.getProperty("maxHealth"));
-        this.attack = parseInt(prop.getProperty("attack"));
-        String[] playerLvls = prop.getProperty("playerLvl").split(":");
-        this.playerLevel = parseInt(playerLvls[0]);
-        this.levelCount = parseInt(playerLvls[1]);
-        this.gold = parseInt(prop.getProperty("gold"));
+        ArrayList<Object> initializers = new ArrayList<>();
+        for (Field field : this.getClass().getDeclaredFields()) {
+            if (field.getName().equals("fields")) {
+                continue;
+            }
+            String[] typeList = field.getType().getName().split("\\.");
+            String type = typeList[typeList.length - 1];
+            System.out.println(type);
+            String value = prop.getProperty(field.getName());
 
-        this.weapon = new Weapons(prop.getProperty("currWeapon"));
-        this.Armor = new Armors(prop.getProperty("currArmor"));
+            switch (type) {
+                case "int":
+                    field.set(this, parseInt(value));
+                    break;
 
-        // Inv -------------------------------------------------
-        this.Inventory = new ArrayList<>();
-        String[] weapons = prop.getProperty("Weapons").split(":");
-        for (String s : weapons){
-            this.Inventory.add(new Weapons(s));
+                case "Weapons":
+                    field.set(this, !Objects.equals(value, "null") ? new Weapons(value) : null);
+                    break;
+
+                case "Armor":
+                    field.set(this, !Objects.equals(value, "null") ? new Armors(value) : null);
+                    break;
+
+                case "Inventory":
+                    String[] items = value.split("\\.");
+                    this.Inventory = new ArrayList<>();
+                    for (String item : items) {
+                        // Maybe do a constructor in Equipables.java that detects based on the name wether it is
+                        // a Weapons or Armors type item
+                        System.out.println(item);
+                    }
+                    break;
+
+                default:
+                    field.set(this, prop.getProperty(field.getName()));
+                    break;
+            }
+
+            //field.set(this, type.cast(prop.getProperty(field.getName())));
         }
-        String[] armors = prop.getProperty("Armors").split(":");
-        for (String s : armors){
-            this.Inventory.add(new Armors(s));
-        }
+
+
+//        this.name = prop.getProperty("name");
+//        this.baseArmor = parseInt(prop.getProperty("baseArmor"));
+//        this.maxHealth = parseInt(prop.getProperty("maxHealth"));
+//        this.attack = parseInt(prop.getProperty("attack"));
+//        String[] playerLvls = prop.getProperty("playerLvl").split(":");
+//        this.playerLevel = parseInt(playerLvls[0]);
+//        this.levelCount = parseInt(playerLvls[1]);
+//        this.gold = parseInt(prop.getProperty("gold"));
+//
+//        this.weapon = new Weapons(prop.getProperty("currWeapon"));
+//        this.Armor = new Armors(prop.getProperty("currArmor"));
+//
+//        // Inv -------------------------------------------------
+//        this.Inventory = new ArrayList<>();
+//        String[] weapons = prop.getProperty("Weapons").split(":");
+//        for (String s : weapons){
+//            this.Inventory.add(new Weapons(s.trim()));
+//        }
+//        String[] armors = prop.getProperty("Armors").split(":");
+//        for (String s : armors){
+//            this.Inventory.add(new Armors(s.trim()));
+//        }
     }
 
     public Player(String name, int maxHealth, int attack, int armor) {
@@ -88,11 +130,11 @@ public class Player {
         System.out.println("Successfully equipped '" + weapon.getName() + "'!");
     }
 
-    public void removeWeapon(){
+    public void removeWeapon() {
         this.weapon = null;
     }
 
-    public void removeArmor(){
+    public void removeArmor() {
         this.Armor = null;
     }
 
@@ -130,7 +172,7 @@ public class Player {
         return playerLevel;
     }
 
-    public int getLevelCount(){
+    public int getLevelCount() {
         return levelCount;
     }
 
@@ -234,7 +276,7 @@ public class Player {
         if (!target.hasDodged()) {
             int totalDamage = getTotalDamage(target);
             target.damage(totalDamage);
-            this.heal((int)(totalDamage * this.weapon.getVampRatio()));      //Implementation for LifeSteal
+            this.heal((int) (totalDamage * this.weapon.getVampRatio()));      //Implementation for LifeSteal
             System.out.println(this.getName() + " attacked " + target.getName() + " for " + totalDamage + " damage!");
             if (!target.isAlive()) {
                 System.out.println(target.getName() + " is dead!");
@@ -273,7 +315,7 @@ public class Player {
                         this.heal(this.weapon.getLStealLvl());
                         break;
                     case "thunder":
-                        if (spChance < this.weapon.getThunderChance()){
+                        if (spChance < this.weapon.getThunderChance()) {
                             target.setParalyzed(this.weapon.getThunderTurns());
                         }
                         break;
@@ -347,22 +389,24 @@ public class Player {
         return this.Inventory;
     }
 
-    public ArrayList<Weapons> getWeapons(){
+    public ArrayList<Weapons> getWeapons() {
         ArrayList<Weapons> wList = new ArrayList<>();
         for (Equipables w : getInventory()) {
-            if (getType(w.getClass()).equals("Weapons")){
+            if (getType(w.getClass()).equals("Weapons")) {
                 wList.add((Weapons) w);
             }
-        } return wList;
+        }
+        return wList;
     }
 
-    public ArrayList<Armors> getArmors(){
+    public ArrayList<Armors> getArmors() {
         ArrayList<Armors> aList = new ArrayList<>();
         for (Equipables w : getInventory()) {
-            if (getType(w.getClass()).equals("Armors")){
+            if (getType(w.getClass()).equals("Armors")) {
                 aList.add((Armors) w);
             }
-        } return aList;
+        }
+        return aList;
     }
 
     public boolean isInInventory(Equipables item) {
@@ -381,7 +425,7 @@ public class Player {
     }
     //------------------------------------------------------
 
-    public void test() {
+    public Map<String, String> test() {
         Map<String, String> data = new HashMap<>();
 
         for (Field field : this.getClass().getDeclaredFields()) {
@@ -389,30 +433,33 @@ public class Player {
             try {
                 Object obj = field.get(this);
                 String value = "null";
-                if (field.getName().equals("fields")) {continue;}
+                String[] type;
+                if (field.getName().equals("fields")) {
+                    continue;
+                }
                 if (obj == null) {
-                    System.out.println(field.getName() + ": " + value);
+                    type = field.getType().getName().split("\\.");
+                    System.out.println(field.getName() + "[" + type[type.length - 1] + "]" + ": " + value);
                     data.put(field.getName(), value);
                     continue;
                 }
                 switch (field.getName()) {
-                     case "weapon" -> {
-                         value = (obj.getClass() == Weapons.class) ? ((Weapons) obj).getItemName() : "null";
-                         System.out.println(field.getName() + ": " + value);
-                     }
+                    case "weapon" -> {
+                        value = (obj.getClass() == Weapons.class) ? ((Weapons) obj).getItemName() : "null";
+                    }
                     case "Armor" -> {
                         value = (obj.getClass() == Armors.class) ? ((Armors) obj).getItemName() : "null";
-                        System.out.println(field.getName() + ": " + value);
                     }
                     case "Inventory" -> {
-                         value = this.getInventoryItemNames().toString();
-                         System.out.println(field.getName() + ": " + value);
+                        String str = this.getInventoryItemNames().toString();
+                        value = str.replace(",", ":").replace("[", "").replace("]", "");
                     }
                     default -> {
-                         value = (field.get(this) != null) ? field.get(this).toString() : "null";
-                        System.out.println(field.getName() + ": " + value);
+                        value = (field.get(this) != null) ? field.get(this).toString() : "null";
                     }
                 }
+                type = field.getType().getName().split("\\.");
+                System.out.println(field.getName() + "[" + type[type.length - 1] + "]" + ": " + value);
                 data.put(field.getName(), value);
                 //System.out.println(field.getName() + ": " + field.get(this));
             } catch (IllegalAccessException e) {
@@ -420,6 +467,48 @@ public class Player {
             }
         }
         System.out.println(data);
+        return data;
+    }
+
+    public void getStats() {
+        System.out.println("===========STATS==========");
+        for (Field field : this.getClass().getDeclaredFields()) {
+            fields.add(field.getName());
+            try {
+                Object obj = field.get(this);
+                String value = "null";
+                String[] type;
+                if (field.getName().equals("fields")) {
+                    continue;
+                }
+                if (obj == null) {
+                    type = field.getType().getName().split("\\.");
+                    System.out.println(field.getName() + "[" + type[type.length - 1] + "]" + ": " + value);
+                    continue;
+                }
+                switch (field.getName()) {
+                    case "weapon" -> {
+                        value = (obj.getClass() == Weapons.class) ? ((Weapons) obj).getItemName() : "null";
+                    }
+                    case "Armor" -> {
+                        value = (obj.getClass() == Armors.class) ? ((Armors) obj).getItemName() : "null";
+                    }
+                    case "Inventory" -> {
+                        String str = this.getInventoryItemNames().toString();
+                        value = str.replace(",", ":").replace("[", "").replace("]", "");
+                    }
+                    default -> {
+                        value = (field.get(this) != null) ? field.get(this).toString() : "null";
+                    }
+                }
+                type = field.getType().getName().split("\\.");
+                System.out.println(field.getName() + "[" + type[type.length - 1] + "]" + ": " + value);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+
+        }
+        System.out.println("==================");
     }
 
 }
