@@ -5,6 +5,7 @@ import fr.snt.game.equipables.Equipables;
 import fr.snt.game.equipables.Armors;
 import fr.snt.game.equipables.Weapons;
 import fr.snt.game.levels.GameOverLevel;
+import fr.snt.game.skills.Skill;
 
 import static assets.utils.UtilMethods.getType;
 import static java.lang.Integer.parseInt;
@@ -24,7 +25,8 @@ public class Player {
     private Armors Armor;
     // Player Levels and poison mechanics
     private int levelCount, poison, poisonLevel;
-    private final ArrayList<String> fields = new ArrayList<>();
+    private final Map<String, Field> fields = new HashMap<>();
+    private final Map<String, Skill> skills = new HashMap<>();
 
     public Player(String saveName) throws Exception {
         saveName += saveName.endsWith(".properties") ? "" : ".properties";
@@ -45,19 +47,10 @@ public class Player {
             String value = prop.getProperty(field.getName());
 
             switch (type) {
-                case "int":
-                    field.set(this, parseInt(value));
-                    break;
-
-                case "Weapons":
-                    field.set(this, !Objects.equals(value, "null") ? new Weapons(value) : null);
-                    break;
-
-                case "Armors":
-                    field.set(this, !Objects.equals(value, "null") ? new Armors(value) : null);
-                    break;
-
-                case "ArrayList":
+                case "int" -> field.set(this, parseInt(value));
+                case "Weapons" -> field.set(this, !Objects.equals(value, "null") ? new Weapons(value) : null);
+                case "Armors" -> field.set(this, !Objects.equals(value, "null") ? new Armors(value) : null);
+                case "ArrayList" -> {
                     String[] items = value.split(":");
                     this.Inventory = new ArrayList<>();
                     for (String item : items) {
@@ -65,13 +58,17 @@ public class Player {
                         // Maybe do a constructor in Equipables.java that detects based on the name wether it is
                         // a Weapons or Armors type item
                         Equipables equipable = Equipables.get(item);
-                        if (equipable != null) {this.addToInventory(equipable);}
+                        if (equipable != null) {
+                            this.addToInventory(equipable);
+                        }
                     }
-                    break;
+                }
+                case "Map" -> {
+                    //TODO
 
-                default:
-                    field.set(this, prop.getProperty(field.getName()));
                     break;
+                }
+                default -> field.set(this, prop.getProperty(field.getName()));
             }
 
             //field.set(this, type.cast(prop.getProperty(field.getName())));
@@ -100,6 +97,7 @@ public class Player {
 //        for (String s : armors){
 //            this.Inventory.add(new Armors(s.trim()));
 //        }
+        this.initFieldsMap();
     }
 
     public Player(String name, int maxHealth, int attack, int armor) {
@@ -221,7 +219,26 @@ public class Player {
     }
 
     public int getAttack() {
-        return attack;
+        int atk = attack;
+        if (this.hasSkills()) {
+            if (this.skills.containsKey("ATTACK_UP")) {
+                atk += skills.get("ATTACK_UP").getValue();
+            }
+        }
+        return atk;
+    }
+
+    public boolean hasSkills() {
+        return this.skills.size() > 0;
+    }
+
+    public void addSkill(Skill skill) {
+        if (skills.containsKey(skill.getName())) {return;}
+        skills.put(skill.getName(), skill);
+    }
+
+    public void upgradeSkill(String skillName) {
+        skills.get(skillName).lvlUp();
     }
 
     public void setAttack(int attack) {
@@ -283,6 +300,16 @@ public class Player {
             target.damage(totalDamage);
             this.heal((int) (totalDamage * this.weapon.getVampRatio()));      //Implementation for LifeSteal
             System.out.println(this.getName() + " attacked " + target.getName() + " for " + totalDamage + " damage!");
+
+            if (this.hasSkills()) {
+                if (this.skills.containsKey("MULTI_ATK")) {
+                    int dmg = skills.get("ATK_MULT").getValue() * this.getAttack();
+                    target.damage(dmg);
+                    System.out.println(this.getName() + " attacked a second time " + target.getName() + " for " + dmg + " damage!");
+                    System.out.println("Total of " + (totalDamage + dmg) + " damage!");
+                }
+            }
+
             if (!target.isAlive()) {
                 System.out.println(target.getName() + " is dead!");
                 this.addGold(target.getGoldValue());
@@ -300,17 +327,21 @@ public class Player {
             totalDamage = this.applyStatuses(target, totalDamage);
             if (this.hasArmor() && this.Armor.hasSpEffect()) {
                 switch (this.Armor.getSpEffectType()) {
-                    case "lastStand":
-                        return (int) ((1 + (this.getPercentMissingHealth() * this.Armor.getLsRatio())) * totalDamage);
-                    case "wall":
+                    case "lastStand" -> totalDamage = (int) ((1 + (this.getPercentMissingHealth() * this.Armor.getLsRatio())) * totalDamage);
+                    case "wall" -> {
                         float ratio = this.getPercentHealth() * this.Armor.getWallRatio();
                         if (ratio >= 0.20) {
-                            return (int) (totalDamage * (this.getPercentHealth() * this.Armor.getWallRatio()));
+                            totalDamage = (int) (totalDamage * (this.getPercentHealth() * this.Armor.getWallRatio()));
                         } else {
-                            return (int) (totalDamage * 0.20);
+                            totalDamage = (int) (totalDamage * 0.20);
                         }
-                    case "atkBonus":
-                        return totalDamage + this.Armor.getAtkBonus();
+                    }
+                    case "atkBonus" -> totalDamage += this.Armor.getAtkBonus();
+                }
+            }
+            if (this.hasSkills()) {
+                if (this.skills.containsKey("ATK_MULT")) {
+                    totalDamage = (int) (totalDamage * (1 + (skills.get("ATK_MULT").getValue() / 100)));
                 }
             }
             return totalDamage;
@@ -435,11 +466,18 @@ public class Player {
     }
     //------------------------------------------------------
 
+    private void initFieldsMap() {
+        for (Field field : this.getClass().getDeclaredFields()) {
+            if (!field.getName().equals("fields")) {
+                fields.put(field.getName(), field);
+            }
+        }
+    }
+
     public Map<String, String> getStats() {
         Map<String, String> data = new HashMap<>();
 
         for (Field field : this.getClass().getDeclaredFields()) {
-            fields.add(field.getName());
             try {
                 Object obj = field.get(this);
                 String value = "null";
@@ -477,7 +515,6 @@ public class Player {
     public void printStats() {
         System.out.println("===========STATS==========");
         for (Field field : this.getClass().getDeclaredFields()) {
-            fields.add(field.getName());
             try {
                 Object obj = field.get(this);
                 String value = "null";

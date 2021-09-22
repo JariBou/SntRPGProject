@@ -1,6 +1,7 @@
 import assets.utils.SavesHandler;
 import fr.snt.game.Player;
 import fr.snt.game.gui.Gui;
+import fr.snt.game.skills.Skills;
 
 import java.io.InputStream;
 import java.nio.file.Path;
@@ -44,6 +45,15 @@ public class runTests {
                     break;
                 case "stats":
                     player.printStats();
+                case "attack":
+                    System.out.println(player.getAttack());
+                    break;
+                case "skill":
+                    player.addSkill(Skills.ATTACK_UP);
+                    break;
+                case "skillup":
+                    player.upgradeSkill("ATTACK_UP");
+                    break;
 
             }
         }
