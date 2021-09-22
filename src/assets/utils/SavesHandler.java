@@ -30,7 +30,7 @@ public class SavesHandler {
     }
 
     public static void save(Player player, String path) throws IOException {
-        Map<String, String> data = player.test();
+        Map<String, String> data = player.getStats();
         Properties prop = new Properties();
 
         for (String field : data.keySet()) {

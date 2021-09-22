@@ -11,8 +11,6 @@ public abstract class Equipables {
     protected String name, description, spEffectType;
     protected int cost;
     protected boolean spEffect = false;
-    protected ArrayList<String> weaponFiles, armorFiles;
-    private boolean listsInitialized;
     final Path currentRelativePath = Paths.get("");
     protected final String imPath = currentRelativePath.toAbsolutePath().toString();
     protected String imgsrc;
@@ -45,10 +43,10 @@ public abstract class Equipables {
         return this.itemName;
     }
 
-    public void loadItemNames() throws Exception {
+    public static ArrayList<String> getArmorsList() throws Exception {
         File f = new File("src\\fr\\snt\\game\\equipables\\armors");
         File[] listFiles = f.listFiles();
-        armorFiles = new ArrayList<>();
+        ArrayList<String> armorFiles = new ArrayList<>();
         try {
             assert listFiles != null;
             for (File s : listFiles) {
@@ -59,9 +57,13 @@ public abstract class Equipables {
         } catch (Exception e) {
             throw new Exception("Error while loading Armors: " + e);
         }
-        f = new File("src\\fr\\snt\\game\\equipables\\weapons");
-        listFiles = f.listFiles();
-        weaponFiles = new ArrayList<>();
+        return armorFiles;
+    }
+
+    public static ArrayList<String> getWeaponsList() throws Exception {
+        File f = new File("src\\fr\\snt\\game\\equipables\\weapons");
+        File[] listFiles = f.listFiles();
+        ArrayList<String> weaponFiles = new ArrayList<>();
         try {
             assert listFiles != null;
             for (File s : listFiles) {
@@ -72,9 +74,13 @@ public abstract class Equipables {
         } catch (Exception e) {
             throw new Exception("Error while loading Weapons: " + e);
         }
+        return weaponFiles;
     }
 
-    public static Equipables get(String itemname) {
-        if (!this.listsInitialized) {this.loadItemNames();}
 
+    public static Equipables get(String itemname) throws Exception {
+        if (getWeaponsList().contains(itemname)) {return new Weapons(itemname);}
+        else if (getArmorsList().contains(itemname)) {return new Armors(itemname);}
+        return null;
+    }
 }

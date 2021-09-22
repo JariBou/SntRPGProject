@@ -58,15 +58,16 @@ public class Gui {
         this.buttonWidth = screenSize.width * 4 / (5 * 20);
         this.buttonHeight = screenSize.width * 4 / (5 * 20);
 
+        //player = new Player("Jari", 255, 20, 15);
         player = new Player("test1.properties");
-        player.addToInventory(WL.get(2));
-        player.addToInventory(AL.get(2));
-        player.setWeapon(player.getWeapons().get(0));
-        player.addGold(999);
+//        player.addToInventory(WL.get(2));
+//        player.addToInventory(AL.get(2));
+//        player.setWeapon(player.getWeapons().get(0));
+        //player.addGold(999);
         //player.test();
-        player.getStats();
+        player.printStats();
 
-       // SavesHandler.save(player, "src/fr/snt/game/saves/test1.properties");
+        //SavesHandler.save(player, "src/fr/snt/game/saves/test1.properties");
 
         this.switchShop();
 

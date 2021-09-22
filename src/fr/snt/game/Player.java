@@ -53,17 +53,19 @@ public class Player {
                     field.set(this, !Objects.equals(value, "null") ? new Weapons(value) : null);
                     break;
 
-                case "Armor":
+                case "Armors":
                     field.set(this, !Objects.equals(value, "null") ? new Armors(value) : null);
                     break;
 
-                case "Inventory":
-                    String[] items = value.split("\\.");
+                case "ArrayList":
+                    String[] items = value.split(":");
                     this.Inventory = new ArrayList<>();
                     for (String item : items) {
+                        item = item.trim();
                         // Maybe do a constructor in Equipables.java that detects based on the name wether it is
                         // a Weapons or Armors type item
-                        System.out.println(item);
+                        Equipables equipable = Equipables.get(item);
+                        if (equipable != null) {this.addToInventory(equipable);}
                     }
                     break;
 
@@ -184,9 +186,14 @@ public class Player {
      * To be called at the end of a level
      */
     public void endLevel() {
-        setPoison(0, 0);
+        resetStatuses();
         levelUp();
         resetHealth();
+    }
+
+    private void resetStatuses() {
+        setPoison(0, 0);
+        // add other statuses
     }
 
     public boolean hasWeapon() {
@@ -226,22 +233,20 @@ public class Player {
     }
 
     public void damage(int attack) {
-
-        if (this.getArmor().hasSpEffect()) {
+        if (this.hasArmor() && this.getArmor().hasSpEffect()) {
             if (this.getArmor().getSpEffectType().equals("block")) {
                 double blockChance = rand();
-                if (blockChance < 0.15) { // 15% chance of dodging
+                if (blockChance < 0.10) { // 10% chance of dodging
                     return;
                 }
             }
         }
         this.health -= attack;
-
     }
 
     private int getDamage() {
         if (this.hasWeapon()) {
-            if (this.weapon.hasSpEffect() && Objects.requireNonNull(this.weapon).getSpEffectType().equals("percent")) {
+            if (this.weapon.hasSpEffect() && this.weapon.getSpEffectType().equals("percent")) {
                 return (int) ((attack + weapon.getAttack()) * weapon.getDmgMultiplier());
             } else {
                 return this.getAttack() + weapon.getAttack();
@@ -261,7 +266,7 @@ public class Player {
     }
 
     /**
-     * To call at the end of EACH turn
+     * To call at the end of EACH turn (?)
      */
     public void update() throws Exception {
         if (isDead()) {
@@ -292,35 +297,7 @@ public class Player {
             System.out.println(this.getName() + " attacked " + target.getName() + " for " + (totalDamage - target.getArmor()) + " damage!");
             return (totalDamage - target.getArmor());
         } else {
-            if (this.hasWeapon() && this.weapon.hasSpEffect()) {
-                String spType = this.weapon.getSpEffectType();
-                double spChance = rand();
-                switch (spType) {
-                    case "burn":
-                        if (spChance < 0.2) { // 20% chance of burning
-                            target.setBurning(weapon.getBurn(), weapon.getBurnLvl());
-                        }
-                        break;
-                    case "freeze":
-                        if (spChance < this.weapon.getFreezeChance()) {
-                            target.setFrozen(this.weapon.getFreezeTurns());
-                        }
-                        break;
-                    case "percentDmg":
-                        totalDamage = (int) ((1 + (target.getPercentMissingHealth() * this.weapon.getPercentRatio()))
-                                * totalDamage); // to be balanced
-                        break;
-                    case "lSteal":
-                        target.damage(this.weapon.getLStealLvl());
-                        this.heal(this.weapon.getLStealLvl());
-                        break;
-                    case "thunder":
-                        if (spChance < this.weapon.getThunderChance()) {
-                            target.setParalyzed(this.weapon.getThunderTurns());
-                        }
-                        break;
-                }
-            }
+            totalDamage = this.applyStatuses(target, totalDamage);
             if (this.hasArmor() && this.Armor.hasSpEffect()) {
                 switch (this.Armor.getSpEffectType()) {
                     case "lastStand":
@@ -338,6 +315,39 @@ public class Player {
             }
             return totalDamage;
         }
+    }
+
+    private int applyStatuses(Enemies target, int totalDamage) {
+        if (this.hasWeapon() && this.weapon.hasSpEffect()) {
+            String spType = this.weapon.getSpEffectType();
+            double spChance = rand();
+            switch (spType) {
+                case "burn":
+                    if (spChance < 0.2) { // 20% chance of burning
+                        target.setBurning(weapon.getBurn(), weapon.getBurnLvl());
+                    }
+                    break;
+                case "freeze":
+                    if (spChance < this.weapon.getFreezeChance()) {
+                        target.setFrozen(this.weapon.getFreezeTurns());
+                    }
+                    break;
+                case "percentDmg":
+                    totalDamage = (int) ((1 + (target.getPercentMissingHealth() * this.weapon.getPercentRatio()))
+                            * totalDamage); // to be balanced
+                    break;
+                case "lSteal":
+                    target.damage(this.weapon.getLStealLvl());
+                    this.heal(this.weapon.getLStealLvl());
+                    break;
+                case "thunder":
+                    if (spChance < this.weapon.getThunderChance()) {
+                        target.setParalyzed(this.weapon.getThunderTurns());
+                    }
+                    break;
+            }
+        }
+        return totalDamage;
     }
 
     private void heal(int amount) {
@@ -425,7 +435,7 @@ public class Player {
     }
     //------------------------------------------------------
 
-    public Map<String, String> test() {
+    public Map<String, String> getStats() {
         Map<String, String> data = new HashMap<>();
 
         for (Field field : this.getClass().getDeclaredFields()) {
@@ -439,38 +449,32 @@ public class Player {
                 }
                 if (obj == null) {
                     type = field.getType().getName().split("\\.");
-                    System.out.println(field.getName() + "[" + type[type.length - 1] + "]" + ": " + value);
+                    //System.out.println(field.getName() + "[" + type[type.length - 1] + "]" + ": " + value);
                     data.put(field.getName(), value);
                     continue;
                 }
                 switch (field.getName()) {
-                    case "weapon" -> {
-                        value = (obj.getClass() == Weapons.class) ? ((Weapons) obj).getItemName() : "null";
-                    }
-                    case "Armor" -> {
-                        value = (obj.getClass() == Armors.class) ? ((Armors) obj).getItemName() : "null";
-                    }
+                    case "weapon" -> value = (obj.getClass() == Weapons.class) ? ((Weapons) obj).getItemName() : "null";
+                    case "Armor" -> value = (obj.getClass() == Armors.class) ? ((Armors) obj).getItemName() : "null";
                     case "Inventory" -> {
                         String str = this.getInventoryItemNames().toString();
                         value = str.replace(",", ":").replace("[", "").replace("]", "");
                     }
-                    default -> {
-                        value = (field.get(this) != null) ? field.get(this).toString() : "null";
-                    }
+                    default -> value = (field.get(this) != null) ? field.get(this).toString() : "null";
                 }
                 type = field.getType().getName().split("\\.");
-                System.out.println(field.getName() + "[" + type[type.length - 1] + "]" + ": " + value);
+                //System.out.println(field.getName() + "[" + type[type.length - 1] + "]" + ": " + value);
                 data.put(field.getName(), value);
                 //System.out.println(field.getName() + ": " + field.get(this));
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
         }
-        System.out.println(data);
+        //System.out.println(data);
         return data;
     }
 
-    public void getStats() {
+    public void printStats() {
         System.out.println("===========STATS==========");
         for (Field field : this.getClass().getDeclaredFields()) {
             fields.add(field.getName());
