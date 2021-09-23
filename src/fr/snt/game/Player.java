@@ -222,7 +222,11 @@ public class Player {
         int atk = attack;
         if (this.hasSkills()) {
             if (this.skills.containsKey("ATTACK_UP")) {
-                atk += skills.get("ATTACK_UP").getValue();
+                atk += (int) (skills.get("ATTACK_UP").getValue());
+                int skillLvl = skills.get("ATTACK_UP").getLevel();
+                if (skillLvl >= 5) {
+                    atk = (int) (atk * (1 + (skillLvl - 4) * 0.03));
+                }
             }
         }
         return atk;
@@ -303,7 +307,7 @@ public class Player {
 
             if (this.hasSkills()) {
                 if (this.skills.containsKey("MULTI_ATK")) {
-                    int dmg = skills.get("ATK_MULT").getValue() * this.getAttack();
+                    int dmg = (int) (skills.get("ATK_MULT").getValue() * this.getAttack());
                     target.damage(dmg);
                     System.out.println(this.getName() + " attacked a second time " + target.getName() + " for " + dmg + " damage!");
                     System.out.println("Total of " + (totalDamage + dmg) + " damage!");
@@ -341,7 +345,7 @@ public class Player {
             }
             if (this.hasSkills()) {
                 if (this.skills.containsKey("ATK_MULT")) {
-                    totalDamage = (int) (totalDamage * (1 + (skills.get("ATK_MULT").getValue() / 100)));
+                    totalDamage = (int) (totalDamage * skills.get("ATK_MULT").getValue());
                 }
             }
             return totalDamage;

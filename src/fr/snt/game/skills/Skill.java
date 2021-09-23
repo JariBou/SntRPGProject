@@ -3,17 +3,18 @@ package fr.snt.game.skills;
 
 public class Skill {
 
-    private final String name, parameter, description, rarity;
-    private final int value;
-    private int level;
+    private final String name, description, rarity;
+    protected final double value;
+    protected int level;
+    private final int pointsRequired;
 
-    public Skill(String name, String parameter, int lvl, int value, String description, String rarity) {
+    public Skill(String name, int lvl, double value, String description, String rarity, int pointsRequired) {
         this.name = name;
-        this.parameter = parameter;
         this.value = value;
         this.level = lvl;
         this.description = description;
         this.rarity = rarity;
+        this.pointsRequired = pointsRequired;
     }
 
     public void lvlUp() {
@@ -32,12 +33,12 @@ public class Skill {
         this.level -= amount;
     }
 
-    public int getValue() {
+    public double getValue() {
         return value * level;
     }
 
-    public String getParameter() {
-        return parameter;
+    public int getPointsRequired() {
+        return pointsRequired;
     }
 
     public String getName() {
