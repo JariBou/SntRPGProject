@@ -49,7 +49,7 @@ public class runTests {
                     System.out.println(player.getAttack());
                     break;
                 case "skill":
-                    player.addSkill(Skills.ATTACK_UP);
+                    player.addSkill(Skills.get("ATTACK_UP"));
                     break;
                 case "skillup":
                     player.upgradeSkill("ATTACK_UP");

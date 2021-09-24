@@ -51,6 +51,7 @@ public class Player {
                 case "Weapons" -> field.set(this, !Objects.equals(value, "null") ? new Weapons(value) : null);
                 case "Armors" -> field.set(this, !Objects.equals(value, "null") ? new Armors(value) : null);
                 case "ArrayList" -> {
+                    // Put a switch with the name if multiple array type stuff appear
                     String[] items = value.split(":");
                     this.Inventory = new ArrayList<>();
                     for (String item : items) {
@@ -541,6 +542,9 @@ public class Player {
                     case "Inventory" -> {
                         String str = this.getInventoryItemNames().toString();
                         value = str.replace(",", ":").replace("[", "").replace("]", "");
+                    }
+                    case "skills" -> {
+
                     }
                     default -> {
                         value = (field.get(this) != null) ? field.get(this).toString() : "null";
