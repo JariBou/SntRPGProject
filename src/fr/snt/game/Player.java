@@ -18,7 +18,7 @@ import java.util.*;
 
 public class Player {
     private String name;
-    private int baseArmor;
+    private int baseArmor, skillPoints;
     private ArrayList<Equipables> Inventory = new ArrayList<>();
     private int health, maxHealth, attack, gold, playerLevel;
     private Weapons weapon;
@@ -112,6 +112,7 @@ public class Player {
         this.Armor = null;
         this.gold = 0;
         this.playerLevel = 1;
+        this.skillPoints = 0;
     }
 
     private double rand() {
@@ -212,23 +213,31 @@ public class Player {
     }
 
     public int getBaseArmor() {
-        if (hasArmor()) {
-            return this.baseArmor + this.Armor.getArmorValue();
-        } else {
-            return this.baseArmor;
+        int b_armor = this.baseArmor;
+        if (this.hasSkills()) {
+            b_armor = applySkillsOnArm(b_armor);
         }
+        if (hasArmor()) {
+            b_armor += this.Armor.getArmorValue();
+        }
+        return b_armor;
+    }
+
+    public int applySkillsOnArm(int b_armor) {
+        if (this.skills.containsKey("ARMOR_UP")) {
+            b_armor += (int) (skills.get("ARMOR_UP").getValue());
+            int skillLvl = skills.get("ARMOR_UP").getLevel();
+            if (skillLvl >= 5) {
+                b_armor = (int) (b_armor * (1 + (skillLvl - 4) * 0.02));
+            }
+        }
+        return b_armor;
     }
 
     public int getAttack() {
         int atk = attack;
         if (this.hasSkills()) {
-            if (this.skills.containsKey("ATTACK_UP")) {
-                atk += (int) (skills.get("ATTACK_UP").getValue());
-                int skillLvl = skills.get("ATTACK_UP").getLevel();
-                if (skillLvl >= 5) {
-                    atk = (int) (atk * (1 + (skillLvl - 4) * 0.03));
-                }
-            }
+            atk = applySkillsOnAtk(atk);
         }
         return atk;
     }
@@ -237,13 +246,52 @@ public class Player {
         return this.skills.size() > 0;
     }
 
+    public int applySkillsOnAtk(int atk) {
+        if (this.skills.containsKey("ATTACK_UP")) {
+            atk += (int) (skills.get("ATTACK_UP").getValue());
+            int skillLvl = skills.get("ATTACK_UP").getLevel();
+            if (skillLvl >= 5) {
+                atk = (int) (atk * (1 + (skillLvl - 4) * 0.03));
+            }
+        }
+        return atk;
+    }
+
     public void addSkill(Skill skill) {
         if (skills.containsKey(skill.getName())) {return;}
         skills.put(skill.getName(), skill);
     }
 
     public void upgradeSkill(String skillName) {
-        skills.get(skillName).lvlUp();
+        Skill sk = skills.get(skillName);
+        if (!(this.skillPoints >= sk.getPointsRequired())) {return;}
+        if (sk.lvlUp()) {
+            this.skillPoints -= sk.getPointsRequired();
+        }
+    }
+
+    public void upgradeSkill(String skillName, int amount) {
+        Skill sk = skills.get(skillName);
+        if (!(this.skillPoints >= sk.getPointsRequired(amount))) {return;}
+        if (sk.levelUp(amount)) {
+            this.skillPoints -= sk.getPointsRequired(amount);
+        }
+    }
+
+    public void downgradeSkill(String skillName) {
+        Skill sk = skills.get(skillName);
+        if (sk.lvlDown()) {
+            this.skillPoints += sk.getPointsRequired();
+        } // Else means that you probably want to unlearn it
+        // TODO
+    }
+
+    public void downgradeSkill(String skillName, int amount) {
+        Skill sk = skills.get(skillName);
+        if (sk.levelDown(amount)) {
+            this.skillPoints += sk.getPointsRequired(amount);
+        } // Else means that you probably want to unlearn it
+        // TODO
     }
 
     public void setAttack(int attack) {
@@ -300,20 +348,16 @@ public class Player {
     }
 
     public void attack(Enemies target) {
+        if (target.hasGuarded()) {
+            System.out.println(this.getName() + " attacked " + target.getName() + " for " + (this.getDamage() - target.getArmor()) + " damage!");
+            target.damage(this.getDamage() - target.getArmor());
+        }
         if (!target.hasDodged()) {
             int totalDamage = getTotalDamage(target);
             target.damage(totalDamage);
             this.heal((int) (totalDamage * this.weapon.getVampRatio()));      //Implementation for LifeSteal
+            // if weapon is not vampiric it will heal for 0
             System.out.println(this.getName() + " attacked " + target.getName() + " for " + totalDamage + " damage!");
-
-            if (this.hasSkills()) {
-                if (this.skills.containsKey("MULTI_ATK")) {
-                    int dmg = (int) (skills.get("ATK_MULT").getValue() * this.getAttack());
-                    target.damage(dmg);
-                    System.out.println(this.getName() + " attacked a second time " + target.getName() + " for " + dmg + " damage!");
-                    System.out.println("Total of " + (totalDamage + dmg) + " damage!");
-                }
-            }
 
             if (!target.isAlive()) {
                 System.out.println(target.getName() + " is dead!");
@@ -329,31 +373,13 @@ public class Player {
             System.out.println(this.getName() + " attacked " + target.getName() + " for " + (totalDamage - target.getArmor()) + " damage!");
             return (totalDamage - target.getArmor());
         } else {
-            totalDamage = this.applyStatuses(target, totalDamage);
-            if (this.hasArmor() && this.Armor.hasSpEffect()) {
-                switch (this.Armor.getSpEffectType()) {
-                    case "lastStand" -> totalDamage = (int) ((1 + (this.getPercentMissingHealth() * this.Armor.getLsRatio())) * totalDamage);
-                    case "wall" -> {
-                        float ratio = this.getPercentHealth() * this.Armor.getWallRatio();
-                        if (ratio >= 0.20) {
-                            totalDamage = (int) (totalDamage * (this.getPercentHealth() * this.Armor.getWallRatio()));
-                        } else {
-                            totalDamage = (int) (totalDamage * 0.20);
-                        }
-                    }
-                    case "atkBonus" -> totalDamage += this.Armor.getAtkBonus();
-                }
-            }
-            if (this.hasSkills()) {
-                if (this.skills.containsKey("ATK_MULT")) {
-                    totalDamage = (int) (totalDamage * skills.get("ATK_MULT").getValue());
-                }
-            }
-            return totalDamage;
+            totalDamage = this.applyWeaponSPs(target, totalDamage);
+            totalDamage = this.applyArmorSPs(target, totalDamage);
+            return this.applySPSkills(target, totalDamage);
         }
     }
 
-    private int applyStatuses(Enemies target, int totalDamage) {
+    private int applyWeaponSPs(Enemies target, int totalDamage) {
         if (this.hasWeapon() && this.weapon.hasSpEffect()) {
             String spType = this.weapon.getSpEffectType();
             double spChance = rand();
@@ -381,6 +407,45 @@ public class Player {
                         target.setParalyzed(this.weapon.getThunderTurns());
                     }
                     break;
+            }
+        }
+        return totalDamage;
+    }
+
+    private int applyArmorSPs(Enemies target, int totalDamage) {
+        if (this.hasArmor() && this.Armor.hasSpEffect()) {
+            switch (this.Armor.getSpEffectType()) {
+                case "lastStand" -> totalDamage = (int) ((1 + (this.getPercentMissingHealth() * this.Armor.getLsRatio())) * totalDamage);
+                case "wall" -> {
+                    float ratio = this.getPercentHealth() * this.Armor.getWallRatio();
+                    if (ratio >= 0.20) {
+                        totalDamage = (int) (totalDamage * (this.getPercentHealth() * this.Armor.getWallRatio()));
+                    } else {
+                        totalDamage = (int) (totalDamage * 0.20);
+                    }
+                }
+                case "atkBonus" -> totalDamage += this.Armor.getAtkBonus();
+            }
+        }
+        return totalDamage;
+    }
+
+    private int applySPSkills(Enemies target, int totalDamage) {
+        if (this.hasSkills()) {
+            if (this.skills.containsKey("ATK_MULT")) {
+                totalDamage = (int) (totalDamage * skills.get("ATK_MULT").getValue());
+            }
+            if (this.skills.containsKey("MULTI_ATK")) {
+                int sk_lvl = this.skills.get("MULTI_ATK").getLevel();
+                if (sk_lvl >= 3) {
+                    totalDamage += this.getDamage() * sk_lvl;
+                } else {
+                    totalDamage += this.getAttack() * sk_lvl;
+                }
+            }
+            // Must be applied in the end
+            if (this.skills.containsKey("VAMPIRIC")) {
+                this.heal((int) (totalDamage * this.skills.get("VAMPIRIC").getValue()));
             }
         }
         return totalDamage;

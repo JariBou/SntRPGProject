@@ -8,8 +8,10 @@ import java.util.Map;
 public class Skills {
 
     // Commons
+        //if lvl >= 5 also upgrades for 2 percent of base atk
     private final Skill ATTACK_UP = new Skill("ATTACK_UP", 1, 2,
             "Upgrades attack", "common", 1);
+        //if lvl >= 5 also upgrades for 3 percent of base armor
     private final Skill ARMOR_UP = new Skill("ARMOR_UP", 1, 3,
             "Upgrades base armor", "common", 1);
 
@@ -18,18 +20,21 @@ public class Skills {
 
 
     // Epic
+        //if lvl >= 3 also dmgs for the weapon damage
     private final Skill MULTI_ATK = new Skill("MULTI_ATK", 1, 1,
             "Attacks once more for your base dmg (including skills)", "epic", 3);
 
 
     // Legendary
-    private final Skill ATK_MULT = new Skill("ATK_MULT", 1, 1.1,
-            "Multiplies your damage by 1 + value/100", "legendary", 4) {
+    private final Skill ATK_MULT = new Skill("ATK_MULT", 1, 0.1,
+            "Multiplies your damage by 1 + skillValue * skillLvl", "legendary", 4) {
         @Override
         public double getValue() {
-            return this.value + 0.1 * (level - 1);
+            return 1 + value * level;
         }
     };
+    private final Skill VAMPIRIC = new Skill("VAMPIRIC", 1, 0.07,
+            "Heals you for skillValue*skillLvl*totalDamage", "legendary", 4);
 
 
     // Utilities

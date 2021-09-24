@@ -6,7 +6,7 @@ public class Skill {
     private final String name, description, rarity;
     protected final double value;
     protected int level;
-    private final int pointsRequired;
+    private final int pointsRequired, maxLvl;
 
     public Skill(String name, int lvl, double value, String description, String rarity, int pointsRequired) {
         this.name = name;
@@ -15,22 +15,45 @@ public class Skill {
         this.description = description;
         this.rarity = rarity;
         this.pointsRequired = pointsRequired;
+        this.maxLvl = 10;
     }
 
-    public void lvlUp() {
-        this.level++;
+    public Skill(String name, int lvl, double value, String description, String rarity, int pointsRequired, int maxLvl) {
+        this.name = name;
+        this.value = value;
+        this.level = lvl;
+        this.description = description;
+        this.rarity = rarity;
+        this.pointsRequired = pointsRequired;
+        this.maxLvl = maxLvl;
     }
 
-    public void levelUp(int amount) {
-        this.level += amount;
+    public boolean lvlUp() {
+        if (this.level < this.maxLvl) {
+            this.level++;
+            return true;
+        } return false;
     }
 
-    public void lvlDown() {
-        this.level--;
+    public boolean levelUp(int amount) {
+        if (this.level+amount <= this.maxLvl) {
+            this.level += amount;
+            return true;
+        } return false;
     }
 
-    public void levelDown(int amount) {
-        this.level -= amount;
+    public boolean lvlDown() {
+        if (this.level > 1) {
+            this.level--;
+            return true;
+        } return false;
+    }
+
+    public boolean levelDown(int amount) {
+        if (this.level-amount > 0) {
+            this.level -= amount;
+            return true;
+        } return false;
     }
 
     public double getValue() {
@@ -39,6 +62,10 @@ public class Skill {
 
     public int getPointsRequired() {
         return pointsRequired;
+    }
+
+    public int getPointsRequired(int number_of_lvls) {
+        return pointsRequired * number_of_lvls;
     }
 
     public String getName() {
