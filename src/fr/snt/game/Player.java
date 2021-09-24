@@ -262,6 +262,10 @@ public class Player {
         skills.put(skill.getName(), skill);
     }
 
+    public void removeSkill(String skillName) {
+        skills.remove(skillName);
+    }
+
     public void upgradeSkill(String skillName) {
         Skill sk = skills.get(skillName);
         if (!(this.skillPoints >= sk.getPointsRequired())) {return;}
@@ -282,14 +286,22 @@ public class Player {
         Skill sk = skills.get(skillName);
         if (sk.lvlDown()) {
             this.skillPoints += sk.getPointsRequired();
+            return;
         } // Else means that you probably want to unlearn it
         // TODO
+        this.removeSkill(skillName);
     }
 
     public void downgradeSkill(String skillName, int amount) {
         Skill sk = skills.get(skillName);
+        if (sk.getLevel() == amount | (sk.getLevel() == 1 && amount >= 1)) {
+            this.removeSkill(skillName);
+            this.skillPoints += sk.getPointsRequired(sk.getLevel());
+            return;
+        }
         if (sk.levelDown(amount)) {
             this.skillPoints += sk.getPointsRequired(amount);
+            return;
         } // Else means that you probably want to unlearn it
         // TODO
     }
