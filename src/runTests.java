@@ -45,11 +45,15 @@ public class runTests {
                     break;
                 case "stats":
                     player.printStats();
+                    break;
                 case "attack":
                     System.out.println(player.getAttack());
                     break;
                 case "skill":
                     player.addSkill(Skills.get("ATTACK_UP"));
+                    break;
+                case "skill2":
+                    player.addSkill(Skills.get("ATK_MULT"));
                     break;
                 case "skillup":
                     player.upgradeSkill("ATTACK_UP");

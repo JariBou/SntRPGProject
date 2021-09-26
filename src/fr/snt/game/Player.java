@@ -6,6 +6,7 @@ import fr.snt.game.equipables.Armors;
 import fr.snt.game.equipables.Weapons;
 import fr.snt.game.levels.GameOverLevel;
 import fr.snt.game.skills.Skill;
+import fr.snt.game.skills.Skills;
 
 import static assets.utils.UtilMethods.getType;
 import static java.lang.Integer.parseInt;
@@ -26,7 +27,7 @@ public class Player {
     // Player Levels and poison mechanics
     private int levelCount, poison, poisonLevel;
     private final Map<String, Field> fields = new HashMap<>();
-    private final Map<String, Skill> skills = new HashMap<>();
+    private Map<String, Skill> skills = new HashMap<>();
 
     public Player(String saveName) throws Exception {
         saveName += saveName.endsWith(".properties") ? "" : ".properties";
@@ -44,6 +45,7 @@ public class Player {
             String[] typeList = field.getType().getName().split("\\.");
             String type = typeList[typeList.length - 1];
             System.out.println(type);
+            System.out.println(field.getName());
             String value = prop.getProperty(field.getName());
 
             switch (type) {
@@ -66,8 +68,15 @@ public class Player {
                 }
                 case "Map" -> {
                     //TODO
-
-                    break;
+                    String[] items = value.split(":");
+                    this.skills = new HashMap<>();
+                    for (String item : items) {
+                        item = item.trim();
+                        Skill skill = Skills.get(item);
+                        if (skill != null) {
+                            this.addSkill(skill);
+                        }
+                    }
                 }
                 default -> field.set(this, prop.getProperty(field.getName()));
             }
@@ -257,6 +266,7 @@ public class Player {
         return atk;
     }
 
+    // ========== Skills Management ================================
     public void addSkill(Skill skill) {
         if (skills.containsKey(skill.getName())) {return;}
         skills.put(skill.getName(), skill);
@@ -294,7 +304,7 @@ public class Player {
 
     public void downgradeSkill(String skillName, int amount) {
         Skill sk = skills.get(skillName);
-        if (sk.getLevel() == amount | (sk.getLevel() == 1 && amount >= 1)) {
+        if (sk.getLevel() == amount || (sk.getLevel() == 1 && amount >= 1)) {
             this.removeSkill(skillName);
             this.skillPoints += sk.getPointsRequired(sk.getLevel());
             return;
@@ -305,6 +315,14 @@ public class Player {
         } // Else means that you probably want to unlearn it
         // TODO
     }
+
+    public ArrayList<String> getSkillsNames() {
+        if (this.skills.size() < 1) {
+            return new ArrayList<>(List.of(""));
+        }
+        return new ArrayList<>(this.skills.keySet());
+    }
+    // ========================================================================
 
     public void setAttack(int attack) {
         this.attack = attack;
@@ -580,6 +598,10 @@ public class Player {
                         String str = this.getInventoryItemNames().toString();
                         value = str.replace(",", ":").replace("[", "").replace("]", "");
                     }
+                    case "skills" -> {
+                        String str = this.getSkillsNames().toString();
+                        value = str.replace(",", ":").replace("[", "").replace("]", "");
+                    }
                     default -> value = (field.get(this) != null) ? field.get(this).toString() : "null";
                 }
                 type = field.getType().getName().split("\\.");
@@ -621,7 +643,8 @@ public class Player {
                         value = str.replace(",", ":").replace("[", "").replace("]", "");
                     }
                     case "skills" -> {
-
+                        String str = this.getSkillsNames().toString();
+                        value = str.replace(",", ":").replace("[", "").replace("]", "");
                     }
                     default -> {
                         value = (field.get(this) != null) ? field.get(this).toString() : "null";
