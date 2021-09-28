@@ -57,10 +57,7 @@ public class Player {
                     String[] items = value.split(":");
                     this.Inventory = new ArrayList<>();
                     for (String item : items) {
-                        item = item.trim();
-                        // Maybe do a constructor in Equipables.java that detects based on the name wether it is
-                        // a Weapons or Armors type item
-                        Equipables equipable = Equipables.get(item);
+                        Equipables equipable = Equipables.get(item.trim());
                         if (equipable != null) {
                             this.addToInventory(equipable);
                         }
@@ -71,8 +68,7 @@ public class Player {
                     String[] items = value.split(":");
                     this.skills = new HashMap<>();
                     for (String item : items) {
-                        item = item.trim();
-                        Skill skill = Skills.get(item);
+                        Skill skill = Skills.get(item.trim());
                         if (skill != null) {
                             this.addSkill(skill);
                         }
@@ -251,10 +247,6 @@ public class Player {
         return atk;
     }
 
-    public boolean hasSkills() {
-        return this.skills.size() > 0;
-    }
-
     public int applySkillsOnAtk(int atk) {
         if (this.skills.containsKey("ATTACK_UP")) {
             atk += (int) (skills.get("ATTACK_UP").getValue());
@@ -268,8 +260,13 @@ public class Player {
 
     // ========== Skills Management ================================
     public void addSkill(Skill skill) {
-        if (skills.containsKey(skill.getName())) {return;}
+        if (skills.containsKey(skill.getName()) || this.skillPoints <= skill.getPointsRequired()) {return;}
+        skillPoints -= skill.getPointsRequired();
         skills.put(skill.getName(), skill);
+    }
+
+    public boolean hasSkills() {
+        return this.skills.size() > 0;
     }
 
     public void removeSkill(String skillName) {
@@ -278,7 +275,7 @@ public class Player {
 
     public void upgradeSkill(String skillName) {
         Skill sk = skills.get(skillName);
-        if (!(this.skillPoints >= sk.getPointsRequired())) {return;}
+        if (sk == null || (this.skillPoints <= sk.getPointsRequired())) {return;}
         if (sk.lvlUp()) {
             this.skillPoints -= sk.getPointsRequired();
         }
@@ -286,7 +283,7 @@ public class Player {
 
     public void upgradeSkill(String skillName, int amount) {
         Skill sk = skills.get(skillName);
-        if (!(this.skillPoints >= sk.getPointsRequired(amount))) {return;}
+        if (sk == null || (this.skillPoints <= sk.getPointsRequired(amount))) {return;}
         if (sk.levelUp(amount)) {
             this.skillPoints -= sk.getPointsRequired(amount);
         }
@@ -294,6 +291,7 @@ public class Player {
 
     public void downgradeSkill(String skillName) {
         Skill sk = skills.get(skillName);
+        if (sk == null) {return;}
         if (sk.lvlDown()) {
             this.skillPoints += sk.getPointsRequired();
             return;
@@ -304,6 +302,7 @@ public class Player {
 
     public void downgradeSkill(String skillName, int amount) {
         Skill sk = skills.get(skillName);
+        if (sk == null) {return;}
         if (sk.getLevel() == amount || (sk.getLevel() == 1 && amount >= 1)) {
             this.removeSkill(skillName);
             this.skillPoints += sk.getPointsRequired(sk.getLevel());
@@ -533,7 +532,7 @@ public class Player {
     public ArrayList<Weapons> getWeapons() {
         ArrayList<Weapons> wList = new ArrayList<>();
         for (Equipables w : getInventory()) {
-            if (getType(w.getClass()).equals("Weapons")) {
+            if (w.getClass() == Weapons.class) {
                 wList.add((Weapons) w);
             }
         }
@@ -542,9 +541,9 @@ public class Player {
 
     public ArrayList<Armors> getArmors() {
         ArrayList<Armors> aList = new ArrayList<>();
-        for (Equipables w : getInventory()) {
-            if (getType(w.getClass()).equals("Armors")) {
-                aList.add((Armors) w);
+        for (Equipables a : getInventory()) {
+            if (a.getClass() == Armors.class) {
+                aList.add((Armors) a);
             }
         }
         return aList;

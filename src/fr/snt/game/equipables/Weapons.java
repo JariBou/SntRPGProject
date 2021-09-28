@@ -24,8 +24,8 @@ public class Weapons extends Equipables {
 
     public Weapons(String itemName) throws Exception {
         if (itemName.equals("null")){return;}
-        this.itemName = itemName;
-        itemName += ".properties";
+        this.itemName = itemName.replace(".properties", "");
+        itemName += itemName.endsWith(".properties") ? "" : ".properties";
         Properties properties = new Properties();
         try {
             properties.load(new FileInputStream(imPath + "\\src\\fr\\snt\\game\\equipables\\weapons\\" + itemName));

@@ -175,7 +175,7 @@ public abstract class BaseLevel {
     private void manageItem(int nb){
         nb--;
         Equipables item = player.getItemInInventory(nb);
-        if (getType(item.getClass()).equals("Weapons")){
+        if (item.getClass() == Weapons.class){
             System.out.println(item.getName());
             System.out.println("attack: " + ((Weapons) item).getAttack());
             System.out.println("Description: " + item.getDescription());

@@ -14,7 +14,7 @@ public class Skills {
         //if lvl >= 5 also upgrades for 3 percent of base armor
     private final Skill ARMOR_UP = new Skill("ARMOR_UP", 1, 3,
             "Upgrades base armor", "common", 1);
-
+    //TODO: private enum class maybe to stock skills since skills are statically retrieved
 
     // Rare
 
@@ -56,11 +56,9 @@ public class Skills {
             }
         }
         return skillList;
-
     }
 
     public Skills() {
-
     }
 
     public static Skill get(String name) {

@@ -19,8 +19,8 @@ public class Armors extends Equipables {
         if (itemName.equals("null")){
             return;
         }
-        this.itemName = itemName;
-        itemName += ".properties";
+        this.itemName = itemName.replace(".properties", "");
+        itemName += itemName.endsWith(".properties") ? "" : ".properties";
         Properties properties = new Properties();
         try {
             properties.load(new FileInputStream(imPath + "\\src\\fr\\snt\\game\\equipables\\armors\\" + itemName));
