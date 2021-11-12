@@ -13,8 +13,7 @@ public class Skills {
             "Upgrades attack", "common", 1);
         //if lvl >= 5 also upgrades for 3 percent of base armor
     private final Skill ARMOR_UP = new Skill("ARMOR_UP", 1, 3,
-            "Upgrades base armor", "common", 1);
-    //TODO: private enum class maybe to stock skills since skills are statically retrieved
+            "Upgrades base armor", "common", 1);;;;;;;;;;;
 
     // Rare
 
@@ -55,6 +54,45 @@ public class Skills {
                 e.printStackTrace();
             }
         }
+        return skillList;
+    }
+
+    public static Map<String, Skill> getSkillList2(){
+        if (skillList != null) {
+            return skillList;
+        }
+        skillList = new HashMap<>();
+
+
+        // Commons
+        //if lvl >= 5 also upgrades for 2 percent of base atk
+        skillList.put("ATTACK_UP", new Skill("ATTACK_UP", 1, 2,
+                "Upgrades attack", "common", 1));
+        //if lvl >= 5 also upgrades for 3 percent of base armor
+        skillList.put("ARMOR_UP", new Skill("ARMOR_UP", 1, 3,
+                "Upgrades base armor", "common", 1));
+
+        // Rare
+
+
+        // Epic
+        //if lvl >= 3 also dmgs for the weapon damage
+        skillList.put("MULTI_ATK", new Skill("MULTI_ATK", 1, 1,
+                "Attacks once more for your base dmg (including skills)", "epic", 3));
+
+
+        // Legendary
+        skillList.put("ATK_MULT", new Skill("ATK_MULT", 1, 0.1,
+                "Multiplies your damage by 1 + skillValue * skillLvl", "legendary", 4) {
+            @Override
+            public double getValue() {
+                return 1 + value * level;
+            }
+        });
+        skillList.put("VAMPIRIC", new Skill("VAMPIRIC", 1, 0.07,
+                "Heals you for skillValue*skillLvl*totalDamage", "legendary", 4));
+
+
         return skillList;
     }
 
