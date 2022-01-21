@@ -216,5 +216,16 @@ public class SavesHandler {
         return enemiesArrayList;
     }
 
+    public static Player loadPlayerFromSave(String saveName) throws Exception {
+        saveName += saveName.endsWith(".properties") ? "" : ".properties";
+        Properties prop = new Properties();
+        try {
+            prop.load(new FileInputStream("src\\fr\\snt\\game\\saves\\" + saveName));
+        } catch (IOException e) {
+            throw new Exception("Unexpected Error while loadind '" + saveName + "'\n" + e);
+        }
+        return new Player(prop);
+    }
+
 }
 

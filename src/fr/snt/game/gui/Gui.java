@@ -356,7 +356,7 @@ public class Gui {
         int n = JOptionPane.showOptionDialog(rootPanel,
                 "Do you want to buy '"
                         + item.getName() + "'?\n" + "Price: " + item.getCost() + "\nYour money: " + player.getGold(),
-                "Equip?",
+                "Buy?",
                 JOptionPane.YES_NO_CANCEL_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
                 dialog_ico,

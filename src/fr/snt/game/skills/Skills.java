@@ -16,24 +16,31 @@ public class Skills {
             "Upgrades base armor", "common", 1);;;;;;;;;;;
 
     // Rare
+    private final Skill MIDAS = new Skill("MIDAS", 1, 0.15,
+            "Increases the amount of gold dained by defeating ennemies", "rare", 2, 5) {
+        @Override
+        public double getValue() {
+            return 1 + value * level;
+        }
+    };
 
 
     // Epic
         //if lvl >= 3 also dmgs for the weapon damage
     private final Skill MULTI_ATK = new Skill("MULTI_ATK", 1, 1,
-            "Attacks once more for your base dmg (including skills)", "epic", 3);
+            "Attacks once more for your base dmg (including skills)", "epic", 3, 3);
 
 
     // Legendary
     private final Skill ATK_MULT = new Skill("ATK_MULT", 1, 0.1,
-            "Multiplies your damage by 1 + skillValue * skillLvl", "legendary", 4) {
+            "Multiplies your damage by 1 + skillValue * skillLvl", "legendary", 4, 7) {
         @Override
         public double getValue() {
             return 1 + value * level;
         }
     };
     private final Skill VAMPIRIC = new Skill("VAMPIRIC", 1, 0.07,
-            "Heals you for skillValue*skillLvl*totalDamage", "legendary", 4);
+            "Heals you for skillValue*skillLvl*totalDamage", "legendary", 4, 5);
 
 
     // Utilities

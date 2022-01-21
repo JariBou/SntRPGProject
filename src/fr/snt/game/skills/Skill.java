@@ -8,6 +8,11 @@ public class Skill {
     protected int level;
     private final int pointsRequired, maxLvl;
 
+    @Override
+    public String toString() {
+        return String.format("Skill(name=%s, lvl=%d, rarity=%s)", this.name, this.level, this.rarity);
+    }
+
     public Skill(String name, int lvl, double value, String description, String rarity, int pointsRequired) {
         this.name = name;
         this.value = value;

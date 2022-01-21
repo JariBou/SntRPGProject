@@ -29,6 +29,8 @@ public class Player {
     private final Map<String, Field> fields = new HashMap<>();
     private Map<String, Skill> skills = new HashMap<>();
 
+    // Soon to be deprecated and replaced with a function that takes in a properties file
+    // This is done to have all of save files handled with the SavesHandler class
     public Player(String saveName) throws Exception {
         saveName += saveName.endsWith(".properties") ? "" : ".properties";
         Properties prop = new Properties();
@@ -37,7 +39,77 @@ public class Player {
         } catch (IOException e) {
             throw new Exception("Unexpected Error while loadind '" + saveName + "'\n" + e);
         }
-        ArrayList<Object> initializers = new ArrayList<>();
+        ArrayList<Object> initializers = new ArrayList<>(); // What's this tho?
+        for (Field field : this.getClass().getDeclaredFields()) {
+            if (field.getName().equals("fields")) {
+                continue;
+            }
+            String[] typeList = field.getType().getName().split("\\.");
+            String type = typeList[typeList.length - 1];
+            System.out.println(type);
+            System.out.println(field.getName());
+            String value = prop.getProperty(field.getName());
+
+            switch (type) {
+                case "int" -> field.set(this, parseInt(value));
+                case "Weapons" -> field.set(this, !Objects.equals(value, "null") ? new Weapons(value) : null);
+                case "Armors" -> field.set(this, !Objects.equals(value, "null") ? new Armors(value) : null);
+                case "ArrayList" -> {
+                    // Put a switch with the name if multiple array type stuff appear
+                    String[] items = value.split(":");
+                    this.Inventory = new ArrayList<>();
+                    for (String item : items) {
+                        Equipables equipable = Equipables.get(item.trim());
+                        if (equipable != null) {
+                            this.addToInventory(equipable);
+                        }
+                    }
+                }
+                case "Map" -> {
+                    //TODO
+                    String[] items = value.split(":");
+                    this.skills = new HashMap<>();
+                    for (String item : items) {
+                        Skill skill = Skills.get(item.trim());
+                        if (skill != null) {
+                            this.addSkill(skill);
+                        }
+                    }
+                }
+                default -> field.set(this, prop.getProperty(field.getName()));
+            }
+
+            //field.set(this, type.cast(prop.getProperty(field.getName())));
+        }
+
+
+//        this.name = prop.getProperty("name");
+//        this.baseArmor = parseInt(prop.getProperty("baseArmor"));
+//        this.maxHealth = parseInt(prop.getProperty("maxHealth"));
+//        this.attack = parseInt(prop.getProperty("attack"));
+//        String[] playerLvls = prop.getProperty("playerLvl").split(":");
+//        this.playerLevel = parseInt(playerLvls[0]);
+//        this.levelCount = parseInt(playerLvls[1]);
+//        this.gold = parseInt(prop.getProperty("gold"));
+//
+//        this.weapon = new Weapons(prop.getProperty("currWeapon"));
+//        this.Armor = new Armors(prop.getProperty("currArmor"));
+//
+//        // Inv -------------------------------------------------
+//        this.Inventory = new ArrayList<>();
+//        String[] weapons = prop.getProperty("Weapons").split(":");
+//        for (String s : weapons){
+//            this.Inventory.add(new Weapons(s.trim()));
+//        }
+//        String[] armors = prop.getProperty("Armors").split(":");
+//        for (String s : armors){
+//            this.Inventory.add(new Armors(s.trim()));
+//        }
+        this.initFieldsMap();
+    }
+
+    public Player(Properties prop) throws Exception {
+        ArrayList<Object> initializers = new ArrayList<>(); // What's this tho?
         for (Field field : this.getClass().getDeclaredFields()) {
             if (field.getName().equals("fields")) {
                 continue;

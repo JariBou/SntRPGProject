@@ -6,6 +6,7 @@ import fr.snt.game.skills.Skills;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Locale;
 import java.util.Scanner;
 
 import static java.lang.Integer.parseInt;
@@ -18,47 +19,57 @@ public class runTests {
 
     public static void main(String[] args) throws Exception {
 
-        //Gui a = new Gui();
-        Player player = new Player("test1.properties");
-        //player.addGold(999);
-        //player.test();
-        player.printStats();
+        System.out.println("Enter mode { gui | console }");
         Scanner sc = new Scanner(System.in);
-        String action = "";
-        while (!action.equals("stop")) {
-            action = sc.nextLine();
-            switch (action) {
-                case "stop":
-                    break;
-                case "save":
-                    SavesHandler.save(player, "src/fr/snt/game/saves/test2.properties");
-                    break;
-                case "load":
-                    player = new Player("test2.properties");
-                    break;
-                case "damage":
-                    int amount = parseInt(sc.nextLine());
-                    player.damage(amount);
-                    break;
-                case "health":
-                    System.out.println(player.getHealth());
-                    break;
-                case "stats":
-                    player.printStats();
-                    break;
-                case "attack":
-                    System.out.println(player.getAttack());
-                    break;
-                case "skill":
-                    player.addSkill(Skills.get("ATTACK_UP"));
-                    break;
-                case "skill2":
-                    player.addSkill(Skills.get("ATK_MULT"));
-                    break;
-                case "skillup":
-                    player.upgradeSkill("ATTACK_UP");
-                    break;
+        String mode = sc.nextLine();
 
+        if (mode.equalsIgnoreCase("gui")) {
+            Gui a = new Gui();
+        } else if (mode.equalsIgnoreCase("console")){
+            Player player = SavesHandler.loadPlayerFromSave("test1.properties");
+            //player.addGold(999);
+            //player.test();
+            player.printStats();
+            String action = "";
+            while (!action.equals("stop")) {
+                action = sc.nextLine();
+                switch (action) {
+                    case "stop":
+                        break;
+                    case "save":
+                        SavesHandler.save(player, "src/fr/snt/game/saves/test2.properties");
+                        break;
+                    case "load":
+                        player = SavesHandler.loadPlayerFromSave("test2.properties");
+                        break;
+                    case "damage":
+                        int amount = parseInt(sc.nextLine());
+                        player.damage(amount);
+                        break;
+                    case "health":
+                        System.out.println(player.getHealth());
+                        break;
+                    case "stats":
+                        player.printStats();
+                        break;
+                    case "attack":
+                        System.out.println(player.getAttack());
+                        break;
+                    case "skill":
+                        player.addSkill(Skills.get("ATTACK_UP"));
+                        break;
+                    case "skill2":
+                        player.addSkill(Skills.get("ATK_MULT"));
+                        break;
+                    case "skillup":
+                        player.upgradeSkill("ATTACK_UP");
+                        break;
+                    case "skillList":
+                        System.out.println(Skills.getSkillList());
+                        break;
+
+
+                }
             }
         }
 
